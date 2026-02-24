@@ -1,3 +1,4 @@
+const supabase = require("./supabase");
 const sbClient = supabase.createClient(
     "https://cbkttelrpoizjcxbiygh.supabase.co",
     "sb_publishable_0qhnYXy2bmdbxfxq0Hpovg_DEQNf5-_", {
@@ -13,14 +14,13 @@ async function runQuery(queryFunction) {
     }
 }
 
-function reformatResponse(response, isDataAnArray = false) {
-    console.log(response);
+function reformatResponse(response, getFirstItem = true) {
     let res = {};
     if (response.error) {
         res.error = "[Database API] Unexpected error: " + response.error.message;
     }
     if (response.data) {
-        res.data = isDataAnArray ? response.data : response.data[0];
+        res.data = getFirstItem ? response.data[0] : response.data 
     } else {
         res.data = true;
     }
@@ -31,7 +31,7 @@ const userColumnsExceptPassword = "id, first_name, last_name, username, bio";
 
 const dbApi = {
     getAllUsers: async () => {
-        return reformatResponse(await sbClient.from("user").select("*"))
+        return reformatResponse(await sbClient.from("user").select("*"), false)
     },
 
     createNewUser: async (newUser) => {
@@ -87,4 +87,4 @@ const dbApi = {
     },
 };
 
-export { dbApi }
+module.exports =   dbApi
