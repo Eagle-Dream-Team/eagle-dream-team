@@ -2,4 +2,7 @@
 Greenwich/ZCAS Professional University, EWSD Online Class, Group 2 SCRUM Project
 
 # Ryan was here 2026
-I just made my first GitHub commit! :D
+I just made my first GitHub push! :D
+
+# Ryan was here also 2026
+This will be my second push!
