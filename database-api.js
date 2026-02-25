@@ -20,7 +20,7 @@ function reformatResponse(response, getFirstItem = true) {
         res.error = "[Database API] Unexpected error: " + response.error.message;
     }
     if (response.data) {
-        res.data = getFirstItem ? response.data[0] : response.data 
+        res.data = getFirstItem ? response.data[0] : response.data
     } else {
         res.data = true;
     }
@@ -28,10 +28,11 @@ function reformatResponse(response, getFirstItem = true) {
 }
 
 const userColumnsExceptPassword = "id, first_name, last_name, username, bio";
+const userColumnsExceptPasswordArr = userColumnsExceptPassword.split(", ");
 
 const dbApi = {
     getAllUsers: async () => {
-        return reformatResponse(await sbClient.from("user").select("*"), false)
+        return reformatResponse(await sbClient.from("user").select(userColumnsExceptPassword), false)
     },
 
     createNewUser: async (newUser) => {
@@ -43,7 +44,14 @@ const dbApi = {
     },
 
     getUserAttributeById: async (attribute, id) => {
-        return reformatResponse(await sbClient.from("user").select(attribute).eq("id", id))
+        if (userColumnsExceptPasswordArr.includes(attribute)) {
+            return reformatResponse(await sbClient.from("user").select(attribute).eq("id", id))
+        }
+
+        return {
+            error: "[Database API] Error: Invalid attribute",
+            data: false,
+        }
     },
 
     setUserById: async (newUser, id) => {
@@ -64,14 +72,14 @@ const dbApi = {
             .eq("password", password)
         ).data.id;
 
-        if (!user_id) {
-            return {
-                error: "[Database API] Error: Invalid login",
-                data: false,
-            }
+        if (user_id) {
+            return reformatResponse(await sbClient.from("session").insert({ "user_id": user_id }).select("*"));
         }
 
-        return reformatResponse(await sbClient.from("session").insert({ "user_id": user_id }))
+        return {
+            error: "[Database API] Error: Invalid login",
+            data: false,
+        }
     },
 
     getUserIdBySessionId: async (id) => {
@@ -87,4 +95,4 @@ const dbApi = {
     },
 };
 
-module.exports =   dbApi
+module.exports = dbApi
