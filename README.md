@@ -2,14 +2,6 @@
 
 Greenwich/ZCAS Professional University, EWSD Online Class, Group 2 SCRUM Project
 
-## Ryan was here 2026
+## Dear Frontend Devs
 
-I just made my first GitHub push! :D
-
-## Ryan was here also 2026
-
-This will be my second push!
-
-## Ryan was here also as well 2026
-
-This will be my third push!
+Currently, the server works with static pages. Please create your HTML, CSS and JS files in the "public" folder.

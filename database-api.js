@@ -1,4 +1,5 @@
 const supabase = require("./supabase");
+
 const sbClient = supabase.createClient(
     "https://cbkttelrpoizjcxbiygh.supabase.co",
     "sb_publishable_0qhnYXy2bmdbxfxq0Hpovg_DEQNf5-_", {
@@ -7,18 +8,14 @@ const sbClient = supabase.createClient(
     }
 });
 
-async function runQuery(queryFunction) {
-    const response = await queryFunction(sbClient);
-    return {
-        then: (callback) => { callback(response) }
-    }
-}
-
+// Removes unecessary data from the Supabase response.
 function reformatResponse(response, getFirstItem = true) {
     let res = {};
     if (response.error) {
         res.error = "[Database API] Unexpected error: " + response.error.message;
+        return res
     }
+
     if (response.data) {
         res.data = getFirstItem ? response.data[0] : response.data
     } else {
@@ -50,7 +47,7 @@ const dbApi = {
 
         return {
             error: "[Database API] Error: Invalid attribute",
-            data: false,
+            data: undefined,
         }
     },
 
@@ -67,10 +64,12 @@ const dbApi = {
     },
 
     createNewSessionFromLogin: async (username, password) => {
-        const user_id = reformatResponse(await sbClient.from("user").select("id")
+        const resData = reformatResponse(await sbClient.from("user").select("id")
             .eq("username", username)
             .eq("password", password)
-        ).data.id;
+        ).data;
+
+        const user_id = resData ? resData.id : null;
 
         if (user_id) {
             return reformatResponse(await sbClient.from("session").insert({ "user_id": user_id }).select("*"));
@@ -78,7 +77,7 @@ const dbApi = {
 
         return {
             error: "[Database API] Error: Invalid login",
-            data: false,
+            data: null,
         }
     },
 
