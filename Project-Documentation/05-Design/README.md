@@ -32,3 +32,7 @@ Examples:
 - Architecture decisions
 
 Supports system planning and technical documentation.
+
+# System Architecture
+
+Documents overall system structure including technologies, components, and integration design.
