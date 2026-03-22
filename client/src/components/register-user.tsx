@@ -40,6 +40,7 @@ export function UserModal({
       footer={null}
       title={mode === "edit" ? "Edit User" : "Register User"}
       destroyOnHidden
+      afterClose={() => form.resetFields()}
     >
       {!lockedRole && mode === "create" && (
         <div className="mb-4">

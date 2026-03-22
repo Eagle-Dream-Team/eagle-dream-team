@@ -100,7 +100,10 @@ function RouteComponent() {
         <Button
           type="primary"
           icon={<UserPlus className="size-4" />}
-          onClick={() => setOpen(true)}
+          onClick={() => {
+            setEditingStudent(null);
+            setOpen(true);
+          }}
         >
           Add Student
         </Button>
@@ -119,6 +122,7 @@ function RouteComponent() {
       />
 
       <UserModal
+        key={editingStudent?.user_id ?? "create"}
         open={open || !!editingStudent}
         onClose={() => {
           setOpen(false);
