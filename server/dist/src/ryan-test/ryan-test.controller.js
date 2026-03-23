@@ -19,8 +19,11 @@ let RyanTestController = class RyanTestController {
     constructor(ryanTestService) {
         this.ryanTestService = ryanTestService;
     }
-    findAllTutors() {
+    findAllUsers() {
         return this.ryanTestService.findAllUsers();
+    }
+    findAllStudents() {
+        return this.ryanTestService.findAllStudents();
     }
 };
 exports.RyanTestController = RyanTestController;
@@ -31,7 +34,15 @@ __decorate([
     __metadata("design:type", Function),
     __metadata("design:paramtypes", []),
     __metadata("design:returntype", void 0)
-], RyanTestController.prototype, "findAllTutors", null);
+], RyanTestController.prototype, "findAllUsers", null);
+__decorate([
+    (0, common_1.Get)('students'),
+    (0, swagger_1.ApiOperation)({ summary: 'List all students' }),
+    openapi.ApiResponse({ status: 200 }),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", []),
+    __metadata("design:returntype", void 0)
+], RyanTestController.prototype, "findAllStudents", null);
 exports.RyanTestController = RyanTestController = __decorate([
     (0, swagger_1.ApiTags)('ryan-test'),
     (0, common_1.Controller)('ryan-test'),

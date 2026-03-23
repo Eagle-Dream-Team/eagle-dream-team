@@ -15,7 +15,13 @@ export class RyanTestController {
 
   @Get('users')
   @ApiOperation({ summary: 'List all users' })
-  findAllTutors() {
+  findAllUsers() {
     return this.ryanTestService.findAllUsers();
+  }
+
+  @Get('students')
+  @ApiOperation({ summary: 'List all students' })
+  findAllStudents() {
+    return this.ryanTestService.findAllStudents();
   }
 }

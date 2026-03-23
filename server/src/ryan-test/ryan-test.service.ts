@@ -9,9 +9,18 @@ export class RyanTestService {
 
   async findAllUsers() {
     const users = await this.prisma.user.findMany({
-      where: {},
       omit: { password_hash: true },
     });
-    return users;
+    
+    return users
+  }
+
+  async findAllStudents() {
+    const students = await this.prisma.user.findMany({
+        where: { role: "student"},
+        omit: { password_hash: true },
+    })
+
+    return students
   }
 }
