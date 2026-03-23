@@ -19,3 +19,11 @@ to run the client
 cd client
 pnpm run dev
 ```
+
+##
+
+swagger URL
+
+```
+localhost:3000/swagger
+```
