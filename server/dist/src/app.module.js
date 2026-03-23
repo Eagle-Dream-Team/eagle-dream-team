@@ -14,6 +14,7 @@ const app_service_1 = require("./app.service");
 const auth_module_1 = require("./auth/auth.module");
 const staff_module_1 = require("./staff/staff.module");
 const tutor_module_1 = require("./tutor/tutor.module");
+const ryan_test_module_1 = require("./ryan-test/ryan-test.module");
 let AppModule = class AppModule {
 };
 exports.AppModule = AppModule;
@@ -24,6 +25,7 @@ exports.AppModule = AppModule = __decorate([
             auth_module_1.AuthModule,
             staff_module_1.StaffModule,
             tutor_module_1.Tutormodule,
+            ryan_test_module_1.RyanTestModule,
         ],
         controllers: [app_controller_1.AppController],
         providers: [app_service_1.AppService],
