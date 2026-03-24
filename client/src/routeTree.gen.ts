@@ -10,6 +10,8 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as ProtectedRouteImport } from './routes/_protected'
+import { Route as TestIndexRouteImport } from './routes/test/index'
+import { Route as TestTestPageRouteImport } from './routes/test/test-page'
 import { Route as AuthSignUpRouteImport } from './routes/auth/sign-up'
 import { Route as AuthSignInRouteImport } from './routes/auth/sign-in'
 import { Route as AuthChangePasswordRouteImport } from './routes/auth/change-password'
@@ -22,6 +24,16 @@ import { Route as ProtectedStaffStudentsIndexRouteImport } from './routes/_prote
 
 const ProtectedRoute = ProtectedRouteImport.update({
   id: '/_protected',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const TestIndexRoute = TestIndexRouteImport.update({
+  id: '/test/',
+  path: '/test/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const TestTestPageRoute = TestTestPageRouteImport.update({
+  id: '/test/test-page',
+  path: '/test/test-page',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AuthSignUpRoute = AuthSignUpRouteImport.update({
@@ -77,6 +89,8 @@ export interface FileRoutesByFullPath {
   '/auth/change-password': typeof AuthChangePasswordRoute
   '/auth/sign-in': typeof AuthSignInRoute
   '/auth/sign-up': typeof AuthSignUpRoute
+  '/test/test-page': typeof TestTestPageRoute
+  '/test/': typeof TestIndexRoute
   '/staff/home': typeof ProtectedStaffHomeRoute
   '/staff/': typeof ProtectedStaffIndexRoute
   '/student/': typeof ProtectedStudentIndexRoute
@@ -89,6 +103,8 @@ export interface FileRoutesByTo {
   '/auth/change-password': typeof AuthChangePasswordRoute
   '/auth/sign-in': typeof AuthSignInRoute
   '/auth/sign-up': typeof AuthSignUpRoute
+  '/test/test-page': typeof TestTestPageRoute
+  '/test': typeof TestIndexRoute
   '/staff/home': typeof ProtectedStaffHomeRoute
   '/staff': typeof ProtectedStaffIndexRoute
   '/student': typeof ProtectedStudentIndexRoute
@@ -102,6 +118,8 @@ export interface FileRoutesById {
   '/auth/change-password': typeof AuthChangePasswordRoute
   '/auth/sign-in': typeof AuthSignInRoute
   '/auth/sign-up': typeof AuthSignUpRoute
+  '/test/test-page': typeof TestTestPageRoute
+  '/test/': typeof TestIndexRoute
   '/_protected/staff/home': typeof ProtectedStaffHomeRoute
   '/_protected/staff/': typeof ProtectedStaffIndexRoute
   '/_protected/student/': typeof ProtectedStudentIndexRoute
@@ -116,6 +134,8 @@ export interface FileRouteTypes {
     | '/auth/change-password'
     | '/auth/sign-in'
     | '/auth/sign-up'
+    | '/test/test-page'
+    | '/test/'
     | '/staff/home'
     | '/staff/'
     | '/student/'
@@ -128,6 +148,8 @@ export interface FileRouteTypes {
     | '/auth/change-password'
     | '/auth/sign-in'
     | '/auth/sign-up'
+    | '/test/test-page'
+    | '/test'
     | '/staff/home'
     | '/staff'
     | '/student'
@@ -140,6 +162,8 @@ export interface FileRouteTypes {
     | '/auth/change-password'
     | '/auth/sign-in'
     | '/auth/sign-up'
+    | '/test/test-page'
+    | '/test/'
     | '/_protected/staff/home'
     | '/_protected/staff/'
     | '/_protected/student/'
@@ -153,6 +177,8 @@ export interface RootRouteChildren {
   AuthChangePasswordRoute: typeof AuthChangePasswordRoute
   AuthSignInRoute: typeof AuthSignInRoute
   AuthSignUpRoute: typeof AuthSignUpRoute
+  TestTestPageRoute: typeof TestTestPageRoute
+  TestIndexRoute: typeof TestIndexRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -162,6 +188,20 @@ declare module '@tanstack/react-router' {
       path: ''
       fullPath: '/'
       preLoaderRoute: typeof ProtectedRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/test/': {
+      id: '/test/'
+      path: '/test'
+      fullPath: '/test/'
+      preLoaderRoute: typeof TestIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/test/test-page': {
+      id: '/test/test-page'
+      path: '/test/test-page'
+      fullPath: '/test/test-page'
+      preLoaderRoute: typeof TestTestPageRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/auth/sign-up': {
@@ -257,6 +297,8 @@ const rootRouteChildren: RootRouteChildren = {
   AuthChangePasswordRoute: AuthChangePasswordRoute,
   AuthSignInRoute: AuthSignInRoute,
   AuthSignUpRoute: AuthSignUpRoute,
+  TestTestPageRoute: TestTestPageRoute,
+  TestIndexRoute: TestIndexRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
