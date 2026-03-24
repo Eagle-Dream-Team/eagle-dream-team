@@ -1,6 +1,8 @@
 import {
   Controller,
   Get,
+  Post,
+  Query,
 } from '@nestjs/common';
 import {
   ApiTags,
@@ -23,5 +25,14 @@ export class RyanTestController {
   @ApiOperation({ summary: 'List all students' })
   findAllStudents() {
     return this.ryanTestService.findAllStudents();
+  }
+
+  @Post('allocate')
+  @ApiOperation({ summary: 'Allocate a student to a tutor' })
+  allocateStudentToTutor(
+        @Query('studentId') studentId: string,
+        @Query('tutorId') tutorId: string,
+  ) {
+    return this.ryanTestService.allocateStudentToTutor({studentId: studentId, tutorId: tutorId, allocatedBy: "WIP ID"});
   }
 }

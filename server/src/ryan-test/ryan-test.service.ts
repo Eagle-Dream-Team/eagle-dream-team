@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from 'prisma.service';
+import { AllocateStudentToTutorDto } from './dto/allocateStudentToTutor.dto'
 
 @Injectable()
 export class RyanTestService {
@@ -22,5 +23,17 @@ export class RyanTestService {
     })
 
     return students
+  }
+
+    async allocateStudentToTutor(dto: AllocateStudentToTutorDto) {
+      const allocation = await this.prisma.userAllocation.create({
+      data: {
+        student_id: dto.studentId,
+        tutor_id: dto.tutorId,
+        allocated_by: dto.allocatedBy,
+      },
+    });
+
+    return allocation
   }
 }
