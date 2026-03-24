@@ -1,4 +1,21 @@
-import { Controller } from '@nestjs/common';
+import { Controller, Get, Param, Req, UseGuards } from '@nestjs/common';
+import { ApiBearerAuth } from '@nestjs/swagger/dist/decorators/api-bearer.decorator';
+import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
+import { UserService } from './user.service';
+import { ApiOperation } from '@nestjs/swagger/dist/decorators/api-operation.decorator';
+import { JwtPayload } from 'src/auth/auth.service';
+import { ApiTags } from '@nestjs/swagger/dist/decorators/api-use-tags.decorator';
 
+@ApiTags('user')
 @Controller('user')
-export class UserController {}
+@ApiBearerAuth()
+@UseGuards(JwtAuthGuard)
+export class UserController {
+  constructor(private userService: UserService) {}
+
+  @Get('me')
+  @ApiOperation({ summary: 'Get current user' })
+  findMe(@Req() { user }: Request & { user: JwtPayload }) {
+    return user;
+  }
+}

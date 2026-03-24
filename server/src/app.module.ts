@@ -6,6 +6,7 @@ import { AuthModule } from './auth/auth.module';
 import { StaffModule } from './staff/staff.module';
 import { Tutormodule } from './tutor/tutor.module';
 import { RyanTestModule } from './ryan-test/ryan-test.module';
+import { UserModule } from './user/user.module';
 
 @Module({
   imports: [
@@ -13,6 +14,7 @@ import { RyanTestModule } from './ryan-test/ryan-test.module';
     AuthModule,
     StaffModule,
     Tutormodule,
+    UserModule,
     RyanTestModule,
   ],
   controllers: [AppController],

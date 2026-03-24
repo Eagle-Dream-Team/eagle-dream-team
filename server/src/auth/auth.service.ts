@@ -4,6 +4,14 @@ import { UserService } from '../user/user.service';
 import { SignInDto } from '../user/dto/signIn.dto';
 import * as bcrypt from 'bcrypt';
 
+export type JwtPayload = {
+  sub: string;
+  email: string;
+  role: string;
+  first_name: string;
+  last_name: string;
+};
+
 @Injectable()
 export class AuthService {
   constructor(
@@ -24,7 +32,7 @@ export class AuthService {
       throw new UnauthorizedException('Invalid credentials');
     }
 
-    const payload = {
+    const payload: JwtPayload = {
       sub: user.user_id,
       email: user.email,
       role: user.role,
