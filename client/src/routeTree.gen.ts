@@ -16,6 +16,7 @@ import { Route as TestOkRouteImport } from './routes/test/ok'
 import { Route as AuthSignUpRouteImport } from './routes/auth/sign-up'
 import { Route as AuthSignInRouteImport } from './routes/auth/sign-in'
 import { Route as AuthChangePasswordRouteImport } from './routes/auth/change-password'
+import { Route as TestRyanIndexRouteImport } from './routes/test/ryan/index'
 import { Route as ProtectedTutorIndexRouteImport } from './routes/_protected/tutor/index'
 import { Route as ProtectedStudentIndexRouteImport } from './routes/_protected/student/index'
 import { Route as ProtectedStaffIndexRouteImport } from './routes/_protected/staff/index'
@@ -55,6 +56,11 @@ const AuthSignInRoute = AuthSignInRouteImport.update({
 const AuthChangePasswordRoute = AuthChangePasswordRouteImport.update({
   id: '/auth/change-password',
   path: '/auth/change-password',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const TestRyanIndexRoute = TestRyanIndexRouteImport.update({
+  id: '/test/ryan/',
+  path: '/test/ryan/',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ProtectedTutorIndexRoute = ProtectedTutorIndexRouteImport.update({
@@ -102,6 +108,7 @@ export interface FileRoutesByFullPath {
   '/staff/': typeof ProtectedStaffIndexRoute
   '/student/': typeof ProtectedStudentIndexRoute
   '/tutor/': typeof ProtectedTutorIndexRoute
+  '/test/ryan/': typeof TestRyanIndexRoute
   '/staff/students/': typeof ProtectedStaffStudentsIndexRoute
   '/staff/tutors/': typeof ProtectedStaffTutorsIndexRoute
 }
@@ -117,6 +124,7 @@ export interface FileRoutesByTo {
   '/staff': typeof ProtectedStaffIndexRoute
   '/student': typeof ProtectedStudentIndexRoute
   '/tutor': typeof ProtectedTutorIndexRoute
+  '/test/ryan': typeof TestRyanIndexRoute
   '/staff/students': typeof ProtectedStaffStudentsIndexRoute
   '/staff/tutors': typeof ProtectedStaffTutorsIndexRoute
 }
@@ -133,6 +141,7 @@ export interface FileRoutesById {
   '/_protected/staff/': typeof ProtectedStaffIndexRoute
   '/_protected/student/': typeof ProtectedStudentIndexRoute
   '/_protected/tutor/': typeof ProtectedTutorIndexRoute
+  '/test/ryan/': typeof TestRyanIndexRoute
   '/_protected/staff/students/': typeof ProtectedStaffStudentsIndexRoute
   '/_protected/staff/tutors/': typeof ProtectedStaffTutorsIndexRoute
 }
@@ -150,6 +159,7 @@ export interface FileRouteTypes {
     | '/staff/'
     | '/student/'
     | '/tutor/'
+    | '/test/ryan/'
     | '/staff/students/'
     | '/staff/tutors/'
   fileRoutesByTo: FileRoutesByTo
@@ -165,6 +175,7 @@ export interface FileRouteTypes {
     | '/staff'
     | '/student'
     | '/tutor'
+    | '/test/ryan'
     | '/staff/students'
     | '/staff/tutors'
   id:
@@ -180,6 +191,7 @@ export interface FileRouteTypes {
     | '/_protected/staff/'
     | '/_protected/student/'
     | '/_protected/tutor/'
+    | '/test/ryan/'
     | '/_protected/staff/students/'
     | '/_protected/staff/tutors/'
   fileRoutesById: FileRoutesById
@@ -192,6 +204,7 @@ export interface RootRouteChildren {
   TestOkRoute: typeof TestOkRoute
   TestTestPageRoute: typeof TestTestPageRoute
   TestIndexRoute: typeof TestIndexRoute
+  TestRyanIndexRoute: typeof TestRyanIndexRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -243,6 +256,13 @@ declare module '@tanstack/react-router' {
       path: '/auth/change-password'
       fullPath: '/auth/change-password'
       preLoaderRoute: typeof AuthChangePasswordRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/test/ryan/': {
+      id: '/test/ryan/'
+      path: '/test/ryan'
+      fullPath: '/test/ryan/'
+      preLoaderRoute: typeof TestRyanIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/_protected/tutor/': {
@@ -320,6 +340,7 @@ const rootRouteChildren: RootRouteChildren = {
   TestOkRoute: TestOkRoute,
   TestTestPageRoute: TestTestPageRoute,
   TestIndexRoute: TestIndexRoute,
+  TestRyanIndexRoute: TestRyanIndexRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
