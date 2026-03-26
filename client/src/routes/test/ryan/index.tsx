@@ -10,7 +10,7 @@ function RouteComponent() {
   return (
     <>
       <div className='flex justify-center p-4 m-2 mt-0 border-b border-gray-400 shadow'>
-        <h1 className='text-2xl text-gray-700'>- Demos -</h1>
+        <h1 className='text-2xl text-gray-700'>&lt;- Demos -&gt;</h1>
       </div>
       <MyAccount />
       <SignInForm />

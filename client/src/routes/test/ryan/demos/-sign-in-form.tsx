@@ -1,43 +1,39 @@
 import axios from "axios";
 import { useState } from "react";
+import { OutputPanel } from "../components/-output-panel";
+import { Button } from "../components/-button";
 
 const serverUrl = import.meta.env.VITE_API_URL;
 
 export function SignInForm() {
-
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [isLoading, setIsLoading] = useState(false);
   const [output, setOutput] = useState("");
   const [isFailed, setIsFailed] = useState(false);
 
   async function submitSignInForm() {
     const login = {
       email,
-      password
+      password,
     }
 
-    setIsFailed(false);
     setOutput("");
-    setIsLoading(true);
-
+    
     try {
       const res = await axios.post(serverUrl + "/auth/sign-in", login);
-      console.log(res);
 
       localStorage.setItem("access_token", res.data.access_token)
-      console.log(localStorage.getItem("access_token"))
+
 
       let role = res.data.role.toUpperCase();
+
+      setIsFailed(false);
       setOutput("Success\n\nRole: " + role);
-      setIsLoading(false)
+
+      console.log(res);
+
     } catch (err: any) {
-
       let message = err.response.data.message
-
-      console.log(message);
-      setIsLoading(false)
-
 
       if (Array.isArray(message)) {
         message = message.map((e: any) => { let e2 = e.split(""); e2[0] = e2[0].toUpperCase(); return e2.join("") }).join("\n\n")
@@ -45,6 +41,8 @@ export function SignInForm() {
 
       setOutput(message);
       setIsFailed(true);
+
+      console.log(message);
     }
   }
 
@@ -63,14 +61,9 @@ export function SignInForm() {
               <input onChange={(e) => { setPassword(e.target.value) }} placeholder="Password" name="password" type="password" className="border rounded pl-2 border-gray-400 outline-purple-800"></input>
             </div>
           </div>
-          <div className='flex justify-center m-4'>
-            <button onClick={() => submitSignInForm()} hidden={isLoading} className="border border-purple-800 bg-purple-500 hover:bg-purple-400 active:bg-purple-300 text-white p-1 w-20 rounded-xl hover:not-active:-translate-y-0.5 duration-20 active:translate-y-0.5 not-active:shadow">Submit</button>
-            <div className="p-1 w-20 text-purple-700" hidden={!isLoading}>Loading...</div>
-          </div>
+          <Button text={"Submit"} action={submitSignInForm} loadingText={"Loading..."} />
         </div>
-        <div className={"duration-700 " + (output ? "w-50 opacity-100" : "w-0 opacity-0")}>
-          <div className={"w-50 p-4 m-2 ml-12 mr-12 opacity-100 whitespace-pre-line " + (isFailed ? "text-red-800" : "text-green-800")}>{output}</div>
-        </div>
+        <OutputPanel text={output} color={isFailed ? "red" : "green"} />
       </div >
     </>
   )
