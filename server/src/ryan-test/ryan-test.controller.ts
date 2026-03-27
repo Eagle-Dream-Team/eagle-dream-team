@@ -43,6 +43,12 @@ export class RyanTestController {
     return this.ryanTestService.findAllAllocations();
   }
 
+  @Get('allocationsGrouped')
+  @ApiOperation({ summary: 'List all student allocations grouped in arrays in an object indexed by tutor IDs' })
+  findAllAllocationsDetailed() {
+    return this.ryanTestService.findAllAllocations(true);
+  }
+
   @Get('users')
   @ApiOperation({ summary: 'List all users' })
   findAllUsers() {

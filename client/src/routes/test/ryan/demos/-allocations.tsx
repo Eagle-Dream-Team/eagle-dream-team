@@ -7,22 +7,19 @@ import { Tray } from "../components/-tray";
 
 const serverUrl = import.meta.env.VITE_API_URL;
 
-export function MyAccount() {
+export function Allocations() {
 
   const [output, setOutput] = useState("");
   const [isFailed, setIsFailed] = useState(false);
 
-  async function submitGetMyAccount() {
+  async function getAllocations() {
     setOutput("");
 
     try {
-      const res = await axios.get(serverUrl + "/user/me", {
-        headers: { Authorization: `Bearer ${localStorage.getItem('access_token')}` }
-      });
+      const res = await axios.get(serverUrl + "/ryan-test/allocationsGrouped");
       console.log(res);
 
-      let user = res.data;
-      setOutput(`SUCCESS\n\nName: ${user.first_name} ${user.last_name}\nEmail: ${user.email}\nRole: ${user.role}`);
+      setOutput("SUCCESS\n\nAllocations: " + JSON.stringify(res.data));
       setIsFailed(false);
 
     } catch (err: any) {
@@ -31,33 +28,19 @@ export function MyAccount() {
       if (Array.isArray(message)) {
         message = message.map((e: any) => { let e2 = e.split(""); e2[0] = e2[0].toUpperCase(); return e2.join("") }).join("\n\n")
       }
+
       message = "ERROR\n\n" + message
       setOutput(message);
       setIsFailed(true);
     }
   }
 
-  
-  function submitLogOut() {
-    setOutput("");
-    if (localStorage.getItem("access_token")) {
-      localStorage.removeItem("access_token")
-
-      setOutput(`SUCCESS\n\nSigned out`);
-      setIsFailed(false);
-    } else {
-      setOutput("ERROR\n\nNot signed in");
-      setIsFailed(true);
-    }
-  }
-
   return (
     <>
-      <Tray title="My Account">
-        <TitledBox title="My Account">
-          <Button text={"Get My Info"} action={submitGetMyAccount} loadingText={"Loading..."} />
-          <Button text={"Log Out"} action={submitLogOut} loadingText={"Loading..."} />
-        </TitledBox >
+      <Tray title="Allocations">
+        <TitledBox title="Allocations">
+          <Button text={"Get All Allocations"} action={getAllocations} loadingText={"Loading..."} />
+        </TitledBox>
         <OutputPanel text={output} color={isFailed ? "red" : "green"} />
       </Tray>
     </>

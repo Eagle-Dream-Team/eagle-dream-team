@@ -27,12 +27,27 @@ export class RyanTestService {
     return students
   }
 
-  async findAllAllocations() {
-    const students = await this.prisma.userAllocation.findMany({
-      where: {},
+  async findAllAllocations(grouped = false, current = false) {
+    const allocations = await this.prisma.userAllocation.findMany({
+      where: {
+      }
+    });
+
+    if (!grouped) {
+      return allocations
+    }
+    
+    const allocationsByTutorIds: any = {}
+    allocations.forEach(a => {
+      if (!allocationsByTutorIds[a.tutor_id]) {
+        allocationsByTutorIds[a.tutor_id] = [{...a, tutor_id: undefined}]
+      } else {
+        allocationsByTutorIds[a.tutor_id].push({...a, tutor_id: undefined})
+      }
     })
 
-    return students
+    return allocationsByTutorIds
+
   }
 
   async allocateStudentToTutor(dto: AllocateStudentToTutorDto) {

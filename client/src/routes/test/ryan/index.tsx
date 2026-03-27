@@ -1,6 +1,7 @@
 import { createFileRoute } from '@tanstack/react-router'
 import { SignInForm } from './demos/-sign-in-form'
 import { MyAccount } from './demos/-my-account'
+import { Allocations } from './demos/-allocations'
 
 export const Route = createFileRoute('/test/ryan/')({
   component: RouteComponent,
@@ -14,6 +15,7 @@ function RouteComponent() {
       </div>
       <MyAccount />
       <SignInForm />
+      <Allocations />
     </>
   )
 }

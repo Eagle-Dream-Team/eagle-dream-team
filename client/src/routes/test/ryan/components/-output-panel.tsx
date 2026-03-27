@@ -1,5 +1,10 @@
 import { useState } from "react";
-
+const colors: any = {
+    red: "text-red-800",
+    green: "text-green-800",
+    blue: "text-blue-800",
+    gray: "text-gray-800",
+}
 export function OutputPanel({ text, color = "gray" }: { text: string, color: string }) {
     let [lastText, setLastText] = useState("");
 
@@ -9,8 +14,8 @@ export function OutputPanel({ text, color = "gray" }: { text: string, color: str
 
     return (
         <>
-            <div className={"duration-700 " + (text ? "w-50 opacity-100" : "w-0 opacity-0")}>
-                <div className={`w-50 p-4 m-2 ml-12 mr-12 opacity-100 whitespace-pre-line text-${color}-800`}>{lastText}</div>
+            <div className={"flex-none duration-700 delay-300 overflow-hidden " + (text ? "w-70 pl-4 opacity-100" : "w-0 opacity-0")}>
+                <div className={`pt-4 pl-8 pr-8 opacity-100 w-70 whitespace-pre-line ${colors[color]}`}>{lastText}</div>
             </div>
         </>
     )
