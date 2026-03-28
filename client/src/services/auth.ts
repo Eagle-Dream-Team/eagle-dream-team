@@ -55,6 +55,12 @@ export function getUser(): JwtPayload | null {
 export function isAuthenticated(): boolean {
   return !!localStorage.getItem("access_token");
 }
+export function isTokenExpired(): boolean {
+  const token = getToken();
+  if (!token) return true;
+  const { exp } = jwtDecode<JwtPayload & { exp: number }>(token);
+  return Date.now() >= exp * 1000;
+}
 
 export async function changePassword(
   payload: ChangePasswordDto,

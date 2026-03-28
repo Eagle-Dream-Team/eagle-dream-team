@@ -9,6 +9,7 @@ import { toast } from "sonner";
 import { Search, UserPlus } from "lucide-react";
 import { UserModal } from "@/components/register-user";
 import type { Student } from "@/models/user";
+import { AppTable } from "@/components/common/app-table";
 
 export const Route = createFileRoute("/_protected/staff/students/")({
   component: RouteComponent,
@@ -109,9 +110,10 @@ function RouteComponent() {
         </Button>
       </div>
 
-      <Table
-        dataSource={students}
+      <AppTable
+        data={students}
         columns={columns}
+        mobileColumns={columns}
         loading={isLoading}
         rowKey="user_id"
         pagination={{ pageSize: 10 }}
