@@ -1,4 +1,9 @@
-import { getStudents, createStudent, updateUser } from "@/services/staff/users";
+import {
+  getStudents,
+  createStudent,
+  updateUser,
+  type StudentFilters,
+} from "@/services/staff/users";
 import type { SignUpDto } from "@server/user/dto/signUp.dto";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { createFileRoute } from "@tanstack/react-router";
@@ -23,9 +28,16 @@ function RouteComponent() {
   const [search, setSearch] = useState("");
   const queryClient = useQueryClient();
 
+  const [params, setParams] = useState<StudentFilters>({
+    page: 1,
+    limit: 10,
+    search: undefined,
+    is_allocated: undefined,
+  });
+
   const { data: students, isLoading } = useQuery({
-    queryKey: ["students", search],
-    queryFn: () => getStudents(search),
+    queryKey: ["students", params],
+    queryFn: () => getStudents(params),
   });
 
   const { mutate, isPending } = useMutation({
@@ -91,32 +103,54 @@ function RouteComponent() {
 
   return (
     <div className="flex flex-col gap-4">
-      <div className="flex items-center justify-between gap-2">
+      <div className="flex flex-col md:flex-row md:items-center gap-2">
         <Input
           placeholder="Search students..."
           prefix={<Search className="size-4 text-muted-foreground" />}
-          value={search}
-          onChange={(e) => setSearch(e.target.value)}
+          value={params.search ?? ""}
+          onChange={(e) =>
+            setParams((prev) => ({ ...prev, search: e.target.value, page: 1 }))
+          }
         />
-        <Button
-          type="primary"
-          icon={<UserPlus className="size-4" />}
-          onClick={() => {
-            setEditingStudent(null);
-            setOpen(true);
-          }}
-        >
-          Add Student
-        </Button>
+        <div className="flex items-center justify-between gap-2">
+          <Button
+            onClick={() =>
+              setParams((prev) => ({
+                ...prev,
+                is_allocated: prev.is_allocated === false ? undefined : false,
+                page: 1,
+              }))
+            }
+            type={params.is_allocated === false ? "primary" : "default"}
+          >
+            {params.is_allocated === false ? "Unallocated" : "Allocated"}
+          </Button>
+          <Button
+            type="primary"
+            icon={<UserPlus className="size-4" />}
+            onClick={() => {
+              setEditingStudent(null);
+              setOpen(true);
+            }}
+          >
+            Add Student
+          </Button>
+        </div>
       </div>
 
       <AppTable
-        data={students}
+        data={students?.data ?? []}
         columns={columns}
         mobileColumns={columns}
         loading={isLoading}
         rowKey="user_id"
-        pagination={{ pageSize: 10 }}
+        pagination={{
+          current: params.page,
+          pageSize: params.limit,
+          total: students?.meta.total,
+          onChange: (page, pageSize) =>
+            setParams((prev) => ({ ...prev, page, limit: pageSize })),
+        }}
         onRow={(record) => ({
           onClick: () => setEditingStudent(record),
           className: "cursor-pointer",

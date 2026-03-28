@@ -10,6 +10,7 @@ import { Search, User, UserPlus } from "lucide-react";
 import { UserModal } from "@/components/register-user";
 import type { Tutor } from "@/models/user";
 import { AppTable } from "@/components/common/app-table";
+import type { PaginationParams } from "@/models/common";
 
 export const Route = createFileRoute("/_protected/staff/tutors/")({
   component: RouteComponent,
@@ -23,10 +24,21 @@ function RouteComponent() {
   const [search, setSearch] = useState("");
   const queryClient = useQueryClient();
 
-  const { data: tutors, isLoading } = useQuery({
-    queryKey: ["tutors", search],
-    queryFn: () => getTutors(search),
+  const [params, setParams] = useState<PaginationParams>({
+    page: 1,
+    limit: 10,
+    search: undefined,
   });
+
+  const { data: tutors, isLoading } = useQuery({
+    queryKey: ["tutors", params],
+    queryFn: () => getTutors(params),
+  });
+
+  // const { data: tutors, isLoading } = useQuery({
+  //   queryKey: ["tutors", search],
+  //   queryFn: () => getTutors(search),
+  // });
 
   const { mutate, isPending } = useMutation({
     mutationFn: (values: FormValues) => createTutor(values),
@@ -101,12 +113,18 @@ function RouteComponent() {
       </div>
 
       <AppTable
-        data={tutors}
+        data={tutors?.data ?? []}
         mobileColumns={columns}
         columns={columns}
         loading={isLoading}
         rowKey="user_id"
-        pagination={{ pageSize: 10 }}
+        pagination={{
+          current: params.page,
+          pageSize: params.limit,
+          total: tutors?.meta.total,
+          onChange: (page, pageSize) =>
+            setParams((prev) => ({ ...prev, page, limit: pageSize })),
+        }}
         onRow={(record) => ({
           onClick: () => setEditingTutor(record),
           className: "cursor-pointer",

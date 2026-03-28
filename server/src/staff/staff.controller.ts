@@ -19,6 +19,7 @@ import { RolesGuard } from '../auth/guards/roles.guard';
 import { Roles } from '../auth/decorators/roles.decorator';
 import { UserService } from '../user/user.service';
 import { SignUpDto } from '../user/dto/signUp.dto';
+import { PaginationDto } from 'src/common/dto/pagination.dto';
 
 @ApiTags('staff')
 @ApiBearerAuth()
@@ -43,8 +44,16 @@ export class StaffController {
   @Get('users/tutors')
   @ApiOperation({ summary: 'List all tutors' })
   @ApiQuery({ name: 'search', required: false })
-  findAllTutors(@Query('search') search?: string) {
-    return this.userService.findAllTutors(search);
+  findAllTutors(
+    @Query('search') search?: string,
+    @Query('page') page?: string,
+    @Query('limit') limit?: string,
+  ) {
+    return this.userService.findAllTutors(
+      search,
+      Number(page) || 1,
+      Number(limit) || 10,
+    );
   }
 
   @Get('users/students')
@@ -52,7 +61,7 @@ export class StaffController {
   @ApiQuery({ name: 'search', required: false })
   @ApiQuery({ name: 'is_allocated', required: false })
   findAllTutees(
-    @Query('search') search?: string,
+    @Query() query: PaginationDto,
     @Query('is_allocated') isAllocated?: string,
   ) {
     const allocated =
@@ -61,7 +70,7 @@ export class StaffController {
         : isAllocated === 'false'
           ? false
           : undefined;
-    return this.userService.findAllTutees(search, allocated);
+    return this.userService.findAllTutees(query, allocated);
   }
 
   @Get('users/:id')

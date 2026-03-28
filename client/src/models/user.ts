@@ -10,11 +10,12 @@ export interface User {
 
 export interface Student extends User {
   role: "student";
-  student_allocations: {
-    allocation_id: number;
-    is_current: boolean;
-    tutor: User;
-  }[];
+  student_allocations: StudentAllocation[];
+}
+export interface StudentAllocation {
+  allocation_id: number;
+  is_current: boolean;
+  tutor: User;
 }
 
 export interface Tutor extends User {

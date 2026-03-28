@@ -7,6 +7,7 @@ import { SignUpDto } from './dto/signUp.dto';
 import * as bcrypt from 'bcrypt';
 import { PrismaService } from 'prisma.service';
 import { ChangePasswordDto } from './dto/changePassword.dto';
+import { PaginatedResult, PaginationDto } from 'src/common/dto/pagination.dto';
 
 @Injectable()
 export class UserService {
@@ -77,49 +78,88 @@ export class UserService {
     return this.signUp({ ...dto, role: 'student' });
   }
 
-  async findAllTutors(search?: string) {
-    const users = await this.prisma.user.findMany({
-      where: {
-        role: 'tutor',
-        ...(search && {
-          OR: [
-            { first_name: { contains: search, mode: 'insensitive' } },
-            { last_name: { contains: search, mode: 'insensitive' } },
-            { email: { contains: search, mode: 'insensitive' } },
-          ],
-        }),
+  async findAllTutors(search?: string, page: number = 1, limit: number = 10) {
+    const skip = (page - 1) * limit;
+
+    const where = {
+      role: 'tutor' as const,
+      ...(search && {
+        OR: [
+          { first_name: { contains: search, mode: 'insensitive' as const } },
+          { last_name: { contains: search, mode: 'insensitive' as const } },
+          { email: { contains: search, mode: 'insensitive' as const } },
+        ],
+      }),
+    };
+
+    const [users, total] = await this.prisma.$transaction([
+      this.prisma.user.findMany({
+        where,
+        omit: { password_hash: true },
+        include: {
+          tutor_allocations: {
+            where: { is_current: true },
+          },
+        },
+        skip,
+        take: limit,
+      }),
+      this.prisma.user.count({ where }),
+    ]);
+
+    return {
+      data: users,
+      meta: {
+        total,
+        page,
+        limit,
+        totalPages: Math.ceil(total / limit),
       },
-      omit: { password_hash: true },
-    });
-    return users;
+    };
   }
 
-  async findAllTutees(search?: string, isAllocated?: boolean) {
-    const users = await this.prisma.user.findMany({
-      where: {
-        role: 'student',
-        ...(search && {
-          OR: [
-            { first_name: { contains: search, mode: 'insensitive' } },
-            { last_name: { contains: search, mode: 'insensitive' } },
-            { email: { contains: search, mode: 'insensitive' } },
-          ],
-        }),
-        ...(isAllocated !== undefined && {
-          student_allocations: isAllocated
-            ? { some: { is_current: true } }
-            : { none: { is_current: true } },
-        }),
-      },
-      omit: { password_hash: true },
-      include: {
-        student_allocations: {
-          where: { is_current: true },
-          include: { tutor: { omit: { password_hash: true } } },
+  async findAllTutees(
+    { page = 1, limit = 10, search }: PaginationDto,
+    isAllocated?: boolean,
+  ): Promise<PaginatedResult<any>> {
+    const skip = (page - 1) * limit;
+
+    const where = {
+      role: 'student' as const,
+      ...(search && {
+        OR: [
+          { first_name: { contains: search, mode: 'insensitive' as const } },
+          { last_name: { contains: search, mode: 'insensitive' as const } },
+          { email: { contains: search, mode: 'insensitive' as const } },
+        ],
+      }),
+      ...(isAllocated !== undefined && {
+        student_allocations: isAllocated
+          ? { some: { is_current: true } }
+          : { none: { is_current: true } },
+      }),
+    };
+
+    const [users, total] = await this.prisma.$transaction([
+      this.prisma.user.findMany({
+        where,
+        omit: { password_hash: true },
+        include: {
+          student_allocations: {
+            where: { is_current: true },
+            include: { tutor: { omit: { password_hash: true } } },
+          },
         },
-      },
-    });
-    return users;
+        skip,
+        take: limit,
+      }),
+      this.prisma.user.count({ where }),
+    ]);
+
+    return {
+      data: users,
+      meta: { total, page, limit, totalPages: Math.ceil(total / limit) },
+    };
   }
 
   async updateUser(user_id: string, dto: Partial<SignUpDto>) {
