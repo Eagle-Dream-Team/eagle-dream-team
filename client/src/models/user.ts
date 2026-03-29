@@ -10,11 +10,12 @@ export interface User {
 
 export interface Student extends User {
   role: "student";
-  student_allocations: {
-    allocation_id: number;
-    is_current: boolean;
-    tutor: User;
-  }[];
+  student_allocations: StudentAllocation[];
+}
+export interface StudentAllocation {
+  allocation_id: number;
+  is_current: boolean;
+  tutor: User;
 }
 
 export interface Tutor extends User {
@@ -28,4 +29,27 @@ export interface Tutor extends User {
 
 export interface Staff extends User {
   role: "staff";
+}
+
+export interface UserAllocation {
+  allocation_id: number;
+  student_id: string;
+  tutor_id: string;
+  allocated_by: string;
+  allocated_at: string;
+  is_current: boolean;
+  created_at: string;
+  updated_at: string;
+  student?: User;
+  tutor?: User;
+  staff?: User;
+}
+
+export interface AllocationResult {
+  allocated: UserAllocation[];
+  skipped: {
+    student_id: string;
+    reason: string;
+    current_tutor: string;
+  }[];
 }

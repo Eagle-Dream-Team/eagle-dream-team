@@ -7,6 +7,8 @@ import {
   Param,
   Query,
   UseGuards,
+  Delete,
+  Req,
 } from '@nestjs/common';
 import {
   ApiTags,
@@ -19,6 +21,12 @@ import { RolesGuard } from '../auth/guards/roles.guard';
 import { Roles } from '../auth/decorators/roles.decorator';
 import { UserService } from '../user/user.service';
 import { SignUpDto } from '../user/dto/signUp.dto';
+import { PaginationDto } from 'src/common/dto/pagination.dto';
+import {
+  AllocateDto,
+  AllocationsService,
+  ReallocateDto,
+} from './allocation.service';
 
 @ApiTags('staff')
 @ApiBearerAuth()
@@ -26,7 +34,10 @@ import { SignUpDto } from '../user/dto/signUp.dto';
 @Roles('staff')
 @Controller('staff')
 export class StaffController {
-  constructor(private userService: UserService) {}
+  constructor(
+    private userService: UserService,
+    private allocationsService: AllocationsService,
+  ) {}
 
   @Post('users/tutor')
   @ApiOperation({ summary: 'Register a tutor' })
@@ -43,8 +54,16 @@ export class StaffController {
   @Get('users/tutors')
   @ApiOperation({ summary: 'List all tutors' })
   @ApiQuery({ name: 'search', required: false })
-  findAllTutors(@Query('search') search?: string) {
-    return this.userService.findAllTutors(search);
+  findAllTutors(
+    @Query('search') search?: string,
+    @Query('page') page?: string,
+    @Query('limit') limit?: string,
+  ) {
+    return this.userService.findAllTutors(
+      search,
+      Number(page) || 1,
+      Number(limit) || 10,
+    );
   }
 
   @Get('users/students')
@@ -52,7 +71,7 @@ export class StaffController {
   @ApiQuery({ name: 'search', required: false })
   @ApiQuery({ name: 'is_allocated', required: false })
   findAllTutees(
-    @Query('search') search?: string,
+    @Query() query: PaginationDto,
     @Query('is_allocated') isAllocated?: string,
   ) {
     const allocated =
@@ -61,7 +80,7 @@ export class StaffController {
         : isAllocated === 'false'
           ? false
           : undefined;
-    return this.userService.findAllTutees(search, allocated);
+    return this.userService.findAllTutees(query, allocated);
   }
 
   @Get('users/:id')
@@ -74,5 +93,65 @@ export class StaffController {
   @ApiOperation({ summary: 'Update a user' })
   update(@Param('id') id: string, @Body() dto: Partial<SignUpDto>) {
     return this.userService.updateUser(id, dto);
+  }
+
+  // --- Allocations ---
+
+  @Post('allocations')
+  @ApiOperation({ summary: 'Allocate one or many students to a tutor' })
+  allocate(@Body() dto: AllocateDto, @Req() req: any) {
+    console.log('req.user:', req.user);
+
+    return this.allocationsService.allocate(
+      dto.tutor_id,
+      dto.student_ids,
+      req.user.user_id,
+    );
+  }
+
+  @Patch('allocations/:student_id')
+  @ApiOperation({ summary: 'Reallocate a student to a new tutor' })
+  reallocate(
+    @Param('student_id') student_id: string,
+    @Body() dto: ReallocateDto,
+    @Req() req: any,
+  ) {
+    return this.allocationsService.reallocate(
+      student_id,
+      dto.tutor_id,
+      req.user.user_id,
+    );
+  }
+
+  @Delete('allocations/:student_id')
+  @ApiOperation({ summary: 'Remove active tutor from a student' })
+  deallocate(@Param('student_id') student_id: string) {
+    return this.allocationsService.deallocate(student_id);
+  }
+
+  @Get('allocations')
+  @ApiOperation({ summary: 'List all allocations' })
+  @ApiQuery({ name: 'tutor_id', required: false })
+  @ApiQuery({ name: 'student_id', required: false })
+  @ApiQuery({ name: 'allocated_by', required: false })
+  @ApiQuery({ name: 'is_current', required: false })
+  findAllAllocations(
+    @Query() query: PaginationDto,
+    @Query('tutor_id') tutor_id?: string,
+    @Query('student_id') student_id?: string,
+    @Query('allocated_by') allocated_by?: string,
+    @Query('is_current') is_current?: string,
+  ) {
+    return this.allocationsService.findAll(query, {
+      tutor_id,
+      student_id,
+      allocated_by,
+      is_current:
+        is_current === 'true'
+          ? true
+          : is_current === 'false'
+            ? false
+            : undefined,
+    });
   }
 }
