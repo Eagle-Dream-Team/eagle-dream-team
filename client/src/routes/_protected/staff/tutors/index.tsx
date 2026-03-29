@@ -6,11 +6,12 @@ import { Button, Input, Table } from "antd";
 import type { AxiosError } from "axios";
 import { useState } from "react";
 import { toast } from "sonner";
-import { Search, User, UserPlus } from "lucide-react";
+import { Search, User, UserPlus, Users } from "lucide-react";
 import { UserModal } from "@/components/register-user";
 import type { Tutor } from "@/models/user";
 import { AppTable } from "@/components/common/app-table";
 import type { PaginationParams } from "@/models/common";
+import { BulkAllocateModal } from "@/components/common/bulk-allocate-modal";
 
 export const Route = createFileRoute("/_protected/staff/tutors/")({
   component: RouteComponent,
@@ -21,6 +22,10 @@ type FormValues = Omit<SignUpDto, "role">;
 function RouteComponent() {
   const [open, setOpen] = useState(false);
   const [editingTutor, setEditingTutor] = useState<Tutor | null>(null);
+  const [bulkAllocateTutor, setBulkAllocateTutor] = useState<Tutor | null>(
+    null,
+  );
+
   const [search, setSearch] = useState("");
   const queryClient = useQueryClient();
 
@@ -34,11 +39,6 @@ function RouteComponent() {
     queryKey: ["tutors", params],
     queryFn: () => getTutors(params),
   });
-
-  // const { data: tutors, isLoading } = useQuery({
-  //   queryKey: ["tutors", search],
-  //   queryFn: () => getTutors(search),
-  // });
 
   const { mutate, isPending } = useMutation({
     mutationFn: (values: FormValues) => createTutor(values),
@@ -95,7 +95,7 @@ function RouteComponent() {
 
   return (
     <div className="flex flex-col gap-4">
-      <div className="flex items-center justify-between">
+      {/* <div className="flex items-center justify-between">
         <Input
           placeholder="Search tutors..."
           prefix={<Search className="size-4 text-muted-foreground" />}
@@ -110,6 +110,32 @@ function RouteComponent() {
         >
           Add Tutor
         </Button>
+      </div> */}
+
+      <div className="flex flex-col md:flex-row md:items-center gap-2">
+        <Input
+          placeholder="Search tutors..."
+          prefix={<Search className="size-4 text-muted-foreground" />}
+          value={params.search ?? ""}
+          onChange={(e) =>
+            setParams((prev) => ({ ...prev, search: e.target.value, page: 1 }))
+          }
+        />
+        <div className="flex items-center gap-2  justify-between md:ml-auto">
+          <Button
+            icon={<Users className="size-4" />}
+            onClick={() => setBulkAllocateTutor({} as Tutor)}
+          >
+            Bulk Allocate
+          </Button>
+          <Button
+            type="primary"
+            icon={<UserPlus className="size-4" />}
+            onClick={() => setOpen(true)}
+          >
+            Add Tutor
+          </Button>
+        </div>
       </div>
 
       <AppTable
@@ -152,6 +178,15 @@ function RouteComponent() {
         }
         onSubmit={(values) =>
           editingTutor ? editMutate(values) : mutate(values)
+        }
+      />
+
+      <BulkAllocateModal
+        open={!!bulkAllocateTutor}
+        onClose={() => setBulkAllocateTutor(null)}
+        preSelectedTutor={bulkAllocateTutor ?? undefined}
+        onSuccess={() =>
+          queryClient.invalidateQueries({ queryKey: ["tutors"] })
         }
       />
     </div>
