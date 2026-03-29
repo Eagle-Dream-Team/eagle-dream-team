@@ -7,7 +7,7 @@ import {
 import type { SignUpDto } from "@server/user/dto/signUp.dto";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { createFileRoute } from "@tanstack/react-router";
-import { Button, Dropdown, Input, Table } from "antd";
+import { Button, Dropdown, Input } from "antd";
 import type { AxiosError } from "axios";
 import { useState } from "react";
 import { toast } from "sonner";

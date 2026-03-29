@@ -2,11 +2,11 @@ import { getTutors, createTutor, updateUser } from "@/services/staff/users";
 import type { SignUpDto } from "@server/user/dto/signUp.dto";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { createFileRoute } from "@tanstack/react-router";
-import { Button, Input, Table } from "antd";
+import { Button, Input } from "antd";
 import type { AxiosError } from "axios";
 import { useState } from "react";
 import { toast } from "sonner";
-import { Search, User, UserPlus, Users } from "lucide-react";
+import { Search, UserPlus, Users } from "lucide-react";
 import { UserModal } from "@/components/register-user";
 import type { Tutor } from "@/models/user";
 import { AppTable } from "@/components/common/app-table";
@@ -26,7 +26,6 @@ function RouteComponent() {
     null,
   );
 
-  const [search, setSearch] = useState("");
   const queryClient = useQueryClient();
 
   const [params, setParams] = useState<PaginationParams>({

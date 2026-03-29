@@ -1,6 +1,5 @@
 // src/components/allocate-modal.tsx
-import type { Tutor, Student } from "@/models/user";
-import type { PaginationParams } from "@/models/common";
+import type { Student } from "@/models/user";
 import { getTutors } from "@/services/staff/users";
 import { useQuery } from "@tanstack/react-query";
 import { Button, Input, Modal, Spin } from "antd";
