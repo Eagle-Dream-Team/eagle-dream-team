@@ -35,7 +35,7 @@ export class RyanTestController {
   @Post('allocateBulk')
   @ApiOperation({ summary: 'Allocate multiple students to a tutor' })
   allocateStudentsToTutor(@Body() dto: AllocateStudentsToTutorDto) {
-    return this.ryanTestService.allocateStudentsToTutor({ ...dto, allocatedBy: "f4def9af-5c79-4db4-9be1-95495f5e4c55" })
+    return this.ryanTestService.allocateStudentsToTutor({ ...dto })
   }
 
   @Get('allocations')

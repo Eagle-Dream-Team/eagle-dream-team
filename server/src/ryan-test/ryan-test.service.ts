@@ -104,7 +104,8 @@ export class RyanTestService {
     }));
 
     const result = await this.prisma.$transaction(async (tx) => {
-      allocations.forEach(async (a) => {
+      for (let i = 0; i < allocations.length; i++) {
+        const a = allocations[i];
         await tx.userAllocation.updateMany({
           where: { student_id: a.student_id },
           data: { is_current: false },
@@ -113,7 +114,7 @@ export class RyanTestService {
         await tx.userAllocation.create({
           data: a
         })
-      });
+      };
     });
 
     return result
@@ -121,8 +122,8 @@ export class RyanTestService {
 
   async deactivateAllocation(allocation_id: number) {
     const result = await this.prisma.userAllocation.update({
-      where: {allocation_id: allocation_id},
-      data: {is_current: false}
+      where: { allocation_id: allocation_id },
+      data: { is_current: false }
     })
     return result
   }
