@@ -23,6 +23,7 @@ import { Route as ProtectedTutorIndexRouteImport } from './routes/_protected/tut
 import { Route as ProtectedStudentIndexRouteImport } from './routes/_protected/student/index'
 import { Route as ProtectedStaffIndexRouteImport } from './routes/_protected/staff/index'
 import { Route as ProtectedStaffHomeRouteImport } from './routes/_protected/staff/home'
+import { Route as ProtectedTutorStudentsIndexRouteImport } from './routes/_protected/tutor/students/index'
 import { Route as ProtectedStaffTutorsIndexRouteImport } from './routes/_protected/staff/tutors/index'
 import { Route as ProtectedStaffStudentsIndexRouteImport } from './routes/_protected/staff/students/index'
 
@@ -95,6 +96,12 @@ const ProtectedStaffHomeRoute = ProtectedStaffHomeRouteImport.update({
   path: '/staff/home',
   getParentRoute: () => ProtectedRoute,
 } as any)
+const ProtectedTutorStudentsIndexRoute =
+  ProtectedTutorStudentsIndexRouteImport.update({
+    id: '/tutor/students/',
+    path: '/tutor/students/',
+    getParentRoute: () => ProtectedRoute,
+  } as any)
 const ProtectedStaffTutorsIndexRoute =
   ProtectedStaffTutorsIndexRouteImport.update({
     id: '/staff/tutors/',
@@ -124,6 +131,7 @@ export interface FileRoutesByFullPath {
   '/test/ryan2/': typeof TestRyan2IndexRoute
   '/staff/students/': typeof ProtectedStaffStudentsIndexRoute
   '/staff/tutors/': typeof ProtectedStaffTutorsIndexRoute
+  '/tutor/students/': typeof ProtectedTutorStudentsIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -141,6 +149,7 @@ export interface FileRoutesByTo {
   '/test/ryan2': typeof TestRyan2IndexRoute
   '/staff/students': typeof ProtectedStaffStudentsIndexRoute
   '/staff/tutors': typeof ProtectedStaffTutorsIndexRoute
+  '/tutor/students': typeof ProtectedTutorStudentsIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -160,6 +169,7 @@ export interface FileRoutesById {
   '/test/ryan2/': typeof TestRyan2IndexRoute
   '/_protected/staff/students/': typeof ProtectedStaffStudentsIndexRoute
   '/_protected/staff/tutors/': typeof ProtectedStaffTutorsIndexRoute
+  '/_protected/tutor/students/': typeof ProtectedTutorStudentsIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -179,6 +189,7 @@ export interface FileRouteTypes {
     | '/test/ryan2/'
     | '/staff/students/'
     | '/staff/tutors/'
+    | '/tutor/students/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -196,6 +207,7 @@ export interface FileRouteTypes {
     | '/test/ryan2'
     | '/staff/students'
     | '/staff/tutors'
+    | '/tutor/students'
   id:
     | '__root__'
     | '/'
@@ -214,6 +226,7 @@ export interface FileRouteTypes {
     | '/test/ryan2/'
     | '/_protected/staff/students/'
     | '/_protected/staff/tutors/'
+    | '/_protected/tutor/students/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -329,6 +342,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ProtectedStaffHomeRouteImport
       parentRoute: typeof ProtectedRoute
     }
+    '/_protected/tutor/students/': {
+      id: '/_protected/tutor/students/'
+      path: '/tutor/students'
+      fullPath: '/tutor/students/'
+      preLoaderRoute: typeof ProtectedTutorStudentsIndexRouteImport
+      parentRoute: typeof ProtectedRoute
+    }
     '/_protected/staff/tutors/': {
       id: '/_protected/staff/tutors/'
       path: '/staff/tutors'
@@ -353,6 +373,7 @@ interface ProtectedRouteChildren {
   ProtectedTutorIndexRoute: typeof ProtectedTutorIndexRoute
   ProtectedStaffStudentsIndexRoute: typeof ProtectedStaffStudentsIndexRoute
   ProtectedStaffTutorsIndexRoute: typeof ProtectedStaffTutorsIndexRoute
+  ProtectedTutorStudentsIndexRoute: typeof ProtectedTutorStudentsIndexRoute
 }
 
 const ProtectedRouteChildren: ProtectedRouteChildren = {
@@ -362,6 +383,7 @@ const ProtectedRouteChildren: ProtectedRouteChildren = {
   ProtectedTutorIndexRoute: ProtectedTutorIndexRoute,
   ProtectedStaffStudentsIndexRoute: ProtectedStaffStudentsIndexRoute,
   ProtectedStaffTutorsIndexRoute: ProtectedStaffTutorsIndexRoute,
+  ProtectedTutorStudentsIndexRoute: ProtectedTutorStudentsIndexRoute,
 }
 
 const ProtectedRouteWithChildren = ProtectedRoute._addFileChildren(

@@ -27,6 +27,7 @@ import {
   AllocationsService,
   ReallocateDto,
 } from './allocation.service';
+import { AllocationQueryDto } from './allcoation.dto';
 
 @ApiTags('staff')
 @ApiBearerAuth()
@@ -129,29 +130,47 @@ export class StaffController {
     return this.allocationsService.deallocate(student_id);
   }
 
+  // @Get('allocations')
+  // @ApiOperation({ summary: 'List all allocations' })
+  // @ApiQuery({ name: 'tutor_id', required: false })
+  // @ApiQuery({ name: 'student_id', required: false })
+  // @ApiQuery({ name: 'allocated_by', required: false })
+  // @ApiQuery({ name: 'is_current', required: false })
+  // findAllAllocations(
+  //   @Query() query: PaginationDto,
+  //   @Query('tutor_id') tutor_id?: string,
+  //   @Query('student_id') student_id?: string,
+  //   @Query('allocated_by') allocated_by?: string,
+  //   @Query('is_current') is_current?: string,
+  // ) {
+  //   return this.allocationsService.findAll(query, {
+  //     tutor_id,
+  //     student_id,
+  //     allocated_by,
+  //     is_current:
+  //       is_current === 'true'
+  //         ? true
+  //         : is_current === 'false'
+  //           ? false
+  //           : undefined,
+  //   });
+  // }
+
   @Get('allocations')
   @ApiOperation({ summary: 'List all allocations' })
-  @ApiQuery({ name: 'tutor_id', required: false })
-  @ApiQuery({ name: 'student_id', required: false })
-  @ApiQuery({ name: 'allocated_by', required: false })
-  @ApiQuery({ name: 'is_current', required: false })
-  findAllAllocations(
-    @Query() query: PaginationDto,
-    @Query('tutor_id') tutor_id?: string,
-    @Query('student_id') student_id?: string,
-    @Query('allocated_by') allocated_by?: string,
-    @Query('is_current') is_current?: string,
-  ) {
-    return this.allocationsService.findAll(query, {
+  findAllAllocations(@Query() query: AllocationQueryDto) {
+    const {
+      page,
+      limit,
+      search,
       tutor_id,
       student_id,
       allocated_by,
-      is_current:
-        is_current === 'true'
-          ? true
-          : is_current === 'false'
-            ? false
-            : undefined,
-    });
+      is_current,
+    } = query;
+    return this.allocationsService.findAll(
+      { page, limit, search },
+      { tutor_id, student_id, allocated_by, is_current },
+    );
   }
 }
