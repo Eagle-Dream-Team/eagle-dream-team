@@ -92,7 +92,7 @@ export class UserService {
       }),
     };
 
-    const [users, total] = await this.prisma.$transaction([
+    const [users, total] = await Promise.all([
       this.prisma.user.findMany({
         where,
         omit: { password_hash: true },
@@ -140,7 +140,7 @@ export class UserService {
       }),
     };
 
-    const [users, total] = await this.prisma.$transaction([
+    const [users, total] = await Promise.all([
       this.prisma.user.findMany({
         where,
         omit: { password_hash: true },
