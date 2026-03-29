@@ -7,14 +7,21 @@ import {
 import type { SignUpDto } from "@server/user/dto/signUp.dto";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { createFileRoute } from "@tanstack/react-router";
-import { Button, Input, Table } from "antd";
+import { Button, Dropdown, Input, Table } from "antd";
 import type { AxiosError } from "axios";
 import { useState } from "react";
 import { toast } from "sonner";
-import { Search, UserPlus } from "lucide-react";
+import { MoreHorizontal, Search, UserPlus } from "lucide-react";
 import { UserModal } from "@/components/register-user";
 import type { Student } from "@/models/user";
 import { AppTable } from "@/components/common/app-table";
+import {
+  allocateStudents,
+  deallocateStudent,
+  reallocateStudent,
+} from "@/services/staff/allocation";
+import { AllocateModal } from "@/components/common/allocate-modal";
+import { DeallocateDialog } from "@/components/common/deallocate-dialog";
 
 export const Route = createFileRoute("/_protected/staff/students/")({
   component: RouteComponent,
@@ -27,6 +34,41 @@ function RouteComponent() {
   const [editingStudent, setEditingStudent] = useState<Student | null>(null);
   const [search, setSearch] = useState("");
   const queryClient = useQueryClient();
+
+  const [allocatingStudent, setAllocatingStudent] = useState<Student | null>(
+    null,
+  );
+  const [deallocatingStudent, setDeallocatingStudent] =
+    useState<Student | null>(null);
+
+  const { mutate: allocateMutate, isPending: isAllocating } = useMutation({
+    mutationFn: async ({ tutor_id }: { tutor_id: string }) => {
+      if (allocatingStudent?.student_allocations?.length) {
+        return reallocateStudent(allocatingStudent.user_id, tutor_id);
+      }
+      return allocateStudents(tutor_id, [allocatingStudent!.user_id]);
+    },
+    onSuccess: () => {
+      toast.success("Student allocated successfully");
+      queryClient.invalidateQueries({ queryKey: ["students"] });
+      setAllocatingStudent(null);
+    },
+    onError: (error: AxiosError) => {
+      toast.error(error.message || "Something went wrong");
+    },
+  });
+
+  const { mutate: deallocateMutate, isPending: isDeallocating } = useMutation({
+    mutationFn: () => deallocateStudent(deallocatingStudent!.user_id),
+    onSuccess: () => {
+      toast.success("Tutor removed successfully");
+      queryClient.invalidateQueries({ queryKey: ["students"] });
+      setDeallocatingStudent(null);
+    },
+    onError: (error: AxiosError) => {
+      toast.error(error.message || "Something went wrong");
+    },
+  });
 
   const [params, setParams] = useState<StudentFilters>({
     page: 1,
@@ -97,6 +139,61 @@ function RouteComponent() {
         if (!allocation)
           return <span className="text-muted-foreground">—</span>;
         return `${allocation.tutor.first_name} ${allocation.tutor.last_name}`;
+      },
+    },
+    {
+      title: "",
+      key: "actions",
+      width: 48,
+      render: (_: unknown, record: Student) => {
+        const isAllocated = record.student_allocations?.length > 0;
+        return (
+          <Dropdown
+            trigger={["click"]}
+            menu={{
+              items: [
+                {
+                  key: "edit",
+                  label: "Edit",
+                  onClick: ({ domEvent }) => {
+                    domEvent.stopPropagation();
+                    setEditingStudent(record);
+                  },
+                },
+                {
+                  key: "allocate",
+                  label: isAllocated ? "Reallocate" : "Allocate to tutor",
+                  onClick: ({ domEvent }) => {
+                    domEvent.stopPropagation();
+                    setAllocatingStudent(record);
+                  },
+                },
+                ...(isAllocated
+                  ? [
+                      {
+                        key: "deallocate",
+                        label: "Remove tutor",
+                        danger: true,
+                        onClick: (info: {
+                          domEvent: { stopPropagation: () => void };
+                        }) => {
+                          info.domEvent.stopPropagation();
+                          setDeallocatingStudent(record);
+                        },
+                      },
+                    ]
+                  : []),
+              ],
+            }}
+          >
+            <Button
+              type="text"
+              size="small"
+              icon={<MoreHorizontal className="size-4" />}
+              onClick={(e) => e.stopPropagation()}
+            />
+          </Dropdown>
+        );
       },
     },
   ];
@@ -180,6 +277,24 @@ function RouteComponent() {
         onSubmit={(values) =>
           editingStudent ? editMutate(values) : mutate(values)
         }
+      />
+
+      <AllocateModal
+        key={allocatingStudent?.user_id ?? "allocate"}
+        open={!!allocatingStudent}
+        onClose={() => setAllocatingStudent(null)}
+        student={allocatingStudent}
+        onSubmit={(tutor_id) => allocateMutate({ tutor_id })}
+        isPending={isAllocating}
+      />
+
+      <DeallocateDialog
+        key={deallocatingStudent?.user_id ?? "deallocate"}
+        open={!!deallocatingStudent}
+        onClose={() => setDeallocatingStudent(null)}
+        student={deallocatingStudent}
+        onConfirm={() => deallocateMutate()}
+        isPending={isDeallocating}
       />
     </div>
   );
