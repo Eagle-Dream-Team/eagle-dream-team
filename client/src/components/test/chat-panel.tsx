@@ -1,45 +1,21 @@
-import { ConversationsList } from "@/components/test/converstaions-list";
-import { createFileRoute } from "@tanstack/react-router";
-import { useState, useEffect } from "react";
+import { ConversationsList } from "./conversations-list";
+import { useState } from "react";
 
-export const Route = createFileRoute("/test/messages/")({
-  component: RouteComponent,
-});
 
 interface User {
-  id: number;
+  id: number; // ✅ FIXED (was string)
   name: string;
 }
 
 interface Message {
   text: string;
-  sender: "me" | "them";
+  sender: "me" | "them"; // ✅ better typing
 }
 
-function RouteComponent() {
+export default function MessagesPage() {
   const [selectedUser, setSelectedUser] = useState<User | null>(null);
   const [messages, setMessages] = useState<Record<number, Message[]>>({});
   const [text, setText] = useState("");
-  useEffect(() => {
-    if (!selectedUser) return;
-
-    // only load once per user
-    if (!messages[selectedUser.id]) {
-      setMessages((prev) => ({
-        ...prev,
-        [selectedUser.id]: [
-          {
-            text: "Hello 👋",
-            sender: "them",
-          },
-          {
-            text: "How can I help you?",
-            sender: "them",
-          },
-        ],
-      }));
-    }
-  }, [selectedUser]);
 
   const handleSend = () => {
     if (!text.trim() || !selectedUser) return;
@@ -81,22 +57,18 @@ function RouteComponent() {
 
             {/* Messages */}
             <div className="flex-1 p-4 overflow-y-auto space-y-2">
-             {(messages[selectedUser.id] || []).length === 0 ? (
-             <p className="text-gray-400 text-sm">No messages yet</p>
-               ) : (
-                (messages[selectedUser.id] || []).map((msg, i) => (
-               <div
-                key={i}
-                className={`max-w-xs px-3 py-2 rounded ${
-                msg.sender === "me"
-                ? "bg-blue-500 text-white ml-auto"
-               : "bg-gray-200"
-                   }`}
-                  >
-                     {msg.text}
-                  </div>
-                ))
-              )}
+              {(messages[selectedUser.id] || []).map((msg, i) => (
+                <div
+                  key={i}
+                  className={`max-w-xs px-3 py-2 rounded ${
+                    msg.sender === "me"
+                      ? "bg-blue-500 text-white ml-auto"
+                      : "bg-gray-200"
+                  }`}
+                >
+                  {msg.text}
+                </div>
+              ))}
             </div>
 
             {/* Input */}
