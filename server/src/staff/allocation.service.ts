@@ -36,6 +36,7 @@ export class ReallocateDto {
 export class AllocationsService {
   constructor(private prisma: PrismaService) {}
 
+  //todo: add transaction to allocate method to ensure atomicity when allocating multiple students
   async allocate(
     tutor_id: string,
     student_ids: string[],
