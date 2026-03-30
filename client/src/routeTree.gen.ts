@@ -19,10 +19,15 @@ import { Route as AuthSignInRouteImport } from './routes/auth/sign-in'
 import { Route as AuthChangePasswordRouteImport } from './routes/auth/change-password'
 import { Route as TestRyan2IndexRouteImport } from './routes/test/ryan2/index'
 import { Route as TestRyanIndexRouteImport } from './routes/test/ryan/index'
+import { Route as TestNathanIndexRouteImport } from './routes/test/nathan/index'
 import { Route as TestMessagesIndexRouteImport } from './routes/test/messages/index'
+import { Route as TestJohn2IndexRouteImport } from './routes/test/John2/index'
 import { Route as ProtectedTutorIndexRouteImport } from './routes/_protected/tutor/index'
 import { Route as ProtectedStudentIndexRouteImport } from './routes/_protected/student/index'
 import { Route as ProtectedStaffIndexRouteImport } from './routes/_protected/staff/index'
+import { Route as TestNathanHomeRouteImport } from './routes/test/nathan/home'
+import { Route as TestJohn2LoginRouteImport } from './routes/test/John2/login'
+import { Route as TestJohn2AddUserRouteImport } from './routes/test/John2/add-user'
 import { Route as ProtectedStaffHomeRouteImport } from './routes/_protected/staff/home'
 import { Route as ProtectedTutorStudentsIndexRouteImport } from './routes/_protected/tutor/students/index'
 import { Route as ProtectedStaffTutorsIndexRouteImport } from './routes/_protected/staff/tutors/index'
@@ -77,9 +82,19 @@ const TestRyanIndexRoute = TestRyanIndexRouteImport.update({
   path: '/test/ryan/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const TestNathanIndexRoute = TestNathanIndexRouteImport.update({
+  id: '/test/nathan/',
+  path: '/test/nathan/',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const TestMessagesIndexRoute = TestMessagesIndexRouteImport.update({
   id: '/test/messages/',
   path: '/test/messages/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const TestJohn2IndexRoute = TestJohn2IndexRouteImport.update({
+  id: '/test/John2/',
+  path: '/test/John2/',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ProtectedTutorIndexRoute = ProtectedTutorIndexRouteImport.update({
@@ -96,6 +111,21 @@ const ProtectedStaffIndexRoute = ProtectedStaffIndexRouteImport.update({
   id: '/staff/',
   path: '/staff/',
   getParentRoute: () => ProtectedRoute,
+} as any)
+const TestNathanHomeRoute = TestNathanHomeRouteImport.update({
+  id: '/test/nathan/home',
+  path: '/test/nathan/home',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const TestJohn2LoginRoute = TestJohn2LoginRouteImport.update({
+  id: '/test/John2/login',
+  path: '/test/John2/login',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const TestJohn2AddUserRoute = TestJohn2AddUserRouteImport.update({
+  id: '/test/John2/add-user',
+  path: '/test/John2/add-user',
+  getParentRoute: () => rootRouteImport,
 } as any)
 const ProtectedStaffHomeRoute = ProtectedStaffHomeRouteImport.update({
   id: '/staff/home',
@@ -130,10 +160,15 @@ export interface FileRoutesByFullPath {
   '/test/test-page': typeof TestTestPageRoute
   '/test/': typeof TestIndexRoute
   '/staff/home': typeof ProtectedStaffHomeRoute
+  '/test/John2/add-user': typeof TestJohn2AddUserRoute
+  '/test/John2/login': typeof TestJohn2LoginRoute
+  '/test/nathan/home': typeof TestNathanHomeRoute
   '/staff/': typeof ProtectedStaffIndexRoute
   '/student/': typeof ProtectedStudentIndexRoute
   '/tutor/': typeof ProtectedTutorIndexRoute
+  '/test/John2/': typeof TestJohn2IndexRoute
   '/test/messages/': typeof TestMessagesIndexRoute
+  '/test/nathan/': typeof TestNathanIndexRoute
   '/test/ryan/': typeof TestRyanIndexRoute
   '/test/ryan2/': typeof TestRyan2IndexRoute
   '/staff/students/': typeof ProtectedStaffStudentsIndexRoute
@@ -149,10 +184,15 @@ export interface FileRoutesByTo {
   '/test/test-page': typeof TestTestPageRoute
   '/test': typeof TestIndexRoute
   '/staff/home': typeof ProtectedStaffHomeRoute
+  '/test/John2/add-user': typeof TestJohn2AddUserRoute
+  '/test/John2/login': typeof TestJohn2LoginRoute
+  '/test/nathan/home': typeof TestNathanHomeRoute
   '/staff': typeof ProtectedStaffIndexRoute
   '/student': typeof ProtectedStudentIndexRoute
   '/tutor': typeof ProtectedTutorIndexRoute
+  '/test/John2': typeof TestJohn2IndexRoute
   '/test/messages': typeof TestMessagesIndexRoute
+  '/test/nathan': typeof TestNathanIndexRoute
   '/test/ryan': typeof TestRyanIndexRoute
   '/test/ryan2': typeof TestRyan2IndexRoute
   '/staff/students': typeof ProtectedStaffStudentsIndexRoute
@@ -170,10 +210,15 @@ export interface FileRoutesById {
   '/test/test-page': typeof TestTestPageRoute
   '/test/': typeof TestIndexRoute
   '/_protected/staff/home': typeof ProtectedStaffHomeRoute
+  '/test/John2/add-user': typeof TestJohn2AddUserRoute
+  '/test/John2/login': typeof TestJohn2LoginRoute
+  '/test/nathan/home': typeof TestNathanHomeRoute
   '/_protected/staff/': typeof ProtectedStaffIndexRoute
   '/_protected/student/': typeof ProtectedStudentIndexRoute
   '/_protected/tutor/': typeof ProtectedTutorIndexRoute
+  '/test/John2/': typeof TestJohn2IndexRoute
   '/test/messages/': typeof TestMessagesIndexRoute
+  '/test/nathan/': typeof TestNathanIndexRoute
   '/test/ryan/': typeof TestRyanIndexRoute
   '/test/ryan2/': typeof TestRyan2IndexRoute
   '/_protected/staff/students/': typeof ProtectedStaffStudentsIndexRoute
@@ -191,10 +236,15 @@ export interface FileRouteTypes {
     | '/test/test-page'
     | '/test/'
     | '/staff/home'
+    | '/test/John2/add-user'
+    | '/test/John2/login'
+    | '/test/nathan/home'
     | '/staff/'
     | '/student/'
     | '/tutor/'
+    | '/test/John2/'
     | '/test/messages/'
+    | '/test/nathan/'
     | '/test/ryan/'
     | '/test/ryan2/'
     | '/staff/students/'
@@ -210,10 +260,15 @@ export interface FileRouteTypes {
     | '/test/test-page'
     | '/test'
     | '/staff/home'
+    | '/test/John2/add-user'
+    | '/test/John2/login'
+    | '/test/nathan/home'
     | '/staff'
     | '/student'
     | '/tutor'
+    | '/test/John2'
     | '/test/messages'
+    | '/test/nathan'
     | '/test/ryan'
     | '/test/ryan2'
     | '/staff/students'
@@ -230,10 +285,15 @@ export interface FileRouteTypes {
     | '/test/test-page'
     | '/test/'
     | '/_protected/staff/home'
+    | '/test/John2/add-user'
+    | '/test/John2/login'
+    | '/test/nathan/home'
     | '/_protected/staff/'
     | '/_protected/student/'
     | '/_protected/tutor/'
+    | '/test/John2/'
     | '/test/messages/'
+    | '/test/nathan/'
     | '/test/ryan/'
     | '/test/ryan2/'
     | '/_protected/staff/students/'
@@ -250,7 +310,12 @@ export interface RootRouteChildren {
   TestOkRoute: typeof TestOkRoute
   TestTestPageRoute: typeof TestTestPageRoute
   TestIndexRoute: typeof TestIndexRoute
+  TestJohn2AddUserRoute: typeof TestJohn2AddUserRoute
+  TestJohn2LoginRoute: typeof TestJohn2LoginRoute
+  TestNathanHomeRoute: typeof TestNathanHomeRoute
+  TestJohn2IndexRoute: typeof TestJohn2IndexRoute
   TestMessagesIndexRoute: typeof TestMessagesIndexRoute
+  TestNathanIndexRoute: typeof TestNathanIndexRoute
   TestRyanIndexRoute: typeof TestRyanIndexRoute
   TestRyan2IndexRoute: typeof TestRyan2IndexRoute
 }
@@ -327,11 +392,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof TestRyanIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/test/nathan/': {
+      id: '/test/nathan/'
+      path: '/test/nathan'
+      fullPath: '/test/nathan/'
+      preLoaderRoute: typeof TestNathanIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/test/messages/': {
       id: '/test/messages/'
       path: '/test/messages'
       fullPath: '/test/messages/'
       preLoaderRoute: typeof TestMessagesIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/test/John2/': {
+      id: '/test/John2/'
+      path: '/test/John2'
+      fullPath: '/test/John2/'
+      preLoaderRoute: typeof TestJohn2IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/_protected/tutor/': {
@@ -354,6 +433,27 @@ declare module '@tanstack/react-router' {
       fullPath: '/staff/'
       preLoaderRoute: typeof ProtectedStaffIndexRouteImport
       parentRoute: typeof ProtectedRoute
+    }
+    '/test/nathan/home': {
+      id: '/test/nathan/home'
+      path: '/test/nathan/home'
+      fullPath: '/test/nathan/home'
+      preLoaderRoute: typeof TestNathanHomeRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/test/John2/login': {
+      id: '/test/John2/login'
+      path: '/test/John2/login'
+      fullPath: '/test/John2/login'
+      preLoaderRoute: typeof TestJohn2LoginRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/test/John2/add-user': {
+      id: '/test/John2/add-user'
+      path: '/test/John2/add-user'
+      fullPath: '/test/John2/add-user'
+      preLoaderRoute: typeof TestJohn2AddUserRouteImport
+      parentRoute: typeof rootRouteImport
     }
     '/_protected/staff/home': {
       id: '/_protected/staff/home'
@@ -419,7 +519,12 @@ const rootRouteChildren: RootRouteChildren = {
   TestOkRoute: TestOkRoute,
   TestTestPageRoute: TestTestPageRoute,
   TestIndexRoute: TestIndexRoute,
+  TestJohn2AddUserRoute: TestJohn2AddUserRoute,
+  TestJohn2LoginRoute: TestJohn2LoginRoute,
+  TestNathanHomeRoute: TestNathanHomeRoute,
+  TestJohn2IndexRoute: TestJohn2IndexRoute,
   TestMessagesIndexRoute: TestMessagesIndexRoute,
+  TestNathanIndexRoute: TestNathanIndexRoute,
   TestRyanIndexRoute: TestRyanIndexRoute,
   TestRyan2IndexRoute: TestRyan2IndexRoute,
 }
