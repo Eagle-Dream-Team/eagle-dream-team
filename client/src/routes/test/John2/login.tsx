@@ -21,7 +21,7 @@ function RouteComponent() {
     });
   };
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e: { preventDefault: () => void; }) => {
     e.preventDefault();
 
     // ✅ YOUR API CODE (UNCHANGED)
@@ -31,8 +31,12 @@ function RouteComponent() {
         login
       );
       setOutput(JSON.stringify(res.data));
-    } catch (error) {
-      setOutput(JSON.stringify(error.response.data.message));
+    } catch (error: unknown) {
+      if (axios.isAxiosError(error)) {
+        setOutput(JSON.stringify(error.response?.data.message));
+      } else {
+        setOutput(JSON.stringify("An unexpected error occurred"));
+      }
     }
   };
 
@@ -87,7 +91,7 @@ function RouteComponent() {
 
         {/* Output */}
         {output && (
-          <div className="mt-4 text-sm break-words">
+          <div className="mt-4 text-sm wrap-break-word">
             {output}
           </div>
         )}
