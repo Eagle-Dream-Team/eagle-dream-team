@@ -45,4 +45,28 @@ export class MessageService {
             orderBy: { sent_at: 'desc' },
         })
     }
+
+    async findLastMessageOfConversation(user1_id: string, user2_id: string) {
+        return await this.prisma.message.findFirst({
+            where: {
+                OR: [
+                    { sender_id: user1_id, receiver_id: user2_id },
+                    { sender_id: user2_id, receiver_id: user1_id },
+                ]
+            },
+            orderBy: { sent_at: 'desc' },
+        })
+    }
+
+    async findAllConversations(user1_id: string, user2_id: string) {
+        return await this.prisma.message.findMany({
+            where: {
+                OR: [
+                    { sender_id: user1_id, receiver_id: user2_id },
+                    { sender_id: user2_id, receiver_id: user1_id },
+                ]
+            },
+            orderBy: { sent_at: 'desc' },
+        })
+    }
 }
