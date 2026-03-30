@@ -1,7 +1,7 @@
-
-import { createFileRoute } from "@tanstack/react-router"
+import { createFileRoute } from "@tanstack/react-router";
 import { useState, useEffect } from "react";
-import { ConversationsList } from "@/components/test/conversations-list";
+import { ConversationsList } from "@/components/test/converstaions-list";
+
 export const Route = createFileRoute("/test/messages/")({
   component: RouteComponent,
 });
@@ -9,6 +9,7 @@ export const Route = createFileRoute("/test/messages/")({
 interface User {
   id: number;
   name: string;
+  initials?: string;
 }
 
 interface Message {
@@ -16,26 +17,50 @@ interface Message {
   sender: "me" | "them";
 }
 
+interface Conversation {
+  id: number;
+  initials: string;
+  name: string;
+  preview: string;
+  time: string;
+  unread: number;
+}
+
 function RouteComponent() {
   const [selectedUser, setSelectedUser] = useState<User | null>(null);
   const [messages, setMessages] = useState<Record<number, Message[]>>({});
   const [text, setText] = useState("");
+
+  // ✅ NEW: conversations state (instead of static sidebar)
+  const [conversations, setConversations] = useState<Conversation[]>([
+    {
+      id: 1,
+      initials: "CM",
+      name: "Chanda Mutale",
+      preview: "Please review the assignment",
+      time: "9:42 am",
+      unread: 3,
+    },
+    {
+      id: 7,
+      initials: "KM",
+      name: "Kasonde Mulenga",
+      preview: "Can you share the reading list?",
+      time: "Mar 22",
+      unread: 2,
+    },
+  ]);
+
+  // ✅ Load sample messages
   useEffect(() => {
     if (!selectedUser) return;
 
-    // only load once per user
     if (!messages[selectedUser.id]) {
-      setMessages((prev: Record<number, Message[]>) => ({
+      setMessages((prev) => ({
         ...prev,
         [selectedUser.id]: [
-          {
-            text: "Hello 👋",
-            sender: "them",
-          },
-          {
-            text: "How can I help you?",
-            sender: "them",
-          },
+          { text: "Hello 👋", sender: "them" },
+          { text: "How can I help you?", sender: "them" },
         ],
       }));
     }
@@ -49,6 +74,7 @@ function RouteComponent() {
       sender: "me",
     };
 
+    // ✅ Update chat messages
     setMessages((prev) => ({
       ...prev,
       [selectedUser.id]: [
@@ -57,6 +83,25 @@ function RouteComponent() {
       ],
     }));
 
+    // ✅ Update sidebar preview + move to top
+    setConversations((prev) => {
+      const updated = prev.map((c) =>
+        c.id === selectedUser.id
+          ? {
+              ...c,
+              preview: text,
+              unread: 0,
+              time: "Now",
+            }
+          : c
+      );
+
+      const selected = updated.find((c) => c.id === selectedUser.id);
+      const others = updated.filter((c) => c.id !== selectedUser.id);
+
+      return selected ? [selected, ...others] : updated;
+    });
+
     setText("");
   };
 
@@ -64,7 +109,10 @@ function RouteComponent() {
     <div className="flex h-screen">
       
       {/* LEFT SIDEBAR */}
-      <ConversationsList onSelectUser={setSelectedUser} />
+      <ConversationsList
+        conversations={conversations}
+        onSelectUser={setSelectedUser}
+      />
 
       {/* RIGHT CHAT PANEL */}
       <div className="flex-1 flex flex-col bg-white">
@@ -81,19 +129,21 @@ function RouteComponent() {
 
             {/* Messages */}
             <div className="flex-1 p-4 overflow-y-auto space-y-2">
-             {(messages[selectedUser.id] || []).length === 0 ? (
-             <p className="text-gray-400 text-sm">No messages yet</p>
-               ) : (
-                (messages[selectedUser.id] || []).map((msg: Message, i: number) => (
-               <div
-                key={i}
-                className={`max-w-xs px-3 py-2 rounded ${
-                msg.sender === "me"
-                ? "bg-blue-500 text-white ml-auto"
-               : "bg-gray-200"
-                   }`}
+              {(messages[selectedUser.id] || []).length === 0 ? (
+                <p className="text-gray-400 text-sm">
+                  No messages yet
+                </p>
+              ) : (
+                (messages[selectedUser.id] || []).map((msg, i) => (
+                  <div
+                    key={i}
+                    className={`max-w-xs px-3 py-2 rounded ${
+                      msg.sender === "me"
+                        ? "bg-blue-500 text-white ml-auto"
+                        : "bg-gray-200"
+                    }`}
                   >
-                     {msg.text}
+                    {msg.text}
                   </div>
                 ))
               )}
