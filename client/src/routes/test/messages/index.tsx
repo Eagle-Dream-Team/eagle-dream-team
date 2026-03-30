@@ -1,7 +1,7 @@
-import { ConversationsList } from "@/components/test/converstaions-list";
-import { createFileRoute } from "@tanstack/react-router";
-import { useState, useEffect } from "react";
 
+import { createFileRoute } from "@tanstack/react-router"
+import { useState, useEffect } from "react";
+import { ConversationsList } from "@/components/test/conversations-list";
 export const Route = createFileRoute("/test/messages/")({
   component: RouteComponent,
 });
@@ -25,7 +25,7 @@ function RouteComponent() {
 
     // only load once per user
     if (!messages[selectedUser.id]) {
-      setMessages((prev) => ({
+      setMessages((prev: Record<number, Message[]>) => ({
         ...prev,
         [selectedUser.id]: [
           {
@@ -84,7 +84,7 @@ function RouteComponent() {
              {(messages[selectedUser.id] || []).length === 0 ? (
              <p className="text-gray-400 text-sm">No messages yet</p>
                ) : (
-                (messages[selectedUser.id] || []).map((msg, i) => (
+                (messages[selectedUser.id] || []).map((msg: Message, i: number) => (
                <div
                 key={i}
                 className={`max-w-xs px-3 py-2 rounded ${
