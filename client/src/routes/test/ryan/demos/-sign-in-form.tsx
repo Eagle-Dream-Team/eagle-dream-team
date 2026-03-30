@@ -26,11 +26,8 @@ export function SignInForm() {
 
       localStorage.setItem("access_token", res.data.access_token)
 
-
-      let role = res.data.role;
-
       setIsFailed(false);
-      setOutput("SUCCESS\n\nRole: " + role);
+      setOutput(`SUCCESS\n\nRole: ${res.data.role}\n\nBearer token: ${res.data.access_token}`);
 
       console.log(res);
 
