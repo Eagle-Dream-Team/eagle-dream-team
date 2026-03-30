@@ -62,7 +62,7 @@ export default function MessagesPage() {
                   key={i}
                   className={`max-w-xs px-3 py-2 rounded ${
                     msg.sender === "me"
-                      ? "bg-blue-500 text-white ml-auto"
+                      ? "bg-blue-300 text-white ml-auto"
                       : "bg-gray-200"
                   }`}
                 >
