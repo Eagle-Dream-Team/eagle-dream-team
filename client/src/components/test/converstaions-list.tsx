@@ -1,5 +1,6 @@
 import { Input } from "antd";
 
+
 const conversations = [
   {
     id: 1,
@@ -45,7 +46,7 @@ const conversations = [
     id: 6,
     initials: "LC",
     name: "Lombe Chisanga",
-    preview: "Thank you for your feedback!",
+    preview: "Thank you for youwr feedback!",
     time: "Mar 23",
     unread: 0,
   },
@@ -163,7 +164,7 @@ const conversations = [
   },
 ];
 
-export function ConversationsList() {
+export function ConversationsList({ onSelectUser }: any) {
   return (
     <div className="w-70 h-full flex flex-col border-r bg-white">
       {/* Header */}
@@ -177,8 +178,9 @@ export function ConversationsList() {
         {conversations.map((c) => (
           <div
             key={c.id}
-            className="flex items-start gap-3 px-4 py-3 cursor-pointer hover:bg-gray-50 border-b transition-all"
-          >
+            onClick={() => onSelectUser(c)}
+             className="flex items-start gap-3 px-4 py-3 cursor-pointer hover:bg-gray-50 border-b transition-all"
+             >
             {/* Avatar/Intial Holder */}
             <div className="w-11 h-11 rounded-full bg-gray-200 border flex items-center justify-center font-bold text-sm text-gray-700 shrink-0">
               {c.initials}
