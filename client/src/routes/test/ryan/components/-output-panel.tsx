@@ -15,7 +15,7 @@ export function OutputPanel({ text, color = "gray" }: { text: string, color: str
     return (
         <>
             <div className={"flex-none duration-700 delay-300 overflow-hidden " + (text ? "w-70 pl-4 opacity-100" : "w-0 opacity-0")}>
-                <div className={`pt-4 pl-8 pr-8 opacity-100 w-70 whitespace-pre-line ${colors[color]}`}>{lastText}</div>
+                <div className={`pt-4 pl-8 pr-8 opacity-100 w-70 whitespace-pre-line wrap-break-word ${colors[color]}`}>{lastText}</div>
             </div>
         </>
     )

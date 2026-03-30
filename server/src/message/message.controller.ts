@@ -2,6 +2,7 @@ import {
   Body,
   Controller,
   Get,
+  Param,
   Patch,
   Post,
   Query,
@@ -11,15 +12,35 @@ import {
 import {
   ApiTags,
   ApiOperation,
+  ApiBearerAuth,
 } from '@nestjs/swagger';
 import { MessageService } from './message.service';
-import { JwtPayload } from 'src/auth/auth.service';
 import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
 
 @ApiTags('message')
 @Controller('message')
+@ApiBearerAuth()
 @UseGuards(JwtAuthGuard)
 export class MessageController {
   constructor(private messageService: MessageService) { }
+
+  @Post('message/send')
+  @ApiOperation({ summary: 'Send a message from the current user to the specified receiver.' })
+  send(
+    @Query('receiver_id') receiver_id: string,
+    @Query('content') content: string,
+    @Req() req: any,
+  ) {
+    return this.messageService.send(req.user.user_id, receiver_id, content)
+  }
+
+  @Get('message/from/:sender_id')
+  @ApiOperation({ summary: 'Get all messages sent from a specified sender to the current user.' })
+  findAll(
+    @Param('sender_id') sender_id: string,
+    @Req() req: any,
+  ) {
+    return this.messageService.findAll(sender_id, req.user.user_id)
+  }
 
 }

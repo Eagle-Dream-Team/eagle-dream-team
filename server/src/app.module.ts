@@ -8,6 +8,7 @@ import { Tutormodule } from './tutor/tutor.module';
 import { RyanTestModule } from './ryan-test/ryan-test.module';
 import { UserModule } from './user/user.module';
 import { StudentModule } from './student/student.module';
+import { MessageModule } from './message/message.module';
 
 @Module({
   imports: [
@@ -16,8 +17,9 @@ import { StudentModule } from './student/student.module';
     StaffModule,
     Tutormodule,
     UserModule,
-    RyanTestModule,
     StudentModule,
+    MessageModule,
+    RyanTestModule,
   ],
   controllers: [AppController],
   providers: [AppService],

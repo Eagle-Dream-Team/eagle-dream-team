@@ -6,15 +6,19 @@ import {
   Post,
   Query,
   Req,
+  UseGuards,
 } from '@nestjs/common';
 import {
   ApiTags,
   ApiOperation,
+  ApiBearerAuth,
 } from '@nestjs/swagger';
 import { RyanTestService } from './ryan-test.service';
 import { JwtPayload } from 'src/auth/auth.service';
 import { AllocateStudentToTutorDto } from './dto/allocateStudentToTutor.dto';
 import { AllocateStudentsToTutorDto } from './dto/allocateStudentsToTutor.dto copy';
+import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
+
 
 @ApiTags('ryan-test')
 @Controller('ryan-test')
@@ -27,7 +31,7 @@ export class RyanTestController {
   allocateStudentToTutor(
     @Query('studentId') studentId: string,
     @Query('tutorId') tutorId: string,
-    @Req() { user }: Request & { user: JwtPayload },
+    @Req() { user }: any,
   ) {
     return this.ryanTestService.allocateStudentToTutor({ studentId: studentId, tutorId: tutorId, allocatedBy: "f4def9af-5c79-4db4-9be1-95495f5e4c55" })
   }
@@ -76,14 +80,18 @@ export class RyanTestController {
 
   @Get('myAllocations')
   @ApiOperation({ summary: 'List all of the currently logged in user\'s allocations (past and present) that involve a user (tutor or student)' })
-  findAllUserAllocations(@Req() { user }: Request & { user: JwtPayload }) {
-    return this.ryanTestService.findAllAllocationsByUserId(user.sub)
+  @UseGuards(JwtAuthGuard)
+  @ApiBearerAuth()
+  findAllUserAllocations(@Req() req: any) {
+    return this.ryanTestService.findAllAllocationsByUserId(req.user.user_id)
   }
 
   @Get('myCurrentAllocations')
   @ApiOperation({ summary: 'List all of the currently logged in user\'s currently active allocations that involve a user (tutor or student)' })
-  findAllUserCurrentAllocations(@Req() { user }: Request & { user: JwtPayload }) {
-    return this.ryanTestService.findAllCurrentAllocationsByUserId(user.sub)
+  @UseGuards(JwtAuthGuard)
+  @ApiBearerAuth()
+  findAllUserCurrentAllocations(@Req() req: any) {
+    return this.ryanTestService.findAllCurrentAllocationsByUserId(req.user.user_id)
   }
 
   @Patch('deactivateAllocation')
