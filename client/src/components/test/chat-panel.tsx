@@ -1,4 +1,4 @@
-import { ConversationsList } from "./conversations-list";
+import { ConversationsList } from "@/components/test/converstaions-list";
 import { useState } from "react";
 
 
