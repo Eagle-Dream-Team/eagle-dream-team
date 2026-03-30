@@ -32,7 +32,7 @@ type FormValues = Omit<SignUpDto, "role">;
 function RouteComponent() {
   const [open, setOpen] = useState(false);
   const [editingStudent, setEditingStudent] = useState<Student | null>(null);
-  const [search, setSearch] = useState("");
+  // const [search, setSearch] = useState("");
   const queryClient = useQueryClient();
 
   const [allocatingStudent, setAllocatingStudent] = useState<Student | null>(

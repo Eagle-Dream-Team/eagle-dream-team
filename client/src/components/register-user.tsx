@@ -18,6 +18,8 @@ interface Props {
   userId?: string;
 }
 
+//todo: bug user create form somtimes shows old data when opened for a new user after editing a user, fix by clearing form on close and setting initial values on open based on user being edited or not
+
 export function UserModal({
   open,
   onClose,
