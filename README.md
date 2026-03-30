@@ -11,6 +11,12 @@ cd server
 pnpm run start
 ```
 
+or
+
+```bash
+pnpm run start:dev
+```
+
 ##
 
 to run the client

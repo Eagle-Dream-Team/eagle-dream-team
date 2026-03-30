@@ -10,21 +10,31 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as ProtectedRouteImport } from './routes/_protected'
+import { Route as IndexRouteImport } from './routes/index'
 import { Route as TestIndexRouteImport } from './routes/test/index'
 import { Route as TestTestPageRouteImport } from './routes/test/test-page'
 import { Route as TestOkRouteImport } from './routes/test/ok'
 import { Route as AuthSignUpRouteImport } from './routes/auth/sign-up'
 import { Route as AuthSignInRouteImport } from './routes/auth/sign-in'
 import { Route as AuthChangePasswordRouteImport } from './routes/auth/change-password'
+import { Route as TestRyan2IndexRouteImport } from './routes/test/ryan2/index'
+import { Route as TestRyanIndexRouteImport } from './routes/test/ryan/index'
+import { Route as TestMessagesIndexRouteImport } from './routes/test/messages/index'
 import { Route as ProtectedTutorIndexRouteImport } from './routes/_protected/tutor/index'
 import { Route as ProtectedStudentIndexRouteImport } from './routes/_protected/student/index'
 import { Route as ProtectedStaffIndexRouteImport } from './routes/_protected/staff/index'
 import { Route as ProtectedStaffHomeRouteImport } from './routes/_protected/staff/home'
+import { Route as ProtectedTutorStudentsIndexRouteImport } from './routes/_protected/tutor/students/index'
 import { Route as ProtectedStaffTutorsIndexRouteImport } from './routes/_protected/staff/tutors/index'
 import { Route as ProtectedStaffStudentsIndexRouteImport } from './routes/_protected/staff/students/index'
 
 const ProtectedRoute = ProtectedRouteImport.update({
   id: '/_protected',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const IndexRoute = IndexRouteImport.update({
+  id: '/',
+  path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
 const TestIndexRoute = TestIndexRouteImport.update({
@@ -57,6 +67,21 @@ const AuthChangePasswordRoute = AuthChangePasswordRouteImport.update({
   path: '/auth/change-password',
   getParentRoute: () => rootRouteImport,
 } as any)
+const TestRyan2IndexRoute = TestRyan2IndexRouteImport.update({
+  id: '/test/ryan2/',
+  path: '/test/ryan2/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const TestRyanIndexRoute = TestRyanIndexRouteImport.update({
+  id: '/test/ryan/',
+  path: '/test/ryan/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const TestMessagesIndexRoute = TestMessagesIndexRouteImport.update({
+  id: '/test/messages/',
+  path: '/test/messages/',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ProtectedTutorIndexRoute = ProtectedTutorIndexRouteImport.update({
   id: '/tutor/',
   path: '/tutor/',
@@ -77,6 +102,12 @@ const ProtectedStaffHomeRoute = ProtectedStaffHomeRouteImport.update({
   path: '/staff/home',
   getParentRoute: () => ProtectedRoute,
 } as any)
+const ProtectedTutorStudentsIndexRoute =
+  ProtectedTutorStudentsIndexRouteImport.update({
+    id: '/tutor/students/',
+    path: '/tutor/students/',
+    getParentRoute: () => ProtectedRoute,
+  } as any)
 const ProtectedStaffTutorsIndexRoute =
   ProtectedStaffTutorsIndexRouteImport.update({
     id: '/staff/tutors/',
@@ -91,7 +122,7 @@ const ProtectedStaffStudentsIndexRoute =
   } as any)
 
 export interface FileRoutesByFullPath {
-  '/': typeof ProtectedRouteWithChildren
+  '/': typeof IndexRoute
   '/auth/change-password': typeof AuthChangePasswordRoute
   '/auth/sign-in': typeof AuthSignInRoute
   '/auth/sign-up': typeof AuthSignUpRoute
@@ -102,11 +133,15 @@ export interface FileRoutesByFullPath {
   '/staff/': typeof ProtectedStaffIndexRoute
   '/student/': typeof ProtectedStudentIndexRoute
   '/tutor/': typeof ProtectedTutorIndexRoute
+  '/test/messages/': typeof TestMessagesIndexRoute
+  '/test/ryan/': typeof TestRyanIndexRoute
+  '/test/ryan2/': typeof TestRyan2IndexRoute
   '/staff/students/': typeof ProtectedStaffStudentsIndexRoute
   '/staff/tutors/': typeof ProtectedStaffTutorsIndexRoute
+  '/tutor/students/': typeof ProtectedTutorStudentsIndexRoute
 }
 export interface FileRoutesByTo {
-  '/': typeof ProtectedRouteWithChildren
+  '/': typeof IndexRoute
   '/auth/change-password': typeof AuthChangePasswordRoute
   '/auth/sign-in': typeof AuthSignInRoute
   '/auth/sign-up': typeof AuthSignUpRoute
@@ -117,11 +152,16 @@ export interface FileRoutesByTo {
   '/staff': typeof ProtectedStaffIndexRoute
   '/student': typeof ProtectedStudentIndexRoute
   '/tutor': typeof ProtectedTutorIndexRoute
+  '/test/messages': typeof TestMessagesIndexRoute
+  '/test/ryan': typeof TestRyanIndexRoute
+  '/test/ryan2': typeof TestRyan2IndexRoute
   '/staff/students': typeof ProtectedStaffStudentsIndexRoute
   '/staff/tutors': typeof ProtectedStaffTutorsIndexRoute
+  '/tutor/students': typeof ProtectedTutorStudentsIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
+  '/': typeof IndexRoute
   '/_protected': typeof ProtectedRouteWithChildren
   '/auth/change-password': typeof AuthChangePasswordRoute
   '/auth/sign-in': typeof AuthSignInRoute
@@ -133,8 +173,12 @@ export interface FileRoutesById {
   '/_protected/staff/': typeof ProtectedStaffIndexRoute
   '/_protected/student/': typeof ProtectedStudentIndexRoute
   '/_protected/tutor/': typeof ProtectedTutorIndexRoute
+  '/test/messages/': typeof TestMessagesIndexRoute
+  '/test/ryan/': typeof TestRyanIndexRoute
+  '/test/ryan2/': typeof TestRyan2IndexRoute
   '/_protected/staff/students/': typeof ProtectedStaffStudentsIndexRoute
   '/_protected/staff/tutors/': typeof ProtectedStaffTutorsIndexRoute
+  '/_protected/tutor/students/': typeof ProtectedTutorStudentsIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -150,8 +194,12 @@ export interface FileRouteTypes {
     | '/staff/'
     | '/student/'
     | '/tutor/'
+    | '/test/messages/'
+    | '/test/ryan/'
+    | '/test/ryan2/'
     | '/staff/students/'
     | '/staff/tutors/'
+    | '/tutor/students/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -165,10 +213,15 @@ export interface FileRouteTypes {
     | '/staff'
     | '/student'
     | '/tutor'
+    | '/test/messages'
+    | '/test/ryan'
+    | '/test/ryan2'
     | '/staff/students'
     | '/staff/tutors'
+    | '/tutor/students'
   id:
     | '__root__'
+    | '/'
     | '/_protected'
     | '/auth/change-password'
     | '/auth/sign-in'
@@ -180,11 +233,16 @@ export interface FileRouteTypes {
     | '/_protected/staff/'
     | '/_protected/student/'
     | '/_protected/tutor/'
+    | '/test/messages/'
+    | '/test/ryan/'
+    | '/test/ryan2/'
     | '/_protected/staff/students/'
     | '/_protected/staff/tutors/'
+    | '/_protected/tutor/students/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
+  IndexRoute: typeof IndexRoute
   ProtectedRoute: typeof ProtectedRouteWithChildren
   AuthChangePasswordRoute: typeof AuthChangePasswordRoute
   AuthSignInRoute: typeof AuthSignInRoute
@@ -192,6 +250,9 @@ export interface RootRouteChildren {
   TestOkRoute: typeof TestOkRoute
   TestTestPageRoute: typeof TestTestPageRoute
   TestIndexRoute: typeof TestIndexRoute
+  TestMessagesIndexRoute: typeof TestMessagesIndexRoute
+  TestRyanIndexRoute: typeof TestRyanIndexRoute
+  TestRyan2IndexRoute: typeof TestRyan2IndexRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -201,6 +262,13 @@ declare module '@tanstack/react-router' {
       path: ''
       fullPath: '/'
       preLoaderRoute: typeof ProtectedRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/': {
+      id: '/'
+      path: '/'
+      fullPath: '/'
+      preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/test/': {
@@ -245,6 +313,27 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthChangePasswordRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/test/ryan2/': {
+      id: '/test/ryan2/'
+      path: '/test/ryan2'
+      fullPath: '/test/ryan2/'
+      preLoaderRoute: typeof TestRyan2IndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/test/ryan/': {
+      id: '/test/ryan/'
+      path: '/test/ryan'
+      fullPath: '/test/ryan/'
+      preLoaderRoute: typeof TestRyanIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/test/messages/': {
+      id: '/test/messages/'
+      path: '/test/messages'
+      fullPath: '/test/messages/'
+      preLoaderRoute: typeof TestMessagesIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/_protected/tutor/': {
       id: '/_protected/tutor/'
       path: '/tutor'
@@ -273,6 +362,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ProtectedStaffHomeRouteImport
       parentRoute: typeof ProtectedRoute
     }
+    '/_protected/tutor/students/': {
+      id: '/_protected/tutor/students/'
+      path: '/tutor/students'
+      fullPath: '/tutor/students/'
+      preLoaderRoute: typeof ProtectedTutorStudentsIndexRouteImport
+      parentRoute: typeof ProtectedRoute
+    }
     '/_protected/staff/tutors/': {
       id: '/_protected/staff/tutors/'
       path: '/staff/tutors'
@@ -297,6 +393,7 @@ interface ProtectedRouteChildren {
   ProtectedTutorIndexRoute: typeof ProtectedTutorIndexRoute
   ProtectedStaffStudentsIndexRoute: typeof ProtectedStaffStudentsIndexRoute
   ProtectedStaffTutorsIndexRoute: typeof ProtectedStaffTutorsIndexRoute
+  ProtectedTutorStudentsIndexRoute: typeof ProtectedTutorStudentsIndexRoute
 }
 
 const ProtectedRouteChildren: ProtectedRouteChildren = {
@@ -306,6 +403,7 @@ const ProtectedRouteChildren: ProtectedRouteChildren = {
   ProtectedTutorIndexRoute: ProtectedTutorIndexRoute,
   ProtectedStaffStudentsIndexRoute: ProtectedStaffStudentsIndexRoute,
   ProtectedStaffTutorsIndexRoute: ProtectedStaffTutorsIndexRoute,
+  ProtectedTutorStudentsIndexRoute: ProtectedTutorStudentsIndexRoute,
 }
 
 const ProtectedRouteWithChildren = ProtectedRoute._addFileChildren(
@@ -313,6 +411,7 @@ const ProtectedRouteWithChildren = ProtectedRoute._addFileChildren(
 )
 
 const rootRouteChildren: RootRouteChildren = {
+  IndexRoute: IndexRoute,
   ProtectedRoute: ProtectedRouteWithChildren,
   AuthChangePasswordRoute: AuthChangePasswordRoute,
   AuthSignInRoute: AuthSignInRoute,
@@ -320,6 +419,9 @@ const rootRouteChildren: RootRouteChildren = {
   TestOkRoute: TestOkRoute,
   TestTestPageRoute: TestTestPageRoute,
   TestIndexRoute: TestIndexRoute,
+  TestMessagesIndexRoute: TestMessagesIndexRoute,
+  TestRyanIndexRoute: TestRyanIndexRoute,
+  TestRyan2IndexRoute: TestRyan2IndexRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
