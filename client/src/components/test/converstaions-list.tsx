@@ -165,11 +165,11 @@ const conversations = [
 
 export function ConversationsList() {
   return (
-    <div className="w-70 h-full flex flex-col border-r">
-      {/*  messages and search */}
-      <div className="p-4 border-b">
-        <h2 className="text-sm font-medium mb-2">Messages</h2>
-        <Input placeholder="Search..." className="h-8 text-xs" />
+    <div className="w-70 h-full flex flex-col border-r bg-white">
+      {/* Header */}
+      <div className="p-4 border-b bg-white sticky top-0 z-10">
+        <h2 className="text-sm font-semibold mb-2 text-gray-800">Messages</h2>
+        <Input placeholder="Search..." className="h-8 text-xs rounded-md" />
       </div>
 
       {/* Contacts */}
@@ -177,14 +177,38 @@ export function ConversationsList() {
         {conversations.map((c) => (
           <div
             key={c.id}
-            className="flex flex-col items-start gap-2.5 px-3.5 py-2.5 cursor-pointer hover:bg-muted border-b"
+            className="flex items-start gap-3 px-4 py-3 cursor-pointer hover:bg-gray-50 border-b transition-all"
           >
-            <div className=" flex gap-2 ">
-              <p className="font-bold"> {c.name}</p>
-              <p> {c.time}</p>
+            {/* Avatar/Intial Holder */}
+            <div className="w-11 h-11 rounded-full bg-gray-200 border flex items-center justify-center font-bold text-sm text-gray-700 shrink-0">
+              {c.initials}
             </div>
 
-            <p className="text-sm"> {c.preview}</p>
+            {/* Conversation Info */}
+            <div className="flex-1 min-w-0">
+              {/* Name + Time */}
+              <div className="flex items-center justify-between gap-2">
+                <p className="font-semibold text-sm text-gray-900 truncate">
+                  {c.name}
+                </p>
+
+                <p className="text-[11px] text-gray-500 whitespace-nowrap">
+                  {c.time}
+                </p>
+              </div>
+
+              {/* Preview + Unread */}
+              <div className="flex items-center justify-between gap-2 mt-1">
+                <p className="text-xs text-gray-600 truncate">{c.preview}</p>
+
+                {/* Unread Badge */}
+                {c.unread > 0 && (
+                  <span className="bg-green-600 text-white text-[10px] font-bold px-2 py-0.5 rounded-full min-w-[20px] text-center">
+                    {c.unread}
+                  </span>
+                )}
+              </div>
+            </div>
           </div>
         ))}
       </div>

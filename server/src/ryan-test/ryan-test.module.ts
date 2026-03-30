@@ -7,4 +7,4 @@ import { PrismaService } from 'prisma.service';
   controllers: [RyanTestController],
   providers: [RyanTestService, PrismaService],
 })
-export class RyanTestModule {}
+export class RyanTestModule { }
