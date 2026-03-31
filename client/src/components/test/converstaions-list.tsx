@@ -205,7 +205,7 @@ export function ConversationsList({ onSelectUser }: any) {
 
                 {/* Unread Badge */}
                 {c.unread > 0 && (
-                  <span className="bg-green-600 text-white text-[10px] font-bold px-2 py-0.5 rounded-full min-w-[20px] text-center">
+                  <span className="bg-green-600 text-white text-[10px] font-bold px-2 py-0.5 rounded-full min-w-5 text-center">
                     {c.unread}
                   </span>
                 )}
