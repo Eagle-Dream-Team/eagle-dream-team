@@ -23,7 +23,7 @@ async function bootstrap() {
     credentials: true,
   });
 
-  app.useGlobalPipes(new ValidationPipe({ whitelist: true }));
+  app.useGlobalPipes(new ValidationPipe({ whitelist: false, transform: true }));
   app.useGlobalFilters(new GlobalExceptionFilter());
   await app.listen(3000);
 }

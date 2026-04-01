@@ -4,6 +4,9 @@ settings:
   autoInstallPeers: true
   excludeLinksFromLockfile: false
 
+overrides:
+  axios: 1.13.6
+
 importers:
 
   .:
@@ -27,7 +30,7 @@ importers:
         specifier: ^6.3.3
         version: 6.3.3(react-dom@19.2.4(react@19.2.4))(react@19.2.4)
       axios:
-        specifier: ^1.13.6
+        specifier: 1.13.6
         version: 1.13.6
       class-variance-authority:
         specifier: ^0.7.1

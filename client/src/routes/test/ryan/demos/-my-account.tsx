@@ -2,6 +2,8 @@ import axios from "axios";
 import { useState } from "react";
 import { Button } from "../components/-button";
 import { OutputPanel } from "../components/-output-panel";
+import { TitledBox } from "../components/-titled-box";
+import { Tray } from "../components/-tray";
 
 const serverUrl = import.meta.env.VITE_API_URL;
 
@@ -14,34 +16,50 @@ export function MyAccount() {
     setOutput("");
 
     try {
-      const res = await axios.get(serverUrl + "/user/me");
+      const res = await axios.get(serverUrl + "/user/me", {
+        headers: { Authorization: `Bearer ${localStorage.getItem('access_token')}` }
+      });
       console.log(res);
 
-      let role = res.data.role.toUpperCase();
-      setOutput("Success\n\nRole: " + role);
+      let user = res.data;
+      setOutput(`SUCCESS\n\nName: ${user.first_name} ${user.last_name}\nEmail: ${user.email}\nRole: ${user.role}`);
       setIsFailed(false);
 
     } catch (err: any) {
-      let message = err.response.data.message
+      let message = err.response ? err.response.data.message : err;
       console.log(err);
       if (Array.isArray(message)) {
         message = message.map((e: any) => { let e2 = e.split(""); e2[0] = e2[0].toUpperCase(); return e2.join("") }).join("\n\n")
       }
-
+      message = "ERROR\n\n" + message
       setOutput(message);
+      setIsFailed(true);
+    }
+  }
+
+  
+  function submitLogOut() {
+    setOutput("");
+    if (localStorage.getItem("access_token")) {
+      localStorage.removeItem("access_token")
+
+      setOutput(`SUCCESS\n\nSigned out`);
+      setIsFailed(false);
+    } else {
+      setOutput("ERROR\n\nNot signed in");
       setIsFailed(true);
     }
   }
 
   return (
     <>
-      <div className='flex justify-center p-8 m-2 border-b border-gray-400 shadow'>
-        <div className="w-85 border border-gray-300 rounded-xl p-4 shadow-xl">
-          <h2 className="text-xl text-center text-purple-700 m-2">My Account</h2>
+      <Tray title="My Account">
+        <TitledBox title="My Account">
           <Button text={"Get My Info"} action={submitGetMyAccount} loadingText={"Loading..."} />
-        </div>
-        <OutputPanel text={output} color={isFailed ? "red" : "gray"} />
-      </div >
+          <Button text={"Log Out"} action={submitLogOut} loadingText={"Loading..."} />
+        </TitledBox >
+        <OutputPanel text={output} color={isFailed ? "red" : "green"} />
+      </Tray>
     </>
   )
 }

@@ -12,8 +12,9 @@ export class AllocateStudentsToTutorDto {
   @IsString()
   @ApiProperty({ example: "tutor_id" })
   tutorId: string;
-
+  
   @IsString()
   // @ApiProperty({ example: "staff_id" })
+  @ApiProperty({ example: "staff_id" })
   allocatedBy: string;
 }

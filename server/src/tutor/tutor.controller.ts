@@ -1,4 +1,4 @@
-import { Controller, Get, UseGuards } from '@nestjs/common';
+import { Controller, Get, Query, Req, UseGuards } from '@nestjs/common';
 import {
   ApiBearerAuth,
   ApiOperation,
@@ -9,6 +9,8 @@ import { Roles } from 'src/auth/decorators/roles.decorator';
 import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
 import { RolesGuard } from 'src/auth/guards/roles.guard';
 import { UserService } from 'src/user/user.service';
+import { TutorService } from './tutor.service';
+import { TutorStudentsQueryDto } from './dto/TutorStudentsQueryDto.dto';
 
 @ApiTags('tutor')
 @ApiBearerAuth()
@@ -16,11 +18,25 @@ import { UserService } from 'src/user/user.service';
 @Roles('tutor')
 @Controller('tutor')
 export class TutorController {
-  constructor(private userService: UserService) {}
+  constructor(
+    private userService: UserService,
+    private tutorService: TutorService,
+  ) {}
 
   @Get('hello')
   @ApiOperation({ summary: 'hello tutor' })
   hello() {
     return 'Hello tutor';
+  }
+
+  @Get('students')
+  @ApiOperation({ summary: 'Get all students by their most recent allocation' })
+  getStudents(@Query() query: TutorStudentsQueryDto, @Req() req: any) {
+    const { is_current, ...pagination } = query;
+    return this.tutorService.getStudents(
+      req.user.user_id,
+      pagination,
+      is_current,
+    );
   }
 }
