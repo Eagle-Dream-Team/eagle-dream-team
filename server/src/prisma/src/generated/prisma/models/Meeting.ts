@@ -231,7 +231,7 @@ export type MeetingGroupByOutputType = {
   _max: MeetingMaxAggregateOutputType | null
 }
 
-type GetMeetingGroupByPayload<T extends MeetingGroupByArgs> = Prisma.PrismaPromise<
+export type GetMeetingGroupByPayload<T extends MeetingGroupByArgs> = Prisma.PrismaPromise<
   Array<
     Prisma.PickEnumerable<MeetingGroupByOutputType, T['by']> &
       {
@@ -562,10 +562,6 @@ export type MeetingUncheckedUpdateManyWithoutAllocationNestedInput = {
 
 export type EnumMeetingTypeFieldUpdateOperationsInput = {
   set?: $Enums.MeetingType
-}
-
-export type NullableStringFieldUpdateOperationsInput = {
-  set?: string | null
 }
 
 export type MeetingCreateWithoutCreatorInput = {

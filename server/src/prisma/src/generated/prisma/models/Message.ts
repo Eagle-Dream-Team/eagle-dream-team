@@ -211,7 +211,7 @@ export type MessageGroupByOutputType = {
   message_id: number
   sender_id: string
   receiver_id: string
-  content: string
+  content: string | null
   file_id: number | null
   sent_at: Date
   is_read: boolean
@@ -224,7 +224,7 @@ export type MessageGroupByOutputType = {
   _max: MessageMaxAggregateOutputType | null
 }
 
-type GetMessageGroupByPayload<T extends MessageGroupByArgs> = Prisma.PrismaPromise<
+export type GetMessageGroupByPayload<T extends MessageGroupByArgs> = Prisma.PrismaPromise<
   Array<
     Prisma.PickEnumerable<MessageGroupByOutputType, T['by']> &
       {
@@ -246,7 +246,7 @@ export type MessageWhereInput = {
   message_id?: Prisma.IntFilter<"Message"> | number
   sender_id?: Prisma.StringFilter<"Message"> | string
   receiver_id?: Prisma.StringFilter<"Message"> | string
-  content?: Prisma.StringFilter<"Message"> | string
+  content?: Prisma.StringNullableFilter<"Message"> | string | null
   file_id?: Prisma.IntNullableFilter<"Message"> | number | null
   sent_at?: Prisma.DateTimeFilter<"Message"> | Date | string
   is_read?: Prisma.BoolFilter<"Message"> | boolean
@@ -261,7 +261,7 @@ export type MessageOrderByWithRelationInput = {
   message_id?: Prisma.SortOrder
   sender_id?: Prisma.SortOrder
   receiver_id?: Prisma.SortOrder
-  content?: Prisma.SortOrder
+  content?: Prisma.SortOrderInput | Prisma.SortOrder
   file_id?: Prisma.SortOrderInput | Prisma.SortOrder
   sent_at?: Prisma.SortOrder
   is_read?: Prisma.SortOrder
@@ -279,7 +279,7 @@ export type MessageWhereUniqueInput = Prisma.AtLeast<{
   NOT?: Prisma.MessageWhereInput | Prisma.MessageWhereInput[]
   sender_id?: Prisma.StringFilter<"Message"> | string
   receiver_id?: Prisma.StringFilter<"Message"> | string
-  content?: Prisma.StringFilter<"Message"> | string
+  content?: Prisma.StringNullableFilter<"Message"> | string | null
   file_id?: Prisma.IntNullableFilter<"Message"> | number | null
   sent_at?: Prisma.DateTimeFilter<"Message"> | Date | string
   is_read?: Prisma.BoolFilter<"Message"> | boolean
@@ -294,7 +294,7 @@ export type MessageOrderByWithAggregationInput = {
   message_id?: Prisma.SortOrder
   sender_id?: Prisma.SortOrder
   receiver_id?: Prisma.SortOrder
-  content?: Prisma.SortOrder
+  content?: Prisma.SortOrderInput | Prisma.SortOrder
   file_id?: Prisma.SortOrderInput | Prisma.SortOrder
   sent_at?: Prisma.SortOrder
   is_read?: Prisma.SortOrder
@@ -314,7 +314,7 @@ export type MessageScalarWhereWithAggregatesInput = {
   message_id?: Prisma.IntWithAggregatesFilter<"Message"> | number
   sender_id?: Prisma.StringWithAggregatesFilter<"Message"> | string
   receiver_id?: Prisma.StringWithAggregatesFilter<"Message"> | string
-  content?: Prisma.StringWithAggregatesFilter<"Message"> | string
+  content?: Prisma.StringNullableWithAggregatesFilter<"Message"> | string | null
   file_id?: Prisma.IntNullableWithAggregatesFilter<"Message"> | number | null
   sent_at?: Prisma.DateTimeWithAggregatesFilter<"Message"> | Date | string
   is_read?: Prisma.BoolWithAggregatesFilter<"Message"> | boolean
@@ -323,7 +323,7 @@ export type MessageScalarWhereWithAggregatesInput = {
 }
 
 export type MessageCreateInput = {
-  content: string
+  content?: string | null
   sent_at?: Date | string
   is_read?: boolean
   created_at?: Date | string
@@ -337,7 +337,7 @@ export type MessageUncheckedCreateInput = {
   message_id?: number
   sender_id: string
   receiver_id: string
-  content: string
+  content?: string | null
   file_id?: number | null
   sent_at?: Date | string
   is_read?: boolean
@@ -346,7 +346,7 @@ export type MessageUncheckedCreateInput = {
 }
 
 export type MessageUpdateInput = {
-  content?: Prisma.StringFieldUpdateOperationsInput | string
+  content?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   sent_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   is_read?: Prisma.BoolFieldUpdateOperationsInput | boolean
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -360,7 +360,7 @@ export type MessageUncheckedUpdateInput = {
   message_id?: Prisma.IntFieldUpdateOperationsInput | number
   sender_id?: Prisma.StringFieldUpdateOperationsInput | string
   receiver_id?: Prisma.StringFieldUpdateOperationsInput | string
-  content?: Prisma.StringFieldUpdateOperationsInput | string
+  content?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   file_id?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   sent_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   is_read?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -372,7 +372,7 @@ export type MessageCreateManyInput = {
   message_id?: number
   sender_id: string
   receiver_id: string
-  content: string
+  content?: string | null
   file_id?: number | null
   sent_at?: Date | string
   is_read?: boolean
@@ -381,7 +381,7 @@ export type MessageCreateManyInput = {
 }
 
 export type MessageUpdateManyMutationInput = {
-  content?: Prisma.StringFieldUpdateOperationsInput | string
+  content?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   sent_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   is_read?: Prisma.BoolFieldUpdateOperationsInput | boolean
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -392,7 +392,7 @@ export type MessageUncheckedUpdateManyInput = {
   message_id?: Prisma.IntFieldUpdateOperationsInput | number
   sender_id?: Prisma.StringFieldUpdateOperationsInput | string
   receiver_id?: Prisma.StringFieldUpdateOperationsInput | string
-  content?: Prisma.StringFieldUpdateOperationsInput | string
+  content?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   file_id?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   sent_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   is_read?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -540,6 +540,10 @@ export type MessageUncheckedUpdateManyWithoutReceiverNestedInput = {
   deleteMany?: Prisma.MessageScalarWhereInput | Prisma.MessageScalarWhereInput[]
 }
 
+export type NullableStringFieldUpdateOperationsInput = {
+  set?: string | null
+}
+
 export type NullableIntFieldUpdateOperationsInput = {
   set?: number | null
   increment?: number
@@ -591,7 +595,7 @@ export type MessageUncheckedUpdateManyWithoutFileNestedInput = {
 }
 
 export type MessageCreateWithoutSenderInput = {
-  content: string
+  content?: string | null
   sent_at?: Date | string
   is_read?: boolean
   created_at?: Date | string
@@ -603,7 +607,7 @@ export type MessageCreateWithoutSenderInput = {
 export type MessageUncheckedCreateWithoutSenderInput = {
   message_id?: number
   receiver_id: string
-  content: string
+  content?: string | null
   file_id?: number | null
   sent_at?: Date | string
   is_read?: boolean
@@ -622,7 +626,7 @@ export type MessageCreateManySenderInputEnvelope = {
 }
 
 export type MessageCreateWithoutReceiverInput = {
-  content: string
+  content?: string | null
   sent_at?: Date | string
   is_read?: boolean
   created_at?: Date | string
@@ -634,7 +638,7 @@ export type MessageCreateWithoutReceiverInput = {
 export type MessageUncheckedCreateWithoutReceiverInput = {
   message_id?: number
   sender_id: string
-  content: string
+  content?: string | null
   file_id?: number | null
   sent_at?: Date | string
   is_read?: boolean
@@ -675,7 +679,7 @@ export type MessageScalarWhereInput = {
   message_id?: Prisma.IntFilter<"Message"> | number
   sender_id?: Prisma.StringFilter<"Message"> | string
   receiver_id?: Prisma.StringFilter<"Message"> | string
-  content?: Prisma.StringFilter<"Message"> | string
+  content?: Prisma.StringNullableFilter<"Message"> | string | null
   file_id?: Prisma.IntNullableFilter<"Message"> | number | null
   sent_at?: Prisma.DateTimeFilter<"Message"> | Date | string
   is_read?: Prisma.BoolFilter<"Message"> | boolean
@@ -700,7 +704,7 @@ export type MessageUpdateManyWithWhereWithoutReceiverInput = {
 }
 
 export type MessageCreateWithoutFileInput = {
-  content: string
+  content?: string | null
   sent_at?: Date | string
   is_read?: boolean
   created_at?: Date | string
@@ -713,7 +717,7 @@ export type MessageUncheckedCreateWithoutFileInput = {
   message_id?: number
   sender_id: string
   receiver_id: string
-  content: string
+  content?: string | null
   sent_at?: Date | string
   is_read?: boolean
   created_at?: Date | string
@@ -749,7 +753,7 @@ export type MessageUpdateManyWithWhereWithoutFileInput = {
 export type MessageCreateManySenderInput = {
   message_id?: number
   receiver_id: string
-  content: string
+  content?: string | null
   file_id?: number | null
   sent_at?: Date | string
   is_read?: boolean
@@ -760,7 +764,7 @@ export type MessageCreateManySenderInput = {
 export type MessageCreateManyReceiverInput = {
   message_id?: number
   sender_id: string
-  content: string
+  content?: string | null
   file_id?: number | null
   sent_at?: Date | string
   is_read?: boolean
@@ -769,7 +773,7 @@ export type MessageCreateManyReceiverInput = {
 }
 
 export type MessageUpdateWithoutSenderInput = {
-  content?: Prisma.StringFieldUpdateOperationsInput | string
+  content?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   sent_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   is_read?: Prisma.BoolFieldUpdateOperationsInput | boolean
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -781,7 +785,7 @@ export type MessageUpdateWithoutSenderInput = {
 export type MessageUncheckedUpdateWithoutSenderInput = {
   message_id?: Prisma.IntFieldUpdateOperationsInput | number
   receiver_id?: Prisma.StringFieldUpdateOperationsInput | string
-  content?: Prisma.StringFieldUpdateOperationsInput | string
+  content?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   file_id?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   sent_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   is_read?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -792,7 +796,7 @@ export type MessageUncheckedUpdateWithoutSenderInput = {
 export type MessageUncheckedUpdateManyWithoutSenderInput = {
   message_id?: Prisma.IntFieldUpdateOperationsInput | number
   receiver_id?: Prisma.StringFieldUpdateOperationsInput | string
-  content?: Prisma.StringFieldUpdateOperationsInput | string
+  content?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   file_id?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   sent_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   is_read?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -801,7 +805,7 @@ export type MessageUncheckedUpdateManyWithoutSenderInput = {
 }
 
 export type MessageUpdateWithoutReceiverInput = {
-  content?: Prisma.StringFieldUpdateOperationsInput | string
+  content?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   sent_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   is_read?: Prisma.BoolFieldUpdateOperationsInput | boolean
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -813,7 +817,7 @@ export type MessageUpdateWithoutReceiverInput = {
 export type MessageUncheckedUpdateWithoutReceiverInput = {
   message_id?: Prisma.IntFieldUpdateOperationsInput | number
   sender_id?: Prisma.StringFieldUpdateOperationsInput | string
-  content?: Prisma.StringFieldUpdateOperationsInput | string
+  content?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   file_id?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   sent_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   is_read?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -824,7 +828,7 @@ export type MessageUncheckedUpdateWithoutReceiverInput = {
 export type MessageUncheckedUpdateManyWithoutReceiverInput = {
   message_id?: Prisma.IntFieldUpdateOperationsInput | number
   sender_id?: Prisma.StringFieldUpdateOperationsInput | string
-  content?: Prisma.StringFieldUpdateOperationsInput | string
+  content?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   file_id?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   sent_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   is_read?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -836,7 +840,7 @@ export type MessageCreateManyFileInput = {
   message_id?: number
   sender_id: string
   receiver_id: string
-  content: string
+  content?: string | null
   sent_at?: Date | string
   is_read?: boolean
   created_at?: Date | string
@@ -844,7 +848,7 @@ export type MessageCreateManyFileInput = {
 }
 
 export type MessageUpdateWithoutFileInput = {
-  content?: Prisma.StringFieldUpdateOperationsInput | string
+  content?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   sent_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   is_read?: Prisma.BoolFieldUpdateOperationsInput | boolean
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -857,7 +861,7 @@ export type MessageUncheckedUpdateWithoutFileInput = {
   message_id?: Prisma.IntFieldUpdateOperationsInput | number
   sender_id?: Prisma.StringFieldUpdateOperationsInput | string
   receiver_id?: Prisma.StringFieldUpdateOperationsInput | string
-  content?: Prisma.StringFieldUpdateOperationsInput | string
+  content?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   sent_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   is_read?: Prisma.BoolFieldUpdateOperationsInput | boolean
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -868,7 +872,7 @@ export type MessageUncheckedUpdateManyWithoutFileInput = {
   message_id?: Prisma.IntFieldUpdateOperationsInput | number
   sender_id?: Prisma.StringFieldUpdateOperationsInput | string
   receiver_id?: Prisma.StringFieldUpdateOperationsInput | string
-  content?: Prisma.StringFieldUpdateOperationsInput | string
+  content?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   sent_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   is_read?: Prisma.BoolFieldUpdateOperationsInput | boolean
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -962,7 +966,7 @@ export type $MessagePayload<ExtArgs extends runtime.Types.Extensions.InternalArg
     message_id: number
     sender_id: string
     receiver_id: string
-    content: string
+    content: string | null
     file_id: number | null
     sent_at: Date
     is_read: boolean

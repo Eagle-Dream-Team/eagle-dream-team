@@ -38,7 +38,7 @@ export type FileMinAggregateOutputType = {
   file_id: number | null
   uploaded_by: string | null
   title: string | null
-  file_type: $Enums.FileType | null
+  file_type: string | null
   file_url: string | null
   created_at: Date | null
   updated_at: Date | null
@@ -48,7 +48,7 @@ export type FileMaxAggregateOutputType = {
   file_id: number | null
   uploaded_by: string | null
   title: string | null
-  file_type: $Enums.FileType | null
+  file_type: string | null
   file_url: string | null
   created_at: Date | null
   updated_at: Date | null
@@ -195,7 +195,7 @@ export type FileGroupByOutputType = {
   file_id: number
   uploaded_by: string
   title: string
-  file_type: $Enums.FileType
+  file_type: string
   file_url: string
   created_at: Date
   updated_at: Date
@@ -228,7 +228,7 @@ export type FileWhereInput = {
   file_id?: Prisma.IntFilter<"File"> | number
   uploaded_by?: Prisma.StringFilter<"File"> | string
   title?: Prisma.StringFilter<"File"> | string
-  file_type?: Prisma.EnumFileTypeFilter<"File"> | $Enums.FileType
+  file_type?: Prisma.EnumFileTypeFilter<"File"> | string
   file_url?: Prisma.StringFilter<"File"> | string
   created_at?: Prisma.DateTimeFilter<"File"> | Date | string
   updated_at?: Prisma.DateTimeFilter<"File"> | Date | string
@@ -255,7 +255,7 @@ export type FileWhereUniqueInput = Prisma.AtLeast<{
   NOT?: Prisma.FileWhereInput | Prisma.FileWhereInput[]
   uploaded_by?: Prisma.StringFilter<"File"> | string
   title?: Prisma.StringFilter<"File"> | string
-  file_type?: Prisma.EnumFileTypeFilter<"File"> | $Enums.FileType
+  file_type?: Prisma.EnumFileTypeFilter<"File"> | string
   file_url?: Prisma.StringFilter<"File"> | string
   created_at?: Prisma.DateTimeFilter<"File"> | Date | string
   updated_at?: Prisma.DateTimeFilter<"File"> | Date | string
@@ -285,7 +285,7 @@ export type FileScalarWhereWithAggregatesInput = {
   file_id?: Prisma.IntWithAggregatesFilter<"File"> | number
   uploaded_by?: Prisma.StringWithAggregatesFilter<"File"> | string
   title?: Prisma.StringWithAggregatesFilter<"File"> | string
-  file_type?: Prisma.EnumFileTypeWithAggregatesFilter<"File"> | $Enums.FileType
+  file_type?: Prisma.EnumFileTypeWithAggregatesFilter<"File"> | string
   file_url?: Prisma.StringWithAggregatesFilter<"File"> | string
   created_at?: Prisma.DateTimeWithAggregatesFilter<"File"> | Date | string
   updated_at?: Prisma.DateTimeWithAggregatesFilter<"File"> | Date | string
@@ -293,7 +293,7 @@ export type FileScalarWhereWithAggregatesInput = {
 
 export type FileCreateInput = {
   title: string
-  file_type: $Enums.FileType
+  file_type: string
   file_url: string
   created_at?: Date | string
   updated_at?: Date | string
@@ -305,7 +305,7 @@ export type FileUncheckedCreateInput = {
   file_id?: number
   uploaded_by: string
   title: string
-  file_type: $Enums.FileType
+  file_type: string
   file_url: string
   created_at?: Date | string
   updated_at?: Date | string
@@ -314,7 +314,7 @@ export type FileUncheckedCreateInput = {
 
 export type FileUpdateInput = {
   title?: Prisma.StringFieldUpdateOperationsInput | string
-  file_type?: Prisma.EnumFileTypeFieldUpdateOperationsInput | $Enums.FileType
+  file_type?: Prisma.EnumFileTypeFieldUpdateOperationsInput | string
   file_url?: Prisma.StringFieldUpdateOperationsInput | string
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -326,7 +326,7 @@ export type FileUncheckedUpdateInput = {
   file_id?: Prisma.IntFieldUpdateOperationsInput | number
   uploaded_by?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
-  file_type?: Prisma.EnumFileTypeFieldUpdateOperationsInput | $Enums.FileType
+  file_type?: Prisma.EnumFileTypeFieldUpdateOperationsInput | string
   file_url?: Prisma.StringFieldUpdateOperationsInput | string
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -337,7 +337,7 @@ export type FileCreateManyInput = {
   file_id?: number
   uploaded_by: string
   title: string
-  file_type: $Enums.FileType
+  file_type: string
   file_url: string
   created_at?: Date | string
   updated_at?: Date | string
@@ -345,7 +345,7 @@ export type FileCreateManyInput = {
 
 export type FileUpdateManyMutationInput = {
   title?: Prisma.StringFieldUpdateOperationsInput | string
-  file_type?: Prisma.EnumFileTypeFieldUpdateOperationsInput | $Enums.FileType
+  file_type?: Prisma.EnumFileTypeFieldUpdateOperationsInput | string
   file_url?: Prisma.StringFieldUpdateOperationsInput | string
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -355,7 +355,7 @@ export type FileUncheckedUpdateManyInput = {
   file_id?: Prisma.IntFieldUpdateOperationsInput | number
   uploaded_by?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
-  file_type?: Prisma.EnumFileTypeFieldUpdateOperationsInput | $Enums.FileType
+  file_type?: Prisma.EnumFileTypeFieldUpdateOperationsInput | string
   file_url?: Prisma.StringFieldUpdateOperationsInput | string
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -473,12 +473,12 @@ export type FileUpdateOneWithoutMessagesNestedInput = {
 }
 
 export type EnumFileTypeFieldUpdateOperationsInput = {
-  set?: $Enums.FileType
+  set?: string
 }
 
 export type FileCreateWithoutUploaderInput = {
   title: string
-  file_type: $Enums.FileType
+  file_type: string
   file_url: string
   created_at?: Date | string
   updated_at?: Date | string
@@ -488,7 +488,7 @@ export type FileCreateWithoutUploaderInput = {
 export type FileUncheckedCreateWithoutUploaderInput = {
   file_id?: number
   title: string
-  file_type: $Enums.FileType
+  file_type: string
   file_url: string
   created_at?: Date | string
   updated_at?: Date | string
@@ -528,7 +528,7 @@ export type FileScalarWhereInput = {
   file_id?: Prisma.IntFilter<"File"> | number
   uploaded_by?: Prisma.StringFilter<"File"> | string
   title?: Prisma.StringFilter<"File"> | string
-  file_type?: Prisma.EnumFileTypeFilter<"File"> | $Enums.FileType
+  file_type?: Prisma.EnumFileTypeFilter<"File"> | string
   file_url?: Prisma.StringFilter<"File"> | string
   created_at?: Prisma.DateTimeFilter<"File"> | Date | string
   updated_at?: Prisma.DateTimeFilter<"File"> | Date | string
@@ -536,7 +536,7 @@ export type FileScalarWhereInput = {
 
 export type FileCreateWithoutMessagesInput = {
   title: string
-  file_type: $Enums.FileType
+  file_type: string
   file_url: string
   created_at?: Date | string
   updated_at?: Date | string
@@ -547,7 +547,7 @@ export type FileUncheckedCreateWithoutMessagesInput = {
   file_id?: number
   uploaded_by: string
   title: string
-  file_type: $Enums.FileType
+  file_type: string
   file_url: string
   created_at?: Date | string
   updated_at?: Date | string
@@ -571,7 +571,7 @@ export type FileUpdateToOneWithWhereWithoutMessagesInput = {
 
 export type FileUpdateWithoutMessagesInput = {
   title?: Prisma.StringFieldUpdateOperationsInput | string
-  file_type?: Prisma.EnumFileTypeFieldUpdateOperationsInput | $Enums.FileType
+  file_type?: Prisma.EnumFileTypeFieldUpdateOperationsInput | string
   file_url?: Prisma.StringFieldUpdateOperationsInput | string
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -582,7 +582,7 @@ export type FileUncheckedUpdateWithoutMessagesInput = {
   file_id?: Prisma.IntFieldUpdateOperationsInput | number
   uploaded_by?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
-  file_type?: Prisma.EnumFileTypeFieldUpdateOperationsInput | $Enums.FileType
+  file_type?: Prisma.EnumFileTypeFieldUpdateOperationsInput | string
   file_url?: Prisma.StringFieldUpdateOperationsInput | string
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -591,7 +591,7 @@ export type FileUncheckedUpdateWithoutMessagesInput = {
 export type FileCreateManyUploaderInput = {
   file_id?: number
   title: string
-  file_type: $Enums.FileType
+  file_type: string
   file_url: string
   created_at?: Date | string
   updated_at?: Date | string
@@ -599,7 +599,7 @@ export type FileCreateManyUploaderInput = {
 
 export type FileUpdateWithoutUploaderInput = {
   title?: Prisma.StringFieldUpdateOperationsInput | string
-  file_type?: Prisma.EnumFileTypeFieldUpdateOperationsInput | $Enums.FileType
+  file_type?: Prisma.EnumFileTypeFieldUpdateOperationsInput | string
   file_url?: Prisma.StringFieldUpdateOperationsInput | string
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -609,7 +609,7 @@ export type FileUpdateWithoutUploaderInput = {
 export type FileUncheckedUpdateWithoutUploaderInput = {
   file_id?: Prisma.IntFieldUpdateOperationsInput | number
   title?: Prisma.StringFieldUpdateOperationsInput | string
-  file_type?: Prisma.EnumFileTypeFieldUpdateOperationsInput | $Enums.FileType
+  file_type?: Prisma.EnumFileTypeFieldUpdateOperationsInput | string
   file_url?: Prisma.StringFieldUpdateOperationsInput | string
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -619,7 +619,7 @@ export type FileUncheckedUpdateWithoutUploaderInput = {
 export type FileUncheckedUpdateManyWithoutUploaderInput = {
   file_id?: Prisma.IntFieldUpdateOperationsInput | number
   title?: Prisma.StringFieldUpdateOperationsInput | string
-  file_type?: Prisma.EnumFileTypeFieldUpdateOperationsInput | $Enums.FileType
+  file_type?: Prisma.EnumFileTypeFieldUpdateOperationsInput | string
   file_url?: Prisma.StringFieldUpdateOperationsInput | string
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -724,7 +724,7 @@ export type $FilePayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
     file_id: number
     uploaded_by: string
     title: string
-    file_type: $Enums.FileType
+    file_type: string
     file_url: string
     created_at: Date
     updated_at: Date

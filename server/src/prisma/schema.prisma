@@ -45,8 +45,8 @@ model User {
   student_allocations UserAllocation[] @relation("StudentAllocations")
   tutor_allocations   UserAllocation[] @relation("TutorAllocations")
   staff_allocations   UserAllocation[] @relation("StaffAllocations")
-  sent_messages       Message[]         @relation("SentMessages")
-  received_messages   Message[]         @relation("ReceivedMessages")
+  sent_messages       Message[]        @relation("SentMessages")
+  received_messages   Message[]        @relation("ReceivedMessages")
   meetings_created    Meeting[]
   files_uploaded      File[]
   blog_posts          BlogPost[]
@@ -67,14 +67,15 @@ model UserAllocation {
   tutor    User      @relation("TutorAllocations", fields: [tutor_id], references: [user_id])
   staff    User      @relation("StaffAllocations", fields: [allocated_by], references: [user_id])
   meetings Meeting[]
-	@@map("TutorAllocation")
+
+  @@map("TutorAllocation")
 }
 
 model Message {
   message_id  Int      @id @default(autoincrement())
   sender_id   String
   receiver_id String
-  content     String
+  content     String?
   file_id     Int?
   sent_at     DateTime @default(now())
   is_read     Boolean  @default(false)
@@ -85,20 +86,21 @@ model Message {
   receiver User  @relation("ReceivedMessages", fields: [receiver_id], references: [user_id])
   file     File? @relation(fields: [file_id], references: [file_id])
 }
+
 model Meeting {
-  meeting_id       Int         @id @default(autoincrement())
-  allocation_id    Int
-  created_by       String
-  meeting_type     MeetingType
-  scheduled_at     DateTime
-  location String?
-  link String?
+  meeting_id    Int         @id @default(autoincrement())
+  allocation_id Int
+  created_by    String
+  meeting_type  MeetingType
+  scheduled_at  DateTime
+  location      String?
+  link          String?
 
-  notes            String?
-  created_at       DateTime    @default(now())
-  updated_at       DateTime    @updatedAt
+  notes      String?
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
 
-  creator    User            @relation(fields: [created_by], references: [user_id])
+  creator    User           @relation(fields: [created_by], references: [user_id])
   allocation UserAllocation @relation(fields: [allocation_id], references: [allocation_id])
 }
 
@@ -106,7 +108,7 @@ model File {
   file_id     Int      @id @default(autoincrement())
   uploaded_by String
   title       String
-  file_type   FileType
+  file_type   String
   file_url    String
   created_at  DateTime @default(now())
   updated_at  DateTime @updatedAt
@@ -114,8 +116,6 @@ model File {
   uploader User      @relation(fields: [uploaded_by], references: [user_id])
   messages Message[]
 }
-
-
 
 model BlogPost {
   post_id      Int       @id @default(autoincrement())
