@@ -140,7 +140,7 @@ function RouteComponent() {
                     className={`max-w-xs px-3 py-2 rounded-2xl ${
                       msg.sender === "me"
                         ? "bg-blue-500 text-white ml-auto rounded-br-none"
-                        : "bg-gray-200  rounded-tl-none"
+                        : "bg-gray-200 rounded-tl-none"
                     }`}
                   >
                     {msg.text}
