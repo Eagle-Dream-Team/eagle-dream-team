@@ -30,9 +30,10 @@ export class MessageController {
   send(
     @Query('receiver_id') receiver_id: string,
     @Query('content') content: string,
+    @Body() data: any,
     @Req() req: any,
   ) {
-    return this.messageService.send(req.user.user_id, receiver_id, content)
+    return this.messageService.send(req.user.user_id, receiver_id ?? data.receiver_id, content ?? data.content)
   }
 
   @Get('conversation/:user_id')
@@ -41,17 +42,16 @@ export class MessageController {
     @Query() query: MaessageQueryDto,
     @Req() req: any,
   ) {
-    return this.messageService.findAll(query)
+    return this.messageService.findAll({ ...query, user1_id: req.user.user_id })
   }
 
-  @Get('conversation/:user_id/unpaginated')
+  @Get('conversation/:user2_id/unpaginated')
   @ApiOperation({ summary: 'Get all messages sent and received between the current user and specified user' })
   findAllUnpaginated(
-    @Query('user1_id') user1_id: string,
-    @Query('user2_id') user2_id: string,
+    @Param('user2_id') user2_id: string,
     @Req() req: any,
   ) {
-    return this.messageService.findAllNoPagination(user1_id, user2_id)
+    return this.messageService.findAllNoPagination(req.user.user1_id, user2_id)
   }
 
   @Get('conversation/:user_id/last')

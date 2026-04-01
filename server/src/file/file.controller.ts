@@ -34,7 +34,7 @@ export class FileController {
 
   @Post('upload')
   @UseInterceptors(FileInterceptor('file'))
-  @ApiOperation({ summary: 'Upload a file owned by the current user' })
+  @ApiOperation({ summary: 'Upload a file under the ownership of the current user' })
   upload(
     @UploadedFile() file: Express.Multer.File,
     @Req() req: any,
