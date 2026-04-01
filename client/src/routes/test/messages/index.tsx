@@ -137,10 +137,10 @@ function RouteComponent() {
                 (messages[selectedUser.id] || []).map((msg, i) => (
                   <div
                     key={i}
-                    className={`max-w-xs px-3 py-2 rounded ${
+                    className={`max-w-xs px-3 py-2 rounded-2xl ${
                       msg.sender === "me"
-                        ? "bg-blue-500 text-white ml-auto"
-                        : "bg-gray-200"
+                        ? "bg-blue-500 text-white ml-auto rounded-br-none"
+                        : "bg-gray-200  rounded-tl-none"
                     }`}
                   >
                     {msg.text}
