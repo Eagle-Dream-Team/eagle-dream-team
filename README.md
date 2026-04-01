@@ -11,7 +11,6 @@ cd server
 pnpm run start
 ```
 
-##
 
 to run the client
 
