@@ -54,13 +54,14 @@ export class MessageService {
         ]);
 
         return {
-            data: messages,
+            data: messages.map(m => ({ ...m, mine: (m.sender_id == user1_id) })),
             meta: { total, page, limit, totalPages: Math.ceil(total / limit) },
         };
     }
 
     async findAllNoPagination(user1_id: string, user2_id: string) {
-        return await this.prisma.message.findMany({
+        // console.log(user1_id)
+        const messages = await this.prisma.message.findMany({
             where: {
                 OR: [
                     { sender_id: user1_id, receiver_id: user2_id },
@@ -69,10 +70,14 @@ export class MessageService {
             },
             orderBy: { sent_at: 'desc' },
         });
+        
+        // console.log(messages[0].sender_id + "\n" + user1_id + "\n" + (messages[0].sender_id == user1_id));
+
+        return messages.map(m => ({ ...m, mine: (m.sender_id == user1_id) }))
     }
 
     async findLast(user1_id: string, user2_id: string) {
-        return await this.prisma.message.findFirst({
+        const result = await this.prisma.message.findFirst({
             where: {
                 OR: [
                     { sender_id: user1_id, receiver_id: user2_id },
@@ -81,5 +86,8 @@ export class MessageService {
             },
             orderBy: { sent_at: 'desc' },
         })
+
+        if (result) return { ...result, mine: result.sender_id == user1_id }
+        return result
     }
 }

@@ -17,6 +17,7 @@ type message = {
     sender_id: string;
     receiver_id: string;
     content: string;
+    mine?: boolean;
 }
 
 const serverUrl = import.meta.env.VITE_API_URL;
@@ -29,17 +30,18 @@ const serverUrl = import.meta.env.VITE_API_URL;
 //         content: string
 //     }[] = [
 //         {
-//             sender_id: "",
-//             receiver_id: "",
-//             content: "Test message.",
+//             sender_id: '',
+//             receiver_id: '',
+//             content: 'Test message.',
 //         }
 //     ]
 let lastId = 0;
 function RouteComponent() {
     const [messages, setMessages] = useState<message[]>([]);
+    const [receiverId, setReceiverId] = useState("89ec7c94-3924-49ad-94c6-d6f6d1aa79b9");
 
     async function updateMessages() {
-        const res = await axios.get(serverUrl + "/message/conversation/89ec7c94-3924-49ad-94c6-d6f6d1aa79b9/unpaginated", {
+        const res = await axios.get(serverUrl + `/message/conversation/${receiverId}/unpaginated`, {
             headers: { Authorization: `Bearer ${localStorage.getItem('access_token')}` }
         })
         setMessages(res.data)
@@ -55,21 +57,21 @@ function RouteComponent() {
 
     async function send() {
         const data = {
-            receiver_id: "89ec7c94-3924-49ad-94c6-d6f6d1aa79b9",
+            receiver_id: receiverId,
             content: text.trim(),
         }
 
         if (text.trim()) {
-            axios.post(serverUrl + "/message/send", data, { headers: { Authorization: `Bearer ${localStorage.getItem('access_token')}` } })
+            axios.post(serverUrl + '/message/send', data, { headers: { Authorization: `Bearer ${localStorage.getItem('access_token')}` } })
 
             setMessages([{
-                message_id: "test" + lastId++,
-                sender_id: "",
-                receiver_id: "89ec7c94-3924-49ad-94c6-d6f6d1aa79b9",
+                message_id: 'test' + lastId++,
+                sender_id: '',
+                receiver_id: receiverId,
                 content: text.trim(),
             }, ...messages])
 
-            setText("");
+            setText('');
         }
     }
 
@@ -81,7 +83,7 @@ function RouteComponent() {
             <div className='h-8/10 border overflow-x-hidden overflow-y-auto border-gray-300 mt-2 mb rounded-xl p-4'>
                 {
                     messages.toReversed().map(m => (
-                        <Bubble key={m.message_id} mine={m.receiver_id == "89ec7c94-3924-49ad-94c6-d6f6d1aa79b9"}>{m.content}</Bubble>
+                        <Bubble key={m.message_id} mine={m.mine}>{m.content}</Bubble>
                     ))
                 }
             </div>

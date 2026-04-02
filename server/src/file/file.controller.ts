@@ -24,11 +24,10 @@ import { FileService } from './file.service';
 import { FileInterceptor } from '@nestjs/platform-express';
 
 
-@ApiTags('staff')
+@ApiTags('file')
 @ApiBearerAuth()
 @UseGuards(JwtAuthGuard, RolesGuard)
-@Roles('staff')
-@Controller('staff')
+@Controller('file')
 export class FileController {
   constructor(private fileService: FileService) { }
 
