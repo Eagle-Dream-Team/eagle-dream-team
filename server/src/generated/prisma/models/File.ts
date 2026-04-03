@@ -38,7 +38,7 @@ export type FileMinAggregateOutputType = {
   file_id: number | null
   uploaded_by: string | null
   title: string | null
-  file_type: string | null
+  file_type?: string | null | null
   file_url: string | null
   created_at: Date | null
   updated_at: Date | null
@@ -48,7 +48,7 @@ export type FileMaxAggregateOutputType = {
   file_id: number | null
   uploaded_by: string | null
   title: string | null
-  file_type: string | null
+  file_type?: string | null | null
   file_url: string | null
   created_at: Date | null
   updated_at: Date | null
@@ -195,7 +195,7 @@ export type FileGroupByOutputType = {
   file_id: number
   uploaded_by: string
   title: string
-  file_type: string
+  file_type?: string | null
   file_url: string
   created_at: Date
   updated_at: Date
@@ -293,7 +293,7 @@ export type FileScalarWhereWithAggregatesInput = {
 
 export type FileCreateInput = {
   title: string
-  file_type: string
+  file_type?: string | null
   file_url: string
   created_at?: Date | string
   updated_at?: Date | string
@@ -305,7 +305,7 @@ export type FileUncheckedCreateInput = {
   file_id?: number
   uploaded_by: string
   title: string
-  file_type: string
+  file_type?: string | null
   file_url: string
   created_at?: Date | string
   updated_at?: Date | string
@@ -337,7 +337,7 @@ export type FileCreateManyInput = {
   file_id?: number
   uploaded_by: string
   title: string
-  file_type: string
+  file_type?: string | null
   file_url: string
   created_at?: Date | string
   updated_at?: Date | string
@@ -478,7 +478,7 @@ export type EnumFileTypeFieldUpdateOperationsInput = {
 
 export type FileCreateWithoutUploaderInput = {
   title: string
-  file_type: string
+  file_type?: string | null
   file_url: string
   created_at?: Date | string
   updated_at?: Date | string
@@ -488,7 +488,7 @@ export type FileCreateWithoutUploaderInput = {
 export type FileUncheckedCreateWithoutUploaderInput = {
   file_id?: number
   title: string
-  file_type: string
+  file_type?: string | null
   file_url: string
   created_at?: Date | string
   updated_at?: Date | string
@@ -536,7 +536,7 @@ export type FileScalarWhereInput = {
 
 export type FileCreateWithoutMessagesInput = {
   title: string
-  file_type: string
+  file_type?: string | null
   file_url: string
   created_at?: Date | string
   updated_at?: Date | string
@@ -547,7 +547,7 @@ export type FileUncheckedCreateWithoutMessagesInput = {
   file_id?: number
   uploaded_by: string
   title: string
-  file_type: string
+  file_type?: string | null
   file_url: string
   created_at?: Date | string
   updated_at?: Date | string
@@ -591,7 +591,7 @@ export type FileUncheckedUpdateWithoutMessagesInput = {
 export type FileCreateManyUploaderInput = {
   file_id?: number
   title: string
-  file_type: string
+  file_type?: string | null
   file_url: string
   created_at?: Date | string
   updated_at?: Date | string
@@ -724,7 +724,7 @@ export type $FilePayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
     file_id: number
     uploaded_by: string
     title: string
-    file_type: string
+    file_type?: string | null
     file_url: string
     created_at: Date
     updated_at: Date

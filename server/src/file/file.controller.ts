@@ -40,23 +40,33 @@ export class FileController {
     @Req() req: any,
     @Body() body: any,
   ) {
-    console.log(body)
     if (!body.title) throw new BadRequestException('No title for file was provided')
     return this.fileService.upload(file, body.title, req.user.user_id)
   }
 
-  @Get(':file_id') 
+  @Post('upload/duplicate')
+  @UseInterceptors(FileInterceptor('file'))
+  @ApiOperation({ summary: 'Upload a file under the ownership of the current user' })
+  uploadDuplicate(
+    @UploadedFile() file: Express.Multer.File,
+    @Req() req: any,
+    @Body() body: any,
+  ) {
+    if (!body.title) throw new BadRequestException('No title for file was provided')
+    return this.fileService.upload(file, body.title, req.user.user_id, true)
+  }
+
+  @Get(':file_id')
   @ApiOperation({ summary: 'Get a specific file\'s metadata' })
-  find (
+  find(
     @Query('file_id') file_id: number,
   ) {
     return this.fileService.find(file_id)
   }
 
-  @Get('all/unpaginated') 
+  @Get('all/unpaginated')
   @ApiOperation({ summary: 'Get all file\'s metadata' })
-  findAll (
-  ) {
+  findAll() {
     return this.fileService.findAll()
   }
 }

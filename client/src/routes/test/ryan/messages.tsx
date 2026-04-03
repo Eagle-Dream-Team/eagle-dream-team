@@ -9,6 +9,7 @@ type message = {
     sender_id: string;
     receiver_id: string;
     content: string;
+    sent_at?: string;
     mine?: boolean;
 };
 
@@ -25,10 +26,17 @@ type allocation = {
     name: string;
 };
 
-function Bubble({ children = '', mine = false }) {
+function simplifyDate(str: string) {
+    let str2 = new Date(str).toString();
+    let arr = str2.split(" ");
+    return `${arr[2]}-${arr[1]}-${arr[3]}, ${arr[4]}`
+}
+
+function Bubble({ children = '', mine = false, sentAt = '' }) {
     return <>
         <div className={'p-2 pr-4 pl-4 rounded-xl mb-2 w-fit ' + (mine ? 'bg-red-400 rounded-br-none justify-self-end pr-6' : 'bg-gray-200 rounded-tl-none pl-6')}>
             {children}
+            <p className={'text-xs text-black/50 w-full ' + (mine ? 'text-right' : '')}>{simplifyDate(sentAt)}</p>
         </div>
     </>
 }
@@ -81,7 +89,7 @@ try {
 
 function RouteComponent() {
     const [messages, setMessages] = useState<message[]>([]);
-    let receiverIdRef =  useRef("");
+    let receiverIdRef = useRef("");
     const [receiver, setReceiver] = useState<receiver>();
     const [allocations, setAllocations] = useState<allocation[]>([]);
     const messagesEndRef = useRef<HTMLDivElement | null>(null);
@@ -95,7 +103,7 @@ function RouteComponent() {
             })
             setMessages(res.data)
         } else {
-            console.log([receiverIdRef,receiverUserId,rId])
+            console.log([receiverIdRef, receiverUserId, rId])
         }
     }
 
@@ -190,7 +198,7 @@ function RouteComponent() {
                 <div className='scroll-smooth grow border overflow-x-hidden overflow-y-auto border-gray-300 mt-2 mb rounded-xl p-4'>
                     {
                         messages.toReversed().map(m => (
-                            <Bubble key={m.message_id} mine={m.mine}>{m.content}</Bubble>
+                            <Bubble key={m.message_id} mine={m.mine} sentAt={m.sent_at}>{m.content}</Bubble>
                         ))
                     }
                     <div ref={messagesEndRef} className='' />
