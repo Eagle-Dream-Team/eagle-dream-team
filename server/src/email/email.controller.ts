@@ -13,14 +13,14 @@ import {
   ApiOperation,
   ApiBearerAuth,
 } from '@nestjs/swagger';
-import { NathanService } from './nathan.service';
+import { EmailService } from './email.service';
 import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
 
 
-@ApiTags('nathan')
-@Controller('nathan')
-export class NathanController {
-  constructor(private nathanService: NathanService) { }
+@ApiTags('email')
+@Controller('email')
+export class EmailController {
+  constructor(private emailService: EmailService) { }
 
 
 
