@@ -10,6 +10,7 @@ import { StudentModule } from './student/student.module';
 import { MessageModule } from './message/message.module';
 import { FileModule } from './file/file.module';
 import { RyanTestModule } from './ryan-test/ryan-test.module';
+import { NathanModule } from './nathan/nathan.module';
 
 @Module({
   imports: [
@@ -22,6 +23,7 @@ import { RyanTestModule } from './ryan-test/ryan-test.module';
     MessageModule,
     FileModule,
     RyanTestModule,
+    NathanModule,
   ],
   controllers: [AppController],
   providers: [AppService],
