@@ -11,6 +11,7 @@ import {
   Req,
   UseInterceptors,
   UploadedFile,
+  BadRequestException,
 } from '@nestjs/common';
 import {
   ApiTags,
@@ -37,8 +38,11 @@ export class FileController {
   upload(
     @UploadedFile() file: Express.Multer.File,
     @Req() req: any,
+    @Body() body: any,
   ) {
-    return this.fileService.upload(file, req.user.user_id)
+    console.log(body)
+    if (!body.title) throw new BadRequestException('No title for file was provided')
+    return this.fileService.upload(file, body.title, req.user.user_id)
   }
 
   @Get(':file_id') 
@@ -47,5 +51,12 @@ export class FileController {
     @Query('file_id') file_id: number,
   ) {
     return this.fileService.find(file_id)
+  }
+
+  @Get('all/unpaginated') 
+  @ApiOperation({ summary: 'Get all file\'s metadata' })
+  findAll (
+  ) {
+    return this.fileService.findAll()
   }
 }

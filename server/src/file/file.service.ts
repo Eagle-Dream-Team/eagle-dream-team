@@ -14,16 +14,16 @@ import { env } from 'process';
 export class FileService {
   constructor(private prisma: PrismaService) {
     this.prisma = prisma;
-    this.supabase = new SupabaseClient(process.env.SUPABASE_PROJECT_URL ?? "", process.env.SUPABASE_PUBLISHABLE_KEY ?? "");
   }
 
-  supabase = new SupabaseClient(process.env.SUPABASE_PROJECT_URL ?? "", process.env.SUPABASE_PUBLISHABLE_KEY ?? "");
+  supabase = new SupabaseClient(process.env.SUPABASE_PROJECT_URL ?? "", process.env.SUPABASE_SECRET_KEY ?? "");
 
-  async upload(file: Express.Multer.File, uploaded_by: string) {
+  async upload(file: Express.Multer.File, filename: string, uploaded_by: string) {
+    console.log(file)
     const { error } = await this.supabase
       .storage
       .from('files')
-      .upload(file.filename, file.stream, {
+      .upload(uploaded_by + '/' + filename, file.stream, {
         contentType: file.mimetype
       })
 
@@ -32,13 +32,13 @@ export class FileService {
     const publicUrl = this.supabase
       .storage
       .from('files')
-      .getPublicUrl(file.filename).data.publicUrl;
+      .getPublicUrl(filename).data.publicUrl;
 
     return await this.prisma.file.create({
       data: {
-        title: file.originalname,
+        title: filename,
         file_url: publicUrl,
-        file_type: file.mimetype,
+        type: file.mimetype,
         uploaded_by,
       }
     })
@@ -47,6 +47,12 @@ export class FileService {
   async find(file_id: number) {
     return await this.prisma.file.findFirst({
       where: { file_id }
+    })
+  }
+
+  async findAll() {
+    return await this.prisma.file.findMany({
+      where: {}
     })
   }
 }
