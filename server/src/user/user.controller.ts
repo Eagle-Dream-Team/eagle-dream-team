@@ -18,4 +18,10 @@ export class UserController {
   findMe(@Req() { user }: Request & { user: JwtPayload }) {
     return user;
   }
+
+  @Get(':user_id')
+  @ApiOperation({ summary: 'Get current user' })
+  find(@Param('user_id') user_id: string) {
+    return this.userService.findById(user_id)
+  }
 }
