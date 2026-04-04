@@ -42,6 +42,8 @@ export type MeetingMinAggregateOutputType = {
   created_by: string | null
   meeting_type: $Enums.MeetingType | null
   scheduled_at: Date | null
+  start_time: Date | null
+  end_time: Date | null
   location: string | null
   link: string | null
   notes: string | null
@@ -55,6 +57,8 @@ export type MeetingMaxAggregateOutputType = {
   created_by: string | null
   meeting_type: $Enums.MeetingType | null
   scheduled_at: Date | null
+  start_time: Date | null
+  end_time: Date | null
   location: string | null
   link: string | null
   notes: string | null
@@ -68,6 +72,8 @@ export type MeetingCountAggregateOutputType = {
   created_by: number
   meeting_type: number
   scheduled_at: number
+  start_time: number
+  end_time: number
   location: number
   link: number
   notes: number
@@ -93,6 +99,8 @@ export type MeetingMinAggregateInputType = {
   created_by?: true
   meeting_type?: true
   scheduled_at?: true
+  start_time?: true
+  end_time?: true
   location?: true
   link?: true
   notes?: true
@@ -106,6 +114,8 @@ export type MeetingMaxAggregateInputType = {
   created_by?: true
   meeting_type?: true
   scheduled_at?: true
+  start_time?: true
+  end_time?: true
   location?: true
   link?: true
   notes?: true
@@ -119,6 +129,8 @@ export type MeetingCountAggregateInputType = {
   created_by?: true
   meeting_type?: true
   scheduled_at?: true
+  start_time?: true
+  end_time?: true
   location?: true
   link?: true
   notes?: true
@@ -219,6 +231,8 @@ export type MeetingGroupByOutputType = {
   created_by: string
   meeting_type: $Enums.MeetingType
   scheduled_at: Date
+  start_time: Date
+  end_time: Date
   location: string | null
   link: string | null
   notes: string | null
@@ -231,7 +245,7 @@ export type MeetingGroupByOutputType = {
   _max: MeetingMaxAggregateOutputType | null
 }
 
-export type GetMeetingGroupByPayload<T extends MeetingGroupByArgs> = Prisma.PrismaPromise<
+type GetMeetingGroupByPayload<T extends MeetingGroupByArgs> = Prisma.PrismaPromise<
   Array<
     Prisma.PickEnumerable<MeetingGroupByOutputType, T['by']> &
       {
@@ -255,6 +269,8 @@ export type MeetingWhereInput = {
   created_by?: Prisma.StringFilter<"Meeting"> | string
   meeting_type?: Prisma.EnumMeetingTypeFilter<"Meeting"> | $Enums.MeetingType
   scheduled_at?: Prisma.DateTimeFilter<"Meeting"> | Date | string
+  start_time?: Prisma.DateTimeFilter<"Meeting"> | Date | string
+  end_time?: Prisma.DateTimeFilter<"Meeting"> | Date | string
   location?: Prisma.StringNullableFilter<"Meeting"> | string | null
   link?: Prisma.StringNullableFilter<"Meeting"> | string | null
   notes?: Prisma.StringNullableFilter<"Meeting"> | string | null
@@ -270,6 +286,8 @@ export type MeetingOrderByWithRelationInput = {
   created_by?: Prisma.SortOrder
   meeting_type?: Prisma.SortOrder
   scheduled_at?: Prisma.SortOrder
+  start_time?: Prisma.SortOrder
+  end_time?: Prisma.SortOrder
   location?: Prisma.SortOrderInput | Prisma.SortOrder
   link?: Prisma.SortOrderInput | Prisma.SortOrder
   notes?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -288,6 +306,8 @@ export type MeetingWhereUniqueInput = Prisma.AtLeast<{
   created_by?: Prisma.StringFilter<"Meeting"> | string
   meeting_type?: Prisma.EnumMeetingTypeFilter<"Meeting"> | $Enums.MeetingType
   scheduled_at?: Prisma.DateTimeFilter<"Meeting"> | Date | string
+  start_time?: Prisma.DateTimeFilter<"Meeting"> | Date | string
+  end_time?: Prisma.DateTimeFilter<"Meeting"> | Date | string
   location?: Prisma.StringNullableFilter<"Meeting"> | string | null
   link?: Prisma.StringNullableFilter<"Meeting"> | string | null
   notes?: Prisma.StringNullableFilter<"Meeting"> | string | null
@@ -303,6 +323,8 @@ export type MeetingOrderByWithAggregationInput = {
   created_by?: Prisma.SortOrder
   meeting_type?: Prisma.SortOrder
   scheduled_at?: Prisma.SortOrder
+  start_time?: Prisma.SortOrder
+  end_time?: Prisma.SortOrder
   location?: Prisma.SortOrderInput | Prisma.SortOrder
   link?: Prisma.SortOrderInput | Prisma.SortOrder
   notes?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -324,6 +346,8 @@ export type MeetingScalarWhereWithAggregatesInput = {
   created_by?: Prisma.StringWithAggregatesFilter<"Meeting"> | string
   meeting_type?: Prisma.EnumMeetingTypeWithAggregatesFilter<"Meeting"> | $Enums.MeetingType
   scheduled_at?: Prisma.DateTimeWithAggregatesFilter<"Meeting"> | Date | string
+  start_time?: Prisma.DateTimeWithAggregatesFilter<"Meeting"> | Date | string
+  end_time?: Prisma.DateTimeWithAggregatesFilter<"Meeting"> | Date | string
   location?: Prisma.StringNullableWithAggregatesFilter<"Meeting"> | string | null
   link?: Prisma.StringNullableWithAggregatesFilter<"Meeting"> | string | null
   notes?: Prisma.StringNullableWithAggregatesFilter<"Meeting"> | string | null
@@ -334,6 +358,8 @@ export type MeetingScalarWhereWithAggregatesInput = {
 export type MeetingCreateInput = {
   meeting_type: $Enums.MeetingType
   scheduled_at: Date | string
+  start_time: Date | string
+  end_time: Date | string
   location?: string | null
   link?: string | null
   notes?: string | null
@@ -349,6 +375,8 @@ export type MeetingUncheckedCreateInput = {
   created_by: string
   meeting_type: $Enums.MeetingType
   scheduled_at: Date | string
+  start_time: Date | string
+  end_time: Date | string
   location?: string | null
   link?: string | null
   notes?: string | null
@@ -359,6 +387,8 @@ export type MeetingUncheckedCreateInput = {
 export type MeetingUpdateInput = {
   meeting_type?: Prisma.EnumMeetingTypeFieldUpdateOperationsInput | $Enums.MeetingType
   scheduled_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  start_time?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  end_time?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   location?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   link?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -374,6 +404,8 @@ export type MeetingUncheckedUpdateInput = {
   created_by?: Prisma.StringFieldUpdateOperationsInput | string
   meeting_type?: Prisma.EnumMeetingTypeFieldUpdateOperationsInput | $Enums.MeetingType
   scheduled_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  start_time?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  end_time?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   location?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   link?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -387,6 +419,8 @@ export type MeetingCreateManyInput = {
   created_by: string
   meeting_type: $Enums.MeetingType
   scheduled_at: Date | string
+  start_time: Date | string
+  end_time: Date | string
   location?: string | null
   link?: string | null
   notes?: string | null
@@ -397,6 +431,8 @@ export type MeetingCreateManyInput = {
 export type MeetingUpdateManyMutationInput = {
   meeting_type?: Prisma.EnumMeetingTypeFieldUpdateOperationsInput | $Enums.MeetingType
   scheduled_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  start_time?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  end_time?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   location?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   link?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -410,6 +446,8 @@ export type MeetingUncheckedUpdateManyInput = {
   created_by?: Prisma.StringFieldUpdateOperationsInput | string
   meeting_type?: Prisma.EnumMeetingTypeFieldUpdateOperationsInput | $Enums.MeetingType
   scheduled_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  start_time?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  end_time?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   location?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   link?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -433,6 +471,8 @@ export type MeetingCountOrderByAggregateInput = {
   created_by?: Prisma.SortOrder
   meeting_type?: Prisma.SortOrder
   scheduled_at?: Prisma.SortOrder
+  start_time?: Prisma.SortOrder
+  end_time?: Prisma.SortOrder
   location?: Prisma.SortOrder
   link?: Prisma.SortOrder
   notes?: Prisma.SortOrder
@@ -451,6 +491,8 @@ export type MeetingMaxOrderByAggregateInput = {
   created_by?: Prisma.SortOrder
   meeting_type?: Prisma.SortOrder
   scheduled_at?: Prisma.SortOrder
+  start_time?: Prisma.SortOrder
+  end_time?: Prisma.SortOrder
   location?: Prisma.SortOrder
   link?: Prisma.SortOrder
   notes?: Prisma.SortOrder
@@ -464,6 +506,8 @@ export type MeetingMinOrderByAggregateInput = {
   created_by?: Prisma.SortOrder
   meeting_type?: Prisma.SortOrder
   scheduled_at?: Prisma.SortOrder
+  start_time?: Prisma.SortOrder
+  end_time?: Prisma.SortOrder
   location?: Prisma.SortOrder
   link?: Prisma.SortOrder
   notes?: Prisma.SortOrder
@@ -567,6 +611,8 @@ export type EnumMeetingTypeFieldUpdateOperationsInput = {
 export type MeetingCreateWithoutCreatorInput = {
   meeting_type: $Enums.MeetingType
   scheduled_at: Date | string
+  start_time: Date | string
+  end_time: Date | string
   location?: string | null
   link?: string | null
   notes?: string | null
@@ -580,6 +626,8 @@ export type MeetingUncheckedCreateWithoutCreatorInput = {
   allocation_id: number
   meeting_type: $Enums.MeetingType
   scheduled_at: Date | string
+  start_time: Date | string
+  end_time: Date | string
   location?: string | null
   link?: string | null
   notes?: string | null
@@ -622,6 +670,8 @@ export type MeetingScalarWhereInput = {
   created_by?: Prisma.StringFilter<"Meeting"> | string
   meeting_type?: Prisma.EnumMeetingTypeFilter<"Meeting"> | $Enums.MeetingType
   scheduled_at?: Prisma.DateTimeFilter<"Meeting"> | Date | string
+  start_time?: Prisma.DateTimeFilter<"Meeting"> | Date | string
+  end_time?: Prisma.DateTimeFilter<"Meeting"> | Date | string
   location?: Prisma.StringNullableFilter<"Meeting"> | string | null
   link?: Prisma.StringNullableFilter<"Meeting"> | string | null
   notes?: Prisma.StringNullableFilter<"Meeting"> | string | null
@@ -632,6 +682,8 @@ export type MeetingScalarWhereInput = {
 export type MeetingCreateWithoutAllocationInput = {
   meeting_type: $Enums.MeetingType
   scheduled_at: Date | string
+  start_time: Date | string
+  end_time: Date | string
   location?: string | null
   link?: string | null
   notes?: string | null
@@ -645,6 +697,8 @@ export type MeetingUncheckedCreateWithoutAllocationInput = {
   created_by: string
   meeting_type: $Enums.MeetingType
   scheduled_at: Date | string
+  start_time: Date | string
+  end_time: Date | string
   location?: string | null
   link?: string | null
   notes?: string | null
@@ -683,6 +737,8 @@ export type MeetingCreateManyCreatorInput = {
   allocation_id: number
   meeting_type: $Enums.MeetingType
   scheduled_at: Date | string
+  start_time: Date | string
+  end_time: Date | string
   location?: string | null
   link?: string | null
   notes?: string | null
@@ -693,6 +749,8 @@ export type MeetingCreateManyCreatorInput = {
 export type MeetingUpdateWithoutCreatorInput = {
   meeting_type?: Prisma.EnumMeetingTypeFieldUpdateOperationsInput | $Enums.MeetingType
   scheduled_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  start_time?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  end_time?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   location?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   link?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -706,6 +764,8 @@ export type MeetingUncheckedUpdateWithoutCreatorInput = {
   allocation_id?: Prisma.IntFieldUpdateOperationsInput | number
   meeting_type?: Prisma.EnumMeetingTypeFieldUpdateOperationsInput | $Enums.MeetingType
   scheduled_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  start_time?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  end_time?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   location?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   link?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -718,6 +778,8 @@ export type MeetingUncheckedUpdateManyWithoutCreatorInput = {
   allocation_id?: Prisma.IntFieldUpdateOperationsInput | number
   meeting_type?: Prisma.EnumMeetingTypeFieldUpdateOperationsInput | $Enums.MeetingType
   scheduled_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  start_time?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  end_time?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   location?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   link?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -730,6 +792,8 @@ export type MeetingCreateManyAllocationInput = {
   created_by: string
   meeting_type: $Enums.MeetingType
   scheduled_at: Date | string
+  start_time: Date | string
+  end_time: Date | string
   location?: string | null
   link?: string | null
   notes?: string | null
@@ -740,6 +804,8 @@ export type MeetingCreateManyAllocationInput = {
 export type MeetingUpdateWithoutAllocationInput = {
   meeting_type?: Prisma.EnumMeetingTypeFieldUpdateOperationsInput | $Enums.MeetingType
   scheduled_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  start_time?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  end_time?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   location?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   link?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -753,6 +819,8 @@ export type MeetingUncheckedUpdateWithoutAllocationInput = {
   created_by?: Prisma.StringFieldUpdateOperationsInput | string
   meeting_type?: Prisma.EnumMeetingTypeFieldUpdateOperationsInput | $Enums.MeetingType
   scheduled_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  start_time?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  end_time?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   location?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   link?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -765,6 +833,8 @@ export type MeetingUncheckedUpdateManyWithoutAllocationInput = {
   created_by?: Prisma.StringFieldUpdateOperationsInput | string
   meeting_type?: Prisma.EnumMeetingTypeFieldUpdateOperationsInput | $Enums.MeetingType
   scheduled_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  start_time?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  end_time?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   location?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   link?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -780,6 +850,8 @@ export type MeetingSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs 
   created_by?: boolean
   meeting_type?: boolean
   scheduled_at?: boolean
+  start_time?: boolean
+  end_time?: boolean
   location?: boolean
   link?: boolean
   notes?: boolean
@@ -795,6 +867,8 @@ export type MeetingSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Exten
   created_by?: boolean
   meeting_type?: boolean
   scheduled_at?: boolean
+  start_time?: boolean
+  end_time?: boolean
   location?: boolean
   link?: boolean
   notes?: boolean
@@ -810,6 +884,8 @@ export type MeetingSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Exten
   created_by?: boolean
   meeting_type?: boolean
   scheduled_at?: boolean
+  start_time?: boolean
+  end_time?: boolean
   location?: boolean
   link?: boolean
   notes?: boolean
@@ -825,6 +901,8 @@ export type MeetingSelectScalar = {
   created_by?: boolean
   meeting_type?: boolean
   scheduled_at?: boolean
+  start_time?: boolean
+  end_time?: boolean
   location?: boolean
   link?: boolean
   notes?: boolean
@@ -832,7 +910,7 @@ export type MeetingSelectScalar = {
   updated_at?: boolean
 }
 
-export type MeetingOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"meeting_id" | "allocation_id" | "created_by" | "meeting_type" | "scheduled_at" | "location" | "link" | "notes" | "created_at" | "updated_at", ExtArgs["result"]["meeting"]>
+export type MeetingOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"meeting_id" | "allocation_id" | "created_by" | "meeting_type" | "scheduled_at" | "start_time" | "end_time" | "location" | "link" | "notes" | "created_at" | "updated_at", ExtArgs["result"]["meeting"]>
 export type MeetingInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   creator?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   allocation?: boolean | Prisma.UserAllocationDefaultArgs<ExtArgs>
@@ -858,6 +936,8 @@ export type $MeetingPayload<ExtArgs extends runtime.Types.Extensions.InternalArg
     created_by: string
     meeting_type: $Enums.MeetingType
     scheduled_at: Date
+    start_time: Date
+    end_time: Date
     location: string | null
     link: string | null
     notes: string | null
@@ -1293,6 +1373,8 @@ export interface MeetingFieldRefs {
   readonly created_by: Prisma.FieldRef<"Meeting", 'String'>
   readonly meeting_type: Prisma.FieldRef<"Meeting", 'MeetingType'>
   readonly scheduled_at: Prisma.FieldRef<"Meeting", 'DateTime'>
+  readonly start_time: Prisma.FieldRef<"Meeting", 'DateTime'>
+  readonly end_time: Prisma.FieldRef<"Meeting", 'DateTime'>
   readonly location: Prisma.FieldRef<"Meeting", 'String'>
   readonly link: Prisma.FieldRef<"Meeting", 'String'>
   readonly notes: Prisma.FieldRef<"Meeting", 'String'>

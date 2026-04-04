@@ -1,14 +1,15 @@
 import {
+  BadRequestException,
   Injectable,
   NotFoundException,
   UnauthorizedException,
 } from '@nestjs/common';
-import { PrismaService } from 'prisma.service';
 import {
   CreateMeetingDto,
   MeetingQueryDto,
   UpdateMeetingDto,
 } from './meeting.dto';
+import { PrismaService } from 'prisma.service';
 
 @Injectable()
 export class MeetingService {
@@ -36,6 +37,8 @@ export class MeetingService {
     if (!allocation)
       throw new UnauthorizedException('Allocation not found or not yours');
 
+    this.validateTimes(dto.start_time, dto.end_time);
+
     return this.prisma.meeting.create({
       data: {
         allocation_id: dto.allocation_id,
@@ -43,6 +46,8 @@ export class MeetingService {
         meeting_type: dto.meeting_type,
         scheduled_at: new Date(dto.scheduled_at),
         location: dto.location,
+        start_time: new Date(dto.start_time),
+        end_time: new Date(dto.end_time),
         link: dto.link,
         notes: dto.notes,
       },
@@ -60,6 +65,12 @@ export class MeetingService {
 
     if (!meeting) throw new NotFoundException('Meeting not found or not yours');
 
+    if (dto.start_time || dto.end_time) {
+      const start = dto.start_time ?? meeting.start_time.toISOString();
+      const end = dto.end_time ?? meeting.end_time.toISOString();
+      this.validateTimes(start, end);
+    }
+
     return this.prisma.meeting.update({
       where: { meeting_id },
       data: {
@@ -68,6 +79,8 @@ export class MeetingService {
         ...(dto.location !== undefined && { location: dto.location }),
         ...(dto.link !== undefined && { link: dto.link }),
         ...(dto.notes !== undefined && { notes: dto.notes }),
+        ...(dto.start_time && { start_time: new Date(dto.start_time) }),
+        ...(dto.end_time && { end_time: new Date(dto.end_time) }),
       },
       include: this.include,
     });
@@ -97,20 +110,24 @@ export class MeetingService {
         : {}),
     };
 
-    const [meetings, total] = await Promise.all([
-      this.prisma.meeting.findMany({
-        where,
-        orderBy: { scheduled_at: 'asc' },
-        skip,
-        take: limit,
-        include: this.include,
-      }),
-      this.prisma.meeting.count({ where }),
-    ]);
+    const meetings = await this.prisma.meeting.findMany({
+      where,
+      orderBy: { scheduled_at: 'asc' },
+      skip,
+      take: limit,
+      include: this.include,
+    });
+
+    const total = await this.prisma.meeting.count({ where });
 
     return {
       data: meetings,
       meta: { total, page, limit, totalPages: Math.ceil(total / limit) },
     };
+  }
+
+  private validateTimes(start_time: string, end_time: string) {
+    if (new Date(start_time) >= new Date(end_time))
+      throw new BadRequestException('start_time must be before end_time');
   }
 }

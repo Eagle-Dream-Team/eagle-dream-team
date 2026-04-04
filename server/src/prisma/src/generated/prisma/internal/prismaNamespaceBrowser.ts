@@ -125,6 +125,8 @@ export const MeetingScalarFieldEnum = {
   created_by: 'created_by',
   meeting_type: 'meeting_type',
   scheduled_at: 'scheduled_at',
+  start_time: 'start_time',
+  end_time: 'end_time',
   location: 'location',
   link: 'link',
   notes: 'notes',

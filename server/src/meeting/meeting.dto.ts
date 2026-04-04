@@ -42,6 +42,14 @@ export class CreateMeetingDto {
   @IsOptional()
   @IsString()
   notes?: string;
+
+  @ApiProperty()
+  @IsDateString()
+  start_time!: string;
+
+  @ApiProperty()
+  @IsDateString()
+  end_time!: string;
 }
 
 export class MeetingQueryDto extends PaginationDto {
@@ -81,4 +89,14 @@ export class UpdateMeetingDto {
   @IsOptional()
   @IsString()
   notes?: string;
+
+  @ApiPropertyOptional()
+  @IsOptional()
+  @IsDateString()
+  start_time?: string;
+
+  @ApiPropertyOptional()
+  @IsOptional()
+  @IsDateString()
+  end_time?: string;
 }

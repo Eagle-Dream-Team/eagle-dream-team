@@ -213,7 +213,7 @@ export type UserAllocationGroupByOutputType = {
   _max: UserAllocationMaxAggregateOutputType | null
 }
 
-export type GetUserAllocationGroupByPayload<T extends UserAllocationGroupByArgs> = Prisma.PrismaPromise<
+type GetUserAllocationGroupByPayload<T extends UserAllocationGroupByArgs> = Prisma.PrismaPromise<
   Array<
     Prisma.PickEnumerable<UserAllocationGroupByOutputType, T['by']> &
       {

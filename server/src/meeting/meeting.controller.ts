@@ -33,7 +33,7 @@ export class MeetingController {
   @UseGuards(RolesGuard)
   @ApiOperation({ summary: 'Create a meeting (tutor only)' })
   create(@Body() dto: CreateMeetingDto, @Req() req: any) {
-    return this.meetingService.create(req.user.sub, dto);
+    return this.meetingService.create(req.user.user_id, dto);
   }
 
   @Patch(':id')
@@ -45,7 +45,7 @@ export class MeetingController {
     @Body() dto: UpdateMeetingDto,
     @Req() req: any,
   ) {
-    return this.meetingService.update(id, req.user.sub, dto);
+    return this.meetingService.update(id, req.user.user_id, dto);
   }
 
   @Get()
