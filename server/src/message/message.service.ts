@@ -2,7 +2,7 @@ import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { ExceptionsHandler } from '@nestjs/core/exceptions/exceptions-handler';
 import { PrismaService } from 'prisma.service';
 import { PaginationDto } from 'src/common/dto/pagination.dto';
-import { MaessageQueryDto } from './messages.dto';
+import { MessageQueryDto } from './message.dto';
 
 @Injectable()
 export class MessageService {
@@ -34,7 +34,7 @@ export class MessageService {
         })
     }
 
-    async findAll({ page = 1, limit = 10, user1_id, user2_id }: MaessageQueryDto) {
+    async findAll({ page = 1, limit = 10, user1_id, user2_id }: MessageQueryDto) {
         const skip = (page - 1) * limit;
         const where = {
             OR: [

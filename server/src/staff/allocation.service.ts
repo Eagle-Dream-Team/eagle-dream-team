@@ -19,17 +19,17 @@ import { IsString, IsArray } from 'class-validator';
 
 export class AllocateDto {
   @ApiProperty({ example: 'uuid-here' })
-  tutor_id: string;
+  tutor_id!: string;
 
   @ApiProperty({ example: ['uuid-1', 'uuid-2'] })
   @IsArray()
   @IsString({ each: true })
-  student_ids: string[];
+  student_ids!: string[];
 }
 
 export class ReallocateDto {
   @ApiProperty({ example: 'uuid-here' })
-  tutor_id: string;
+  tutor_id!: string;
 }
 
 @Injectable()

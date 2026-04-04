@@ -17,7 +17,7 @@ import {
 } from '@nestjs/swagger';
 import { MessageService } from './message.service';
 import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
-import { MaessageQueryDto } from './messages.dto';
+import { MessageQueryDto } from './message.dto';
 import { PaginationDto } from 'src/common/dto/pagination.dto';
 import { RolesGuard } from 'src/auth/guards/roles.guard';
 
@@ -42,7 +42,7 @@ export class MessageController {
   @Get('conversation/:user_id')
   @ApiOperation({ summary: 'Get all messages sent and received between the current user and specified user' })
   findAllForCurrent(
-    @Query() query: MaessageQueryDto,
+    @Query() query: MessageQueryDto,
     @Req() req: any,
   ) {
     return this.messageService.findAll({ ...query, user1_id: req.user.user_id })
