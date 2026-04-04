@@ -1,53 +1,68 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useState, useEffect } from "react";
 import { ConversationsList } from "@/components/test/converstaions-list";
+import type { Conversation } from "@/models/message";
 
 export const Route = createFileRoute("/test/messages/")({
   component: RouteComponent,
 });
 
-interface User {
-  id: number;
-  name: string;
-  initials?: string;
-}
-
-interface Message {
+interface MockMessage {
   text: string;
   sender: "me" | "them";
 }
 
-interface Conversation {
-  id: number;
-  initials: string;
-  name: string;
-  preview: string;
-  time: string;
-  unread: number;
-}
-
 function RouteComponent() {
-  const [selectedUser, setSelectedUser] = useState<User | null>(null);
-  const [messages, setMessages] = useState<Record<number, Message[]>>({});
+  const [selectedUser, setSelectedUser] = useState<Conversation | null>(null);
   const [text, setText] = useState("");
+  const [messages, setMessages] = useState<Record<string, MockMessage[]>>({});
 
-  // ✅ NEW: conversations state (instead of static sidebar)
   const [conversations, setConversations] = useState<Conversation[]>([
     {
-      id: 1,
-      initials: "CM",
-      name: "Chanda Mutale",
-      preview: "Please review the assignment",
-      time: "9:42 am",
-      unread: 3,
+      allocation_id: "1",
+      peer: {
+        user_id: "user-1",
+        first_name: "Chanda",
+        last_name: "Mutale",
+        email: "chanda@example.com",
+        role: "student",
+        created_at: new Date().toISOString(),
+        updated_at: new Date().toISOString(),
+      },
+      last_message: {
+        message_id: 1,
+        sender_id: "user-1",
+        receiver_id: "me",
+        content: "Please review the assignment",
+        sent_at: new Date().toISOString(),
+        is_read: false,
+        mine: false,
+        file_id: null,
+      },
+      unread_count: 3,
     },
     {
-      id: 7,
-      initials: "KM",
-      name: "Kasonde Mulenga",
-      preview: "Can you share the reading list?",
-      time: "Mar 22",
-      unread: 2,
+      allocation_id: "7",
+      peer: {
+        user_id: "user-7",
+        first_name: "Kasonde",
+        last_name: "Mulenga",
+        email: "kasonde@example.com",
+        role: "student",
+        created_at: new Date().toISOString(),
+        updated_at: new Date().toISOString(),
+      },
+      last_message: {
+        message_id: 2,
+        sender_id: "me",
+        receiver_id: "user-7",
+        content: "Can you share the reading list?",
+        sent_at: new Date().toISOString(),
+        is_read: true,
+        mine: true,
+        file_id: null,
+      },
+      unread_count: 2,
     },
   ]);
 
@@ -55,10 +70,10 @@ function RouteComponent() {
   useEffect(() => {
     if (!selectedUser) return;
 
-    if (!messages[selectedUser.id]) {
+    if (!messages[selectedUser.allocation_id]) {
       setMessages((prev) => ({
         ...prev,
-        [selectedUser.id]: [
+        [selectedUser.allocation_id]: [
           { text: "Hello 👋", sender: "them" },
           { text: "How can I help you?", sender: "them" },
         ],
@@ -69,32 +84,40 @@ function RouteComponent() {
   const handleSend = () => {
     if (!text.trim() || !selectedUser) return;
 
-    const newMsg: Message = {
-      text,
-      sender: "me",
-    };
+    const newMsg: MockMessage = { text, sender: "me" };
 
     // ✅ Update chat messages
     setMessages((prev) => ({
       ...prev,
-      [selectedUser.id]: [...(prev[selectedUser.id] || []), newMsg],
+      [selectedUser.allocation_id]: [
+        ...(prev[selectedUser.allocation_id] || []),
+        newMsg,
+      ],
     }));
 
     // ✅ Update sidebar preview + move to top
     setConversations((prev) => {
       const updated = prev.map((c) =>
-        c.id === selectedUser.id
+        c.allocation_id === selectedUser.allocation_id
           ? {
               ...c,
-              preview: text,
-              unread: 0,
-              time: "Now",
+              last_message: {
+                ...c.last_message!,
+                content: text,
+                mine: true,
+                sent_at: new Date().toISOString(),
+              },
+              unread_count: 0,
             }
           : c,
       );
 
-      const selected = updated.find((c) => c.id === selectedUser.id);
-      const others = updated.filter((c) => c.id !== selectedUser.id);
+      const selected = updated.find(
+        (c) => c.allocation_id === selectedUser.allocation_id,
+      );
+      const others = updated.filter(
+        (c) => c.allocation_id !== selectedUser.allocation_id,
+      );
 
       return selected ? [selected, ...others] : updated;
     });
@@ -120,15 +143,15 @@ function RouteComponent() {
           <>
             {/* Header */}
             <div className="p-4 border-b font-semibold">
-              {selectedUser.name}
+              {selectedUser.peer.first_name} {selectedUser.peer.last_name}
             </div>
 
             {/* Messages */}
             <div className="flex-1 p-4 overflow-y-auto space-y-2">
-              {(messages[selectedUser.id] || []).length === 0 ? (
+              {(messages[selectedUser.allocation_id] || []).length === 0 ? (
                 <p className="text-gray-400 text-sm">No messages yet</p>
               ) : (
-                (messages[selectedUser.id] || []).map((msg, i) => (
+                (messages[selectedUser.allocation_id] || []).map((msg, i) => (
                   <div
                     key={i}
                     className={`max-w-xs px-3 py-2 rounded-2xl ${
