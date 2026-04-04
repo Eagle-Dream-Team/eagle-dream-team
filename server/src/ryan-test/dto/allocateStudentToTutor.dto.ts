@@ -5,11 +5,11 @@ import { UUID } from 'crypto';
 /* with this */
 export class AllocateStudentToTutorDto {
   @ApiProperty()
-  studentId: string;
+  studentId!: string;
   
   @ApiProperty()
-  tutorId: string;
+  tutorId!: string;
   
   @ApiProperty()
-  allocatedBy: string;
+  allocatedBy!: string;
 }

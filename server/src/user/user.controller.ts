@@ -1,9 +1,9 @@
 import { Controller, Get, Param, Req, UseGuards } from '@nestjs/common';
 import { ApiBearerAuth } from '@nestjs/swagger/dist/decorators/api-bearer.decorator';
-import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
+import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 import { UserService } from './user.service';
 import { ApiOperation } from '@nestjs/swagger/dist/decorators/api-operation.decorator';
-import { JwtPayload } from 'src/auth/auth.service';
+import { JwtPayload } from '../auth/auth.service';
 import { ApiTags } from '@nestjs/swagger/dist/decorators/api-use-tags.decorator';
 
 @ApiTags('user')

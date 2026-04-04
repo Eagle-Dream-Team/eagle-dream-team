@@ -7,14 +7,14 @@ import { Transform } from 'class-transformer/types/decorators';
 export class AllocateStudentsToTutorDto {
   @IsArray()
   @ApiProperty({ example: ["student_1_id", "student_2_id", "student_3_id"] })
-  studentIds: string[];
+  studentIds!: string[];
 
   @IsString()
   @ApiProperty({ example: "tutor_id" })
-  tutorId: string;
+  tutorId!: string;
   
   @IsString()
   // @ApiProperty({ example: "staff_id" })
   @ApiProperty({ example: "staff_id" })
-  allocatedBy: string;
+  allocatedBy!: string;
 }

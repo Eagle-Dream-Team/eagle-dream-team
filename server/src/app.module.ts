@@ -10,7 +10,7 @@ import { StudentModule } from './student/student.module';
 import { MessageModule } from './message/message.module';
 import { FileModule } from './file/file.module';
 import { RyanTestModule } from './ryan-test/ryan-test.module';
-import { EmailModule } from './email/email.module';
+import { BlogModule } from './blog/blog.module';
 
 @Module({
   imports: [
@@ -22,8 +22,8 @@ import { EmailModule } from './email/email.module';
     StudentModule,
     MessageModule,
     FileModule,
+    BlogModule,
     RyanTestModule,
-    EmailModule,
   ],
   controllers: [AppController],
   providers: [AppService],

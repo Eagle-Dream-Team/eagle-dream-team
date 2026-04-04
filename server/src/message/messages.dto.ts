@@ -4,6 +4,6 @@ import { PaginationDto } from 'src/common/dto/pagination.dto';
 
 // allocation.dto.ts
 export class MaessageQueryDto extends PaginationDto {
-    user1_id: string;
-    user2_id: string;
+    user1_id!: string;
+    user2_id!: string;
 }
