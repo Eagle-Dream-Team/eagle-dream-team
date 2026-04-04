@@ -51,6 +51,6 @@ export class MeetingController {
   @Get()
   @ApiOperation({ summary: 'Get all meetings for the current user' })
   findAll(@Query() query: MeetingQueryDto, @Req() req: any) {
-    return this.meetingService.findAll(req.user.sub, req.user.role, query);
+    return this.meetingService.findAll(req.user.user_id, req.user.role, query);
   }
 }
