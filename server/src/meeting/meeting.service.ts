@@ -39,6 +39,12 @@ export class MeetingService {
 
     this.validateTimes(dto.start_time, dto.end_time);
 
+    await this.checkOverlap(
+      created_by,
+      new Date(dto.start_time),
+      new Date(dto.end_time),
+    );
+
     return this.prisma.meeting.create({
       data: {
         allocation_id: dto.allocation_id,
@@ -69,6 +75,13 @@ export class MeetingService {
       const start = dto.start_time ?? meeting.start_time.toISOString();
       const end = dto.end_time ?? meeting.end_time.toISOString();
       this.validateTimes(start, end);
+
+      await this.checkOverlap(
+        meeting.created_by,
+        new Date(start),
+        new Date(end),
+        meeting_id,
+      );
     }
 
     return this.prisma.meeting.update({
@@ -129,5 +142,28 @@ export class MeetingService {
   private validateTimes(start_time: string, end_time: string) {
     if (new Date(start_time) >= new Date(end_time))
       throw new BadRequestException('start_time must be before end_time');
+  }
+
+  private async checkOverlap(
+    tutor_id: string,
+    start_time: Date,
+    end_time: Date,
+    exclude_meeting_id?: number,
+  ) {
+    const overlap = await this.prisma.meeting.findFirst({
+      where: {
+        ...(exclude_meeting_id && { meeting_id: { not: exclude_meeting_id } }),
+        allocation: { tutor_id },
+        AND: [
+          { start_time: { lt: end_time } },
+          { end_time: { gt: start_time } },
+        ],
+      },
+    });
+
+    if (overlap)
+      throw new BadRequestException(
+        `This time slot overlaps with an existing meeting from ${overlap.start_time.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: false })} to ${overlap.end_time.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: false })} on ${overlap.start_time.toLocaleDateString([], { weekday: 'long', month: 'long', day: 'numeric' })}`,
+      );
   }
 }

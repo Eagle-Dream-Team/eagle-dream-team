@@ -1,19 +1,13 @@
 import { CalendarView } from "@/components/common/calendar/calendar-view";
 import { MeetingModal } from "@/components/common/meeting-modal";
-import { Button } from "@/components/ui/button";
 import type { Meeting } from "@/models/meeting";
 import { getUser } from "@/services/auth";
 import { getMeetings } from "@/services/tutor/meeting";
-import {
-  getTutorStudents,
-  type TutorStudentFilters,
-} from "@/services/tutor/student";
+import { type TutorStudentFilters } from "@/services/tutor/student";
 import { useQuery } from "@tanstack/react-query";
 import { createFileRoute } from "@tanstack/react-router";
-import { Plus } from "lucide-react";
 import { useState } from "react";
-
-export const Route = createFileRoute("/_protected/tutor/meetings/")({
+export const Route = createFileRoute("/_protected/student/meetings/")({
   component: RouteComponent,
 });
 
@@ -23,7 +17,6 @@ function RouteComponent() {
 
   const [selectedMeeting, setSelectedMeeting] = useState<Meeting | null>(null);
   const [modalOpen, setModalOpen] = useState(false);
-  const [isCreating, setIsCreating] = useState(false);
 
   const firstDay = new Date(
     currentDate.getFullYear(),
@@ -37,7 +30,6 @@ function RouteComponent() {
   );
 
   //todo: use  calendar loading
-
   const { data, isLoading } = useQuery({
     queryKey: ["meetings", firstDay.toISOString(), lastDay.toISOString()],
     queryFn: () =>
@@ -55,35 +47,9 @@ function RouteComponent() {
     is_current: true,
   });
 
-  const { data: studentsData, isLoading: isStudentsLoading } = useQuery({
-    queryKey: ["tutor-students", params],
-    queryFn: () => getTutorStudents(params),
-  });
-
   return (
     <>
-      <div className="flex justify-end mb-4">
-        <Button
-          icon={<Plus size={14} />}
-          onClick={() => {
-            setSelectedMeeting(null);
-            setIsCreating(true);
-            setModalOpen(true);
-          }}
-        >
-          Schedule Meeting
-        </Button>
-      </div>
-
-      {/* <MonthView
-        currentDate={currentDate}
-        meetings={data?.data ?? []}
-        // onMeetingClick={(meeting) => console.log(meeting)}
-        onMeetingClick={(meeting) => {
-          setSelectedMeeting(meeting);
-          setModalOpen(true);
-        }}
-      /> */}
+      <div className="flex justify-end mb-4"></div>
 
       <CalendarView
         meetings={data?.data ?? []}
@@ -95,13 +61,12 @@ function RouteComponent() {
 
       <MeetingModal
         open={modalOpen}
-        meeting={isCreating ? undefined : (selectedMeeting ?? undefined)}
+        meeting={selectedMeeting ?? undefined}
         onClose={() => {
           setModalOpen(false);
           setSelectedMeeting(null);
-          setIsCreating(false);
         }}
-        allocations={studentsData?.data ?? []}
+        allocations={[]}
         role={user?.role!}
       />
     </>

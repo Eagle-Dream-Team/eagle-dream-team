@@ -17,6 +17,7 @@ import {
 } from "antd";
 import { createMeeting, updateMeeting } from "@/services/tutor/meeting";
 import dayjs from "dayjs";
+import { toast } from "sonner";
 
 const { TextArea } = Input;
 const { Text } = Typography;
@@ -86,7 +87,18 @@ export function MeetingForm({
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["meetings"] });
+      toast.success(
+        isEdit
+          ? "Meeting updated successfully"
+          : "Meeting scheduled successfully",
+      );
+
       onSuccess();
+    },
+
+    onError: (error: any) => {
+      console.error(error);
+      toast.error(error?.message ?? "Something went wrong");
     },
   });
 
