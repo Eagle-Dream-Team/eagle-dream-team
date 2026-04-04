@@ -13,7 +13,7 @@ export const Route = createFileRoute("/_protected/student/messages/")({
 function RouteComponent() {
   const [selected, setSelected] = useState<Conversation | null>(null);
 
-  const { data: conversations = [] } = useQuery({
+  const { data: conversations = [], isLoading } = useQuery({
     queryKey: ["conversations"],
     queryFn: getConversations,
     refetchInterval: 30_000,
@@ -24,6 +24,7 @@ function RouteComponent() {
       <div className="-m-6 flex h-[calc(100vh-4rem)]">
         <ConversationsList
           conversations={conversations}
+          isLoading={isLoading}
           onSelectUser={(c) => {
             // console.log(c);
             setSelected(c);
