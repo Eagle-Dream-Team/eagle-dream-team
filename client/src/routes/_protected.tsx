@@ -13,6 +13,7 @@ import {
   UserCog,
   FolderOpen,
   CalendarDays,
+  MessageCircle,
 } from "lucide-react";
 
 import {
@@ -76,6 +77,7 @@ function ProtectedLayout() {
   const tutorNav = [
     { title: "Dashboard", url: "/tutor/home", icon: <LayoutDashboard /> },
     { title: "My Students", url: "/tutor/students", icon: <GraduationCap /> },
+    { title: "Messages", url: "/tutor/messages", icon: <MessageCircle /> },
     { title: "Meetings", url: "/tutor/meetings", icon: <CalendarDays /> },
     { title: "Files", url: "/tutor/files", icon: <FolderOpen /> },
   ].map((item) => ({ ...item, isActive: pathname === item.url }));
@@ -83,6 +85,7 @@ function ProtectedLayout() {
   const studentNav = [
     { title: "Dashboard", url: "/student/home", icon: <LayoutDashboard /> },
     { title: "My Tutor", url: "/student/tutor", icon: <Users /> },
+    { title: "Messages", url: "/student/messages", icon: <MessageCircle /> },
     { title: "Meetings", url: "/student/meetings", icon: <CalendarDays /> },
     { title: "Files", url: "/student/files", icon: <FolderOpen /> },
   ].map((item) => ({ ...item, isActive: pathname === item.url }));

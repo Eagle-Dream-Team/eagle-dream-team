@@ -77,10 +77,7 @@ function RouteComponent() {
     // ✅ Update chat messages
     setMessages((prev) => ({
       ...prev,
-      [selectedUser.id]: [
-        ...(prev[selectedUser.id] || []),
-        newMsg,
-      ],
+      [selectedUser.id]: [...(prev[selectedUser.id] || []), newMsg],
     }));
 
     // ✅ Update sidebar preview + move to top
@@ -93,7 +90,7 @@ function RouteComponent() {
               unread: 0,
               time: "Now",
             }
-          : c
+          : c,
       );
 
       const selected = updated.find((c) => c.id === selectedUser.id);
@@ -107,7 +104,6 @@ function RouteComponent() {
 
   return (
     <div className="flex h-screen">
-      
       {/* LEFT SIDEBAR */}
       <ConversationsList
         conversations={conversations}
@@ -130,9 +126,7 @@ function RouteComponent() {
             {/* Messages */}
             <div className="flex-1 p-4 overflow-y-auto space-y-2">
               {(messages[selectedUser.id] || []).length === 0 ? (
-                <p className="text-gray-400 text-sm">
-                  No messages yet
-                </p>
+                <p className="text-gray-400 text-sm">No messages yet</p>
               ) : (
                 (messages[selectedUser.id] || []).map((msg, i) => (
                   <div

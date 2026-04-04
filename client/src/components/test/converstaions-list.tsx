@@ -1,5 +1,5 @@
+import type { Conversation } from "@/models/message";
 import { Input } from "antd";
-
 
 const conversations = [
   {
@@ -164,9 +164,15 @@ const conversations = [
   },
 ];
 
-export function ConversationsList({ onSelectUser }: any) {
+export function ConversationsList({
+  onSelectUser,
+  conversations,
+}: {
+  onSelectUser: (c: Conversation) => void;
+  conversations: Conversation[];
+}) {
   return (
-    <div className="w-70 h-full flex flex-col border-r bg-white">
+    <div className="w-70 h-full flex flex-col border-r   border-t  bg-white">
       {/* Header */}
       <div className="p-4 border-b bg-white sticky top-0 z-10">
         <h2 className="text-sm font-semibold mb-2 text-gray-800">Messages</h2>
@@ -177,13 +183,14 @@ export function ConversationsList({ onSelectUser }: any) {
       <div className="flex-1 overflow-y-auto">
         {conversations.map((c) => (
           <div
-            key={c.id}
+            key={c.allocation_id}
             onClick={() => onSelectUser(c)}
-             className="flex items-start gap-3 px-4 py-3 cursor-pointer hover:bg-gray-50 border-b transition-all"
-             >
+            className="flex items-start gap-3 px-4 py-3 cursor-pointer hover:bg-gray-50 border-b transition-all"
+          >
             {/* Avatar/Intial Holder */}
             <div className="w-11 h-11 rounded-full bg-gray-200 border flex items-center justify-center font-bold text-sm text-gray-700 shrink-0">
-              {c.initials}
+              {c.peer.first_name[0]}
+              {c.peer.last_name[0]}
             </div>
 
             {/* Conversation Info */}
@@ -191,22 +198,27 @@ export function ConversationsList({ onSelectUser }: any) {
               {/* Name + Time */}
               <div className="flex items-center justify-between gap-2">
                 <p className="font-semibold text-sm text-gray-900 truncate">
-                  {c.name}
+                  {c.peer.first_name} {c.peer.last_name}
                 </p>
 
                 <p className="text-[11px] text-gray-500 whitespace-nowrap">
-                  {c.time}
+                  {c.last_message
+                    ? new Date(c.last_message.sent_at).toLocaleDateString()
+                    : ""}
                 </p>
               </div>
 
-              {/* Preview + Unread */}
               <div className="flex items-center justify-between gap-2 mt-1">
-                <p className="text-xs text-gray-600 truncate">{c.preview}</p>
+                <p className="text-xs text-gray-600 truncate">
+                  {c.last_message?.mine && (
+                    <span className="text-gray-400">You: </span>
+                  )}
+                  {c.last_message?.content ?? "No messages yet"}
+                </p>
 
-                {/* Unread Badge */}
-                {c.unread > 0 && (
-                  <span className="bg-green-600 text-white text-[10px] font-bold px-2 py-0.5 rounded-full min-w-5 text-center">
-                    {c.unread}
+                {c.unread_count > 0 && (
+                  <span className="bg-neutral-800 text-neutral-50 text-[10px] font-bold px-2 py-0.5 rounded-full min-w-5 text-center shrink-0">
+                    {c.unread_count}
                   </span>
                 )}
               </div>
