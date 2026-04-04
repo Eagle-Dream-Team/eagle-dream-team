@@ -142,7 +142,8 @@ export const FileScalarFieldEnum = {
   uploaded_by: 'uploaded_by',
   title: 'title',
   file_type: 'file_type',
-  file_url: 'file_url',
+  url: 'url',
+  download_url: 'download_url',
   created_at: 'created_at',
   updated_at: 'updated_at'
 } as const

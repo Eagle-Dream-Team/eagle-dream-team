@@ -107,13 +107,14 @@ model Meeting {
 }
 
 model File {
-  file_id     Int      @id @default(autoincrement())
-  uploaded_by String
-  title       String
-  file_type   String?
-  file_url    String
-  created_at  DateTime @default(now())
-  updated_at  DateTime @updatedAt
+  file_id      Int      @id @default(autoincrement())
+  uploaded_by  String
+  title        String
+  file_type    String?
+  url          String
+  download_url String
+  created_at   DateTime @default(now())
+  updated_at   DateTime @updatedAt
 
   uploader User      @relation(fields: [uploaded_by], references: [user_id])
   messages Message[]

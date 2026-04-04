@@ -1,7 +1,6 @@
 import { createFileRoute } from '@tanstack/react-router'
 import axios from 'axios';
 import { Download, Upload } from 'lucide-react'
-import type { title } from 'process';
 import { useEffect, useRef, useState } from 'react'
 const serverUrl = import.meta.env.VITE_API_URL;
 
@@ -9,11 +8,11 @@ function FileCard({ file }: any) {
     return <>
         <div className='flex border border-gray-300 mb-2 rounded-xl p-2 pr-3 pl-3'>
             <div className='grow'>
-                <a className=' text-blue-700 hover:not-active:underline' href={file.file_url} target='_blank'>
+                <a title={file.title} className='text-blue-700 hover:not-active:underline' href={file.url} target='_blank'>
                     {file.title}
                 </a>
             </div>
-            <a href={file.file_url} download={file.title} className='flex-none'>
+            <a title={'Download "' + file.title + '"'} href={file.download_url} className='flex-none'>
                 <Download className='stroke-blue-700 stroke-1 w-10 hover:not-active:stroke-blue-500' />
             </a>
         </div>

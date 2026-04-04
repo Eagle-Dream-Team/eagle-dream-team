@@ -55,11 +55,19 @@ export class FileService {
       .from('files')
       .getPublicUrl(uploaded_by + '/' + newFilename).data.publicUrl;
 
+    const downloadUrl = this.supabase
+      .storage
+      .from('files')
+      .getPublicUrl(uploaded_by + '/' + newFilename, {
+        download: true,
+      }).data.publicUrl;
+
     return await this.prisma.file.create({
       data: {
         title: newFilename,
-        file_url: publicUrl,
-        file_type: 'pdf',
+        url: publicUrl,
+        download_url: downloadUrl,
+        file_type: file.mimetype,
         uploaded_by,
       }
     })
@@ -76,4 +84,6 @@ export class FileService {
       where: {}
     })
   }
+
+  async downloadLink() {}
 }
