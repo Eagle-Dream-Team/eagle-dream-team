@@ -1,3 +1,4 @@
+import { CalendarView } from "@/components/common/calendar/calendar-view";
 import { MonthView } from "@/components/common/calendar/month-view";
 import { MeetingModal } from "@/components/common/meeting-modal";
 import { Button } from "@/components/ui/button";
@@ -72,7 +73,8 @@ function RouteComponent() {
           Schedule Meeting
         </Button>
       </div>
-      <MonthView
+
+      {/* <MonthView
         currentDate={currentDate}
         meetings={data?.data ?? []}
         // onMeetingClick={(meeting) => console.log(meeting)}
@@ -80,18 +82,15 @@ function RouteComponent() {
           setSelectedMeeting(meeting);
           setModalOpen(true);
         }}
-      />
-
-      {/* <MeetingModal
-        open={modalOpen}
-        meeting={selectedMeeting ?? undefined}
-        onClose={() => {
-          setModalOpen(false);
-          setSelectedMeeting(null);
-        }}
-        allocations={[]}
-        role={user?.role!}
       /> */}
+
+      <CalendarView
+        meetings={data?.data ?? []}
+        onMeetingClick={(meeting) => {
+          setSelectedMeeting(meeting);
+          setModalOpen(true);
+        }}
+      />
 
       <MeetingModal
         open={modalOpen}
