@@ -11,6 +11,7 @@ import { MessageModule } from './message/message.module';
 import { FileModule } from './file/file.module';
 import { RyanTestModule } from './ryan-test/ryan-test.module';
 import { BlogModule } from './blog/blog.module';
+import { MeetingModule } from './meeting/meeting.module';
 
 @Module({
   imports: [
@@ -24,6 +25,7 @@ import { BlogModule } from './blog/blog.module';
     FileModule,
     BlogModule,
     RyanTestModule,
+    MeetingModule,
   ],
   controllers: [AppController],
   providers: [AppService],

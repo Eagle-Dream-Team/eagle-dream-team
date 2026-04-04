@@ -93,6 +93,8 @@ model Meeting {
   created_by    String
   meeting_type  MeetingType
   scheduled_at  DateTime
+  start_time    DateTime
+  end_time      DateTime
   location      String?
   link          String?
 
