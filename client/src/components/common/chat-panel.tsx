@@ -4,12 +4,14 @@ import { getMessages } from "@/services/common/messages";
 import { MessageBubble } from "./message-bubble";
 import { MessageInput } from "./message-input";
 import { getUser } from "@/services/auth";
+import { ChevronLeft } from "lucide-react";
 
 interface Props {
   conversation: Conversation;
+  onBack?: () => void;
 }
 
-export function ChatPanel({ conversation }: Props) {
+export function ChatPanel({ conversation, onBack }: Props) {
   const peerId = conversation.peer.user_id;
 
   const currentUser = getUser();
@@ -26,6 +28,14 @@ export function ChatPanel({ conversation }: Props) {
     <div className="flex-1 flex flex-col bg-white border-t">
       {/* Header */}
       <div className="px-4 py-3 border-b flex items-center gap-3">
+        {onBack && (
+          <button
+            onClick={onBack}
+            className="md:hidden text-gray-500 hover:text-gray-800 mr-1"
+          >
+            <ChevronLeft size={20} />
+          </button>
+        )}
         <div className="w-9 h-9 rounded-full bg-gray-200 flex items-center justify-center text-sm font-bold text-gray-700">
           {conversation.peer.first_name[0]}
           {conversation.peer.last_name[0]}

@@ -22,22 +22,34 @@ function RouteComponent() {
   return (
     <>
       <div className="-m-6 flex h-[calc(100vh-4rem)]">
-        <ConversationsList
-          conversations={conversations}
-          isLoading={isLoading}
-          onSelectUser={(c) => {
-            // console.log(c);
-            setSelected(c);
-          }}
-        />
+        <div
+          className={`${selected ? "hidden" : "flex"} md:flex w-full md:w-70 flex-col`}
+        >
+          <ConversationsList
+            conversations={conversations}
+            isLoading={isLoading}
+            onSelectUser={(c) => {
+              // console.log(c);
+              setSelected(c);
+            }}
+          />
+        </div>
 
-        {selected ? (
-          <ChatPanel conversation={selected} />
-        ) : (
-          <div className="flex-1 flex items-center justify-center text-gray-400 text-sm border-t">
-            Select a conversation
-          </div>
-        )}
+        {/* On mobile: show chat only when selected, always show on md+ */}
+        <div
+          className={`${selected ? "flex" : "hidden"} md:flex flex-1 flex-col`}
+        >
+          {selected ? (
+            <ChatPanel
+              conversation={selected}
+              onBack={() => setSelected(null)}
+            />
+          ) : (
+            <div className="flex-1 flex items-center justify-center text-gray-400 text-sm border-t">
+              Select a conversation
+            </div>
+          )}
+        </div>
       </div>
     </>
   );
