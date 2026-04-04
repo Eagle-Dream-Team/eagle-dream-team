@@ -83,8 +83,8 @@ function ProtectedLayout() {
   ].map((item) => ({ ...item, isActive: pathname === item.url }));
 
   const studentNav = [
-    { title: "Dashboard", url: "/student/home", icon: <LayoutDashboard /> },
-    { title: "My Tutor", url: "/student/tutor", icon: <Users /> },
+    { title: "Dashboard", url: "/student/", icon: <LayoutDashboard /> },
+    { title: "My Tutor", url: "/student/", icon: <Users /> },
     { title: "Messages", url: "/student/messages", icon: <MessageCircle /> },
     { title: "Meetings", url: "/student/meetings", icon: <CalendarDays /> },
     { title: "Files", url: "/student/files", icon: <FolderOpen /> },

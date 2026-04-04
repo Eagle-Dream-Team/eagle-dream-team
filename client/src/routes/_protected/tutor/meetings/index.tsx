@@ -36,6 +36,8 @@ function RouteComponent() {
     0,
   );
 
+  //todo: use  calendar loading
+
   const { data, isLoading } = useQuery({
     queryKey: ["meetings", firstDay.toISOString(), lastDay.toISOString()],
     queryFn: () =>
