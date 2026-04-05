@@ -46,3 +46,11 @@ export async function sendMessage(
     return handleApiError(error);
   }
 }
+
+export async function markAsRead(messageId: number): Promise<void> {
+  try {
+    await api.patch(`/message/${messageId}/read`);
+  } catch (error) {
+    return handleApiError(error);
+  }
+}

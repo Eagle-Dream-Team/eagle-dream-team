@@ -158,4 +158,25 @@ export class MessageService {
       return bTime - aTime;
     });
   }
+
+  async markAsRead(upToMessageId: number, currentUserId: string) {
+    const message = await this.prisma.message.findUnique({
+      where: { message_id: upToMessageId },
+    });
+
+    if (!message) return;
+
+    await this.prisma.message.updateMany({
+      where: {
+        receiver_id: currentUserId,
+        sender_id: message.sender_id,
+        is_read: false,
+        message_id: { lte: upToMessageId },
+      },
+      data: {
+        is_read: true,
+      },
+    });
+    return { success: true };
+  }
 }

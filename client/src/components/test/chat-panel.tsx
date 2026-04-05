@@ -1,7 +1,6 @@
 import { ConversationsList } from "@/components/test/converstaions-list";
 import { useState } from "react";
 
-
 interface User {
   id: number; // ✅ FIXED (was string)
   name: string;
@@ -27,10 +26,7 @@ export default function MessagesPage() {
 
     setMessages((prev) => ({
       ...prev,
-      [selectedUser.id]: [
-        ...(prev[selectedUser.id] || []),
-        newMsg,
-      ],
+      [selectedUser.id]: [...(prev[selectedUser.id] || []), newMsg],
     }));
 
     setText("");
@@ -38,7 +34,6 @@ export default function MessagesPage() {
 
   return (
     <div className="flex h-screen">
-      
       {/* LEFT SIDEBAR */}
       <ConversationsList onSelectUser={setSelectedUser} />
 

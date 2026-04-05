@@ -1,4 +1,4 @@
-import { ChatPanel } from "@/components/common/chat-panel";
+import { ChatPanel } from "@/components/common/message/chat-panel";
 import { ConversationsList } from "@/components/test/converstaions-list";
 import type { Conversation } from "@/models/message";
 import { getConversations } from "@/services/common/messages";
