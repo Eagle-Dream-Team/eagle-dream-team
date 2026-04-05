@@ -3,6 +3,7 @@ import {
   createStudent,
   updateUser,
   type StudentFilters,
+  getTutors,
 } from "@/services/staff/users";
 import type { SignUpDto } from "@server/user/dto/signUp.dto";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
@@ -32,8 +33,14 @@ type FormValues = Omit<SignUpDto, "role">;
 function RouteComponent() {
   const [open, setOpen] = useState(false);
   const [editingStudent, setEditingStudent] = useState<Student | null>(null);
-  // const [search, setSearch] = useState("");
+  const [tutorsSearch, setTutorsSearch] = useState("");
   const queryClient = useQueryClient();
+
+  const { data: tutors, isLoading: isTutorsLoading } = useQuery({
+    queryKey: ["tutors", { search: tutorsSearch }],
+    queryFn: () => getTutors({ search: tutorsSearch }),
+    enabled: open,
+  });
 
   const [allocatingStudent, setAllocatingStudent] = useState<Student | null>(
     null,
@@ -83,7 +90,13 @@ function RouteComponent() {
   });
 
   const { mutate, isPending } = useMutation({
-    mutationFn: (values: FormValues) => createStudent(values),
+    mutationFn: (values: FormValues) => {
+      console.log(
+        "Creating student with values:",
+        JSON.stringify(values, null, 2),
+      );
+      return createStudent(values);
+    },
     onSuccess: () => {
       toast.success("Student registered successfully");
       queryClient.invalidateQueries({ queryKey: ["students"] });
@@ -264,6 +277,7 @@ function RouteComponent() {
         role="student"
         mode={editingStudent ? "edit" : "create"}
         isPending={editingStudent ? isEditing : isPending}
+        tutors={tutors?.data ?? []}
         userId={editingStudent?.user_id}
         initialValues={
           editingStudent

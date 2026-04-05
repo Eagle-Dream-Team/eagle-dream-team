@@ -75,7 +75,26 @@ export class UserService {
   }
 
   async createStudent(dto: SignUpDto) {
-    return this.signUp({ ...dto, role: 'student' });
+    const student = await this.signUp({ ...dto, role: 'student' });
+
+    if (dto.tutor_id) {
+      const tutor = await this.prisma.user.findUnique({
+        where: { user_id: dto.tutor_id, role: 'tutor' },
+      });
+
+      if (!tutor) throw new NotFoundException('Tutor not found');
+
+      await this.prisma.userAllocation.create({
+        data: {
+          student_id: student.user_id,
+          tutor_id: dto.tutor_id,
+          allocated_by: dto.tutor_id,
+          is_current: true,
+        },
+      });
+    }
+
+    return student;
   }
 
   async findAllTutors(search?: string, page: number = 1, limit: number = 10) {

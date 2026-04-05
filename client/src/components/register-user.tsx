@@ -1,7 +1,7 @@
 import type { User } from "@/models/user";
 import type { Role } from "@/services/auth";
 import type { SignUpDto } from "@server/user/dto/signUp.dto";
-import { Button, Form, Input, Modal, Segmented } from "antd";
+import { Button, Form, Input, Modal, Segmented, Select } from "antd";
 import { useState } from "react";
 
 type FormValues = Omit<SignUpDto, "role">;
@@ -16,9 +16,8 @@ interface Props {
   onSubmit: (values: FormValues, role: Role) => void;
   isPending?: boolean;
   userId?: string;
+  tutors?: User[];
 }
-
-//todo: bug user create form somtimes shows old data when opened for a new user after editing a user, fix by clearing form on close and setting initial values on open based on user being edited or not
 
 export function UserModal({
   open,
@@ -28,6 +27,7 @@ export function UserModal({
   mode = "create",
   onSubmit,
   isPending = false,
+  tutors = [],
 }: Props) {
   const [form] = Form.useForm<FormValues>();
   const [role, setRole] = useState<Role>(lockedRole ?? "tutor");
@@ -107,6 +107,30 @@ export function UserModal({
             <Input.Password
               placeholder="Min 6 characters"
               disabled={isPending}
+            />
+          </Form.Item>
+        )}
+
+        {mode === "create" && role === "student" && tutors.length > 0 && (
+          <Form.Item
+            label="Assign to Tutor"
+            name="tutor_id"
+            rules={[{ required: true, message: "Please select a tutor" }]}
+          >
+            <Select
+              allowClear
+              placeholder="Search and select a tutor (optional)"
+              disabled={isPending}
+              showSearch={{
+                filterOption: (input, option) =>
+                  (option?.label as string)
+                    ?.toLowerCase()
+                    .includes(input.toLowerCase()),
+              }}
+              options={tutors.map((t) => ({
+                value: t.user_id,
+                label: `${t.first_name} ${t.last_name} — ${t.email}`,
+              }))}
             />
           </Form.Item>
         )}

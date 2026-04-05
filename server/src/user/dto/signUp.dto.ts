@@ -1,4 +1,7 @@
-import { ApiProperty } from '@nestjs/swagger/dist/decorators/api-property.decorator';
+import {
+  ApiProperty,
+  ApiPropertyOptional,
+} from '@nestjs/swagger/dist/decorators/api-property.decorator';
 import {
   IsEmail,
   IsString,
@@ -11,19 +14,24 @@ import { Role } from 'src/generated/prisma/client';
 
 export class SignUpDto {
   @IsEmail()
-  email: string;
+  email!: string;
 
   @IsString()
   @MinLength(6)
-  password: string;
+  password!: string;
 
   @IsString()
-  firstName: string;
+  firstName!: string;
 
   @IsString()
-  lastName: string;
+  lastName!: string;
+
+  @ApiPropertyOptional()
+  @IsOptional()
+  @IsString()
+  tutor_id?: string;
 
   @ApiProperty({ enum: Role, enumName: 'Role' })
   @IsEnum(Role)
-  role: Role;
+  role!: Role;
 }
