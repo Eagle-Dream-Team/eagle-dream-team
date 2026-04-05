@@ -8,6 +8,7 @@ import { Toaster } from "@/components/ui/sonner.tsx";
 import { queryClient } from "./lib/queryClient";
 import { ConfigProvider, type ThemeConfig } from "antd";
 import { QueryClientProvider } from "@tanstack/react-query";
+import { App } from "antd";
 
 const router = createRouter({ routeTree });
 
