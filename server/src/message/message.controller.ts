@@ -38,6 +38,7 @@ export class MessageController {
       req.user.user_id,
       receiver_id ?? data.receiver_id,
       content ?? data.content,
+      data.file_id ?? undefined,
     );
   }
 

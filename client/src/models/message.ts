@@ -1,3 +1,4 @@
+import type { AppFile } from "./file";
 import type { User } from "./user";
 
 export interface Message {
@@ -9,6 +10,7 @@ export interface Message {
   sent_at: string;
   is_read: boolean;
   mine: boolean;
+  file?: AppFile | null;
 }
 
 export interface Conversation {

@@ -57,6 +57,9 @@ export class MessageService {
         orderBy: { sent_at: 'desc' },
         skip,
         take: limit,
+        include: {
+          file: true,
+        },
       }),
       this.prisma.message.count({ where }),
     ]);
