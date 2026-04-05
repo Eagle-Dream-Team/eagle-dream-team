@@ -25,7 +25,7 @@ export function ChatPanel({ conversation, onBack }: Props) {
   const messages: Message[] = data?.data ?? [];
 
   return (
-    <div className="flex-1 flex flex-col bg-white border-t">
+    <div className="flex-1 flex flex-col bg-white border-t overflow-hidden">
       {/* Header */}
       <div className="px-4 py-3 border-b flex items-center gap-3">
         {onBack && (

@@ -11,7 +11,7 @@ export function ConversationsList({
   isLoading?: boolean;
 }) {
   return (
-    <div className="h-full flex flex-col border-r border-t bg-white">
+    <div className="h-full flex flex-col border-r border-t bg-white overflow-hidden">
       {/* Header */}
       <div className="p-4 border-b bg-white sticky top-0 z-10">
         <h2 className="text-sm font-semibold mb-2 text-gray-800">Messages</h2>

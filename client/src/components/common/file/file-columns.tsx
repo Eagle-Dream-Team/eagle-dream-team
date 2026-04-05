@@ -3,7 +3,9 @@ import { Button, Tag } from "antd";
 import { Download, FileIcon } from "lucide-react";
 import type { ColumnType } from "antd/es/table";
 
-export const fileColumns: ColumnType<AppFile>[] = [
+export const getFileColumns = (
+  currentUserId: string,
+): ColumnType<AppFile>[] => [
   {
     title: "File Name",
     dataIndex: "title",
@@ -21,9 +23,11 @@ export const fileColumns: ColumnType<AppFile>[] = [
     title: "Type",
     dataIndex: "file_type",
     key: "file_type",
+    width: 100,
+    ellipsis: true,
     render: (type: string) =>
       type ? (
-        <Tag className="text-xs">
+        <Tag className="text-xs truncate max-w-20">
           {type.split("/")[1]?.toUpperCase() ?? type}
         </Tag>
       ) : (
@@ -33,26 +37,30 @@ export const fileColumns: ColumnType<AppFile>[] = [
   {
     title: "Owner",
     key: "owner",
-    render: (_: any, record: AppFile) =>
-      record.uploader ? (
+    render: (_: any, record: AppFile) => {
+      if (!record.uploader)
+        return <span className="text-neutral-400 text-xs">—</span>;
+      const isMe = record.uploader.user_id === currentUserId;
+      return (
         <span className="text-sm text-neutral-700">
-          {record.uploader.first_name} {record.uploader.last_name}
+          {isMe
+            ? "Me"
+            : `${record.uploader.first_name} ${record.uploader.last_name}`}
         </span>
-      ) : (
-        <span className="text-neutral-400 text-xs">—</span>
-      ),
+      );
+    },
   },
   {
     title: "Shared By",
     key: "shared_by",
     render: (_: any, record: AppFile) => {
       const sender = record.messages?.[0]?.sender;
-      return sender ? (
+      if (!sender) return <span className="text-neutral-400 text-xs">—</span>;
+      const isMe = sender.user_id === currentUserId;
+      return (
         <span className="text-sm text-neutral-700">
-          {sender.first_name} {sender.last_name}
+          {isMe ? "Me" : `${sender.first_name} ${sender.last_name}`}
         </span>
-      ) : (
-        <span className="text-neutral-400 text-xs">—</span>
       );
     },
   },
@@ -86,7 +94,9 @@ export const fileColumns: ColumnType<AppFile>[] = [
   },
 ];
 
-export const fileMobileColumns: ColumnType<AppFile>[] = [
+export const getFileMobileColumns = (
+  currentUserId: string,
+): ColumnType<AppFile>[] => [
   {
     title: "File",
     key: "title",
@@ -102,19 +112,19 @@ export const fileMobileColumns: ColumnType<AppFile>[] = [
   {
     title: "Owner",
     key: "owner",
-    render: (_: any, record: AppFile) =>
-      record.uploader
-        ? `${record.uploader.first_name} ${record.uploader.last_name}`
-        : "—",
+    render: (_: any, record: AppFile) => {
+      if (!record.uploader) return "—";
+      const isMe = record.uploader.user_id === currentUserId;
+      return isMe
+        ? "Me"
+        : `${record.uploader.first_name} ${record.uploader.last_name}`;
+    },
   },
   {
     title: "Date",
     dataIndex: "created_at",
     key: "created_at",
     render: (date: string) =>
-      new Date(date).toLocaleDateString([], {
-        day: "numeric",
-        month: "short",
-      }),
+      new Date(date).toLocaleDateString([], { day: "numeric", month: "short" }),
   },
 ];

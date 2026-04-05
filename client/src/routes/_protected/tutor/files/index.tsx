@@ -5,12 +5,14 @@ import type { AppFile, FileFilter } from "@/models/file";
 import { AppTable } from "@/components/common/app-table";
 import { getFiles } from "@/services/common/file";
 import { FileFilterSegment } from "@/components/common/file/file-filter";
-import {
-  fileColumns,
-  fileMobileColumns,
-} from "@/components/common/file/file-columns";
+
 import { Button, Upload } from "antd";
 import { FileUploadModal } from "@/components/common/file/file-upload-modal";
+import { getUser } from "@/services/auth";
+import {
+  getFileColumns,
+  getFileMobileColumns,
+} from "@/components/common/file/file-columns";
 
 export const Route = createFileRoute("/_protected/tutor/files/")({
   component: RouteComponent,
@@ -20,6 +22,7 @@ function RouteComponent() {
   const [filter, setFilter] = useState<FileFilter | undefined>(undefined);
   const [page, setPage] = useState(1);
   const limit = 10;
+  const user = getUser();
 
   const [uploadOpen, setUploadOpen] = useState(false);
 
@@ -50,10 +53,11 @@ function RouteComponent() {
       <FileUploadModal open={uploadOpen} onClose={() => setUploadOpen(false)} />
 
       <AppTable<AppFile>
-        columns={fileColumns}
-        mobileColumns={fileMobileColumns}
+        columns={getFileColumns(user?.sub ?? "")}
+        mobileColumns={getFileMobileColumns(user?.sub ?? "")}
         data={data?.data ?? []}
         loading={isLoading}
+        scroll={{ x: "max-content" }}
         rowKey={(r) =>
           r.file_id != null ? String(r.file_id) : `skeleton-${Math.random()}`
         }

@@ -17,7 +17,7 @@ export function MessageInput({ peerId }: Props) {
   const [filePickerOpen, setFilePickerOpen] = useState(false);
   const queryClient = useQueryClient();
 
-  const { data: filesData } = useQuery({
+  const { data: filesData, isLoading: isLoadingFiles } = useQuery({
     queryKey: ["files", "mine"],
     queryFn: () => getFiles({ filter: "mine", limit: 100 }),
     enabled: filePickerOpen,
@@ -46,7 +46,7 @@ export function MessageInput({ peerId }: Props) {
         footer={null}
         destroyOnHidden
       >
-        <div className="flex flex-col gap-2 max-h-96 overflow-y-auto py-2">
+        {/* <div className="flex flex-col gap-2 max-h-96 overflow-y-auto py-2">
           {filesData?.data.length === 0 && (
             <p className="text-sm text-neutral-400 text-center py-4">
               No files uploaded yet
@@ -72,6 +72,48 @@ export function MessageInput({ peerId }: Props) {
               </div>
             </div>
           ))}
+        </div> */}
+
+        <div className="flex flex-col gap-2 max-h-96 overflow-y-auto py-2">
+          {isLoadingFiles ? (
+            Array.from({ length: 4 }).map((_, i) => (
+              <div
+                key={i}
+                className="flex items-center gap-3 px-3 py-2 rounded-lg border animate-pulse"
+              >
+                <div className="w-4 h-4 bg-neutral-200 rounded shrink-0" />
+                <div className="flex-1 space-y-1.5">
+                  <div className="h-3 bg-neutral-200 rounded w-3/4" />
+                  <div className="h-2.5 bg-neutral-200 rounded w-1/4" />
+                </div>
+              </div>
+            ))
+          ) : filesData?.data.length === 0 ? (
+            <p className="text-sm text-neutral-400 text-center py-4">
+              No files uploaded yet
+            </p>
+          ) : (
+            filesData?.data.map((f) => (
+              <div
+                key={f.file_id}
+                onClick={() => {
+                  setSelectedFile(f);
+                  setFilePickerOpen(false);
+                }}
+                className="flex items-center gap-3 px-3 py-2 rounded-lg border cursor-pointer hover:bg-neutral-50 transition-colors"
+              >
+                <Paperclip size={14} className="text-neutral-400 shrink-0" />
+                <div className="flex-1 min-w-0">
+                  <p className="text-sm font-medium text-neutral-800 truncate">
+                    {f.title}
+                  </p>
+                  <p className="text-xs text-neutral-400">
+                    {f.file_type?.split("/")[1]?.toUpperCase()}
+                  </p>
+                </div>
+              </div>
+            ))
+          )}
         </div>
       </Modal>
 
