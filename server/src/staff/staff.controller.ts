@@ -28,6 +28,7 @@ import {
   ReallocateDto,
 } from './allocation.service';
 import { AllocationQueryDto } from './allcoation.dto';
+import { ReportsService } from './reports.service';
 
 @ApiTags('staff')
 @ApiBearerAuth()
@@ -38,6 +39,7 @@ export class StaffController {
   constructor(
     private userService: UserService,
     private allocationsService: AllocationsService,
+    private reportsService: ReportsService,
   ) {}
 
   @Post('users/tutor')
@@ -172,5 +174,25 @@ export class StaffController {
       { page, limit, search },
       { tutor_id, student_id, allocated_by, is_current },
     );
+  }
+
+  // --- Reports ---
+
+  @Get('reports/stats')
+  @ApiOperation({ summary: 'Get platform statistics' })
+  getReportStats() {
+    return this.reportsService.getStats();
+  }
+
+  @Get('reports/exceptions/unallocated')
+  @ApiOperation({ summary: 'Get students without a personal tutor' })
+  getUnallocatedStudents() {
+    return this.reportsService.getUnallocatedStudents();
+  }
+
+  @Get('reports/exceptions/inactive')
+  @ApiOperation({ summary: 'Get students with no interaction in 7 or 28 days' })
+  getInactiveStudents() {
+    return this.reportsService.getInactiveStudents();
   }
 }

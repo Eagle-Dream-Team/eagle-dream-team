@@ -68,10 +68,10 @@ function ProtectedLayout() {
   }, []);
 
   const staffNav = [
-    { title: "Dashboard", url: "/staff/home", icon: <LayoutDashboard /> },
+    { title: "Dashboard", url: "/staff/", icon: <LayoutDashboard /> },
     { title: "Tutors", url: "/staff/tutors", icon: <Users /> },
     { title: "Students", url: "/staff/students", icon: <GraduationCap /> },
-    { title: "Allocations", url: "/staff/allocations", icon: <UserCog /> },
+    // { title: "Allocations", url: "/staff/allocations", icon: <UserCog /> },
   ].map((item) => ({ ...item, isActive: pathname === item.url }));
 
   const tutorNav = [

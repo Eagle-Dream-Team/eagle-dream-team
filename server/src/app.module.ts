@@ -12,6 +12,7 @@ import { FileModule } from './file/file.module';
 import { RyanTestModule } from './ryan-test/ryan-test.module';
 import { BlogModule } from './blog/blog.module';
 import { MeetingModule } from './meeting/meeting.module';
+import { JobsModule } from './jobs/jobs.module';
 
 @Module({
   imports: [
@@ -26,6 +27,7 @@ import { MeetingModule } from './meeting/meeting.module';
     BlogModule,
     RyanTestModule,
     MeetingModule,
+    JobsModule,
   ],
   controllers: [AppController],
   providers: [AppService],
