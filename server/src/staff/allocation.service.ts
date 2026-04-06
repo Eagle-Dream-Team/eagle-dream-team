@@ -16,6 +16,7 @@ export interface AllocationResult {
 import { ApiProperty } from '@nestjs/swagger';
 import { PaginatedResult, PaginationDto } from 'src/common/dto/pagination.dto';
 import { IsString, IsArray } from 'class-validator';
+import { JobQueueService } from 'src/jobs/job-queue.service';
 
 export class AllocateDto {
   @ApiProperty({ example: 'uuid-here' })
@@ -34,7 +35,10 @@ export class ReallocateDto {
 
 @Injectable()
 export class AllocationsService {
-  constructor(private prisma: PrismaService) {}
+  constructor(
+    private prisma: PrismaService,
+    private jobQueueService: JobQueueService,
+  ) {}
 
   //todo: add transaction to allocate method to ensure atomicity when allocating multiple students
   async allocate(
@@ -85,6 +89,10 @@ export class AllocationsService {
 
       allocated.push(allocation);
     }
+
+    this.jobQueueService.enqueue(async () => {
+      //send email in background here
+    });
 
     return { allocated, skipped };
   }

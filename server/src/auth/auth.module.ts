@@ -6,6 +6,7 @@ import { AuthController } from './auth.controller';
 import { JwtStrategy } from './jwt.strategy';
 import { UserModule } from 'src/user/user.module';
 import { JobQueueService } from 'src/jobs/job-queue.service';
+import { EmailService } from 'src/email/email.service';
 
 @Module({
   imports: [
@@ -18,7 +19,7 @@ import { JobQueueService } from 'src/jobs/job-queue.service';
       }),
     }),
   ],
-  providers: [AuthService, JwtStrategy, JobQueueService],
+  providers: [AuthService, JwtStrategy, JobQueueService, EmailService],
   controllers: [AuthController],
 })
 export class AuthModule {}

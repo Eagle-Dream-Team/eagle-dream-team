@@ -1,7 +1,7 @@
 // src/email/email.service.ts
 import { Injectable, Logger } from '@nestjs/common';
-// @ts-ignore
-import * as sgMail from '@sendgrid/mail';
+
+import sgMail from '@sendgrid/mail';
 
 // Declare process.env so TypeScript stops complaining
 declare const process: {
@@ -24,12 +24,22 @@ export class EmailService {
   }
 
   // Generic email sender
-  private async sendEmail(to: string, subject: string, text: string): Promise<boolean> {
+  public async sendEmail(
+    to: string,
+    subject: string,
+    text: string,
+  ): Promise<boolean> {
     const msg = {
       to,
       from: process.env.SENDGRID_FROM_EMAIL as string,
       subject,
       text,
+      trackingSettings: {
+        clickTracking: {
+          enable: false,
+          enableText: false,
+        },
+      },
     };
 
     try {
@@ -44,7 +54,11 @@ export class EmailService {
   }
 
   // 1️⃣ Notify student + tutor when allocation happens
-  async notifyTutorAllocated(studentEmail: string, tutorEmail: string, tutorName: string) {
+  async notifyTutorAllocated(
+    studentEmail: string,
+    tutorEmail: string,
+    tutorName: string,
+  ) {
     const subject = 'eTutoring Notification: Tutor Allocation';
 
     const studentMessage = `Hello,
@@ -70,7 +84,11 @@ University eTutoring System`;
   }
 
   // 2️⃣ Notify tutor about new meeting scheduled
-  async notifyMeetingScheduled(tutorEmail: string, studentName: string, meetingDate: string) {
+  async notifyMeetingScheduled(
+    tutorEmail: string,
+    studentName: string,
+    meetingDate: string,
+  ) {
     const subject = 'eTutoring Notification: Meeting Scheduled';
     const message = `Hello,
 
