@@ -15,6 +15,7 @@ import {
   CalendarDays,
   MessageCircle,
   SidebarOpen,
+  Newspaper,
 } from "lucide-react";
 
 import {
@@ -76,7 +77,7 @@ function ProtectedLayout() {
     { title: "Dashboard", url: "/staff/", icon: <LayoutDashboard /> },
     { title: "Tutors", url: "/staff/tutors", icon: <Users /> },
     { title: "Students", url: "/staff/students", icon: <GraduationCap /> },
-    // { title: "Allocations", url: "/staff/allocations", icon: <UserCog /> },
+    { title: "Blogs", url: "/staff/blogs", icon: <Newspaper /> },
   ].map((item) => ({ ...item, isActive: pathname === item.url }));
 
   const tutorNav = [
@@ -85,6 +86,7 @@ function ProtectedLayout() {
     { title: "Messages", url: "/tutor/messages", icon: <MessageCircle /> },
     { title: "Meetings", url: "/tutor/meetings", icon: <CalendarDays /> },
     { title: "Files", url: "/tutor/files", icon: <FolderOpen /> },
+    { title: "Blogs", url: "/tutor/blogs", icon: <Newspaper /> },
   ].map((item) => ({ ...item, isActive: pathname === item.url }));
 
   const studentNav = [
@@ -93,6 +95,7 @@ function ProtectedLayout() {
     { title: "Messages", url: "/student/messages", icon: <MessageCircle /> },
     { title: "Meetings", url: "/student/meetings", icon: <CalendarDays /> },
     { title: "Files", url: "/student/files", icon: <FolderOpen /> },
+    { title: "Blogs", url: "/student/blogs", icon: <Newspaper /> },
   ].map((item) => ({ ...item, isActive: pathname === item.url }));
 
   const isMobile = useIsMobile();
