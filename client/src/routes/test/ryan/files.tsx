@@ -59,12 +59,12 @@ function RouteComponent() {
         <div hidden={localStorage.getItem('access_token') != null} className='fixed h-full w-full flex flex-col justify-center bg-black/50'>
             <div className=' w-full p-5 border-t border-b border-red-900 bg-red-400 text-center align-text'>You are not logged in. Please log in to acces this page.</div>
         </div>
-        <div className='flex max-h-dvh h-dvh overflow-hidden p-2 pt-0'>
-            <div className='flex-none flex flex-col justify-center items-center mr-2 border overflow-x-hidden overflow-y-auto border-gray-300 mt-2 mb rounded-xl p-2'>
-                <input onChange={(e) => { if (e.target.files) setFile(e.target.files[0]) }} type="file" className=' p-2 w-60 file:mr-2 file:p-2 file:rounded-xl hover:file:bg-blue-50 file:text-blue-700 file:border file:border-blue-700 file:bg-blue-100' />
+        <div className='flex flex-col-reverse max-h-dvh h-dvh overflow-hidden p-2 pt-0'>
+            <div className='flex-none flex justify-center items-center mr-2 border overflow-x-hidden overflow-y-auto border-gray-300 mt-2 mb rounded-xl p-2'>
+                <input onChange={(e) => { if (e.target.files) setFile(e.target.files[0]) }} type="file" className=' p-2 w-full file:mr-2 file:p-2 file:rounded-xl hover:file:bg-blue-50 file:text-blue-700 file:border file:border-blue-700 file:bg-blue-100' />
                 <div>
-                    <button onClick={() => { submit() }} hidden={isLoading || !file} className='mt-4 p-2 flex flex-none w-20 justify-center border rounded-xl border-blue-700 bg-blue-400 hover:bg-blue-300 active:bg-blue-200'><Upload className='stroke-white stroke-2' /></button>
-                    <p hidden={!isLoading} className='text-blue-700'>Loading...</p>
+                    <button onClick={() => { submit() }} hidden={isLoading || !file} className='p-2 flex flex-none w-20 justify-center border rounded-xl border-blue-700 bg-blue-400 hover:bg-blue-300 active:bg-blue-200'><Upload className='stroke-white stroke-2' /></button>
+                    <p hidden={!isLoading} className='text-blue-700 w-20'>Loading...</p>
                 </div>
             </div>
             <div className='grow h-full flex flex-col'>
