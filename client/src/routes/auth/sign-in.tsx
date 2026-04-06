@@ -6,11 +6,14 @@ import { Button, Form, Input } from "antd";
 import type { AxiosError } from "axios";
 import { useState } from "react";
 import { toast } from "sonner";
+import eagleLogo from "@/assets/eagle.svg";
+
 export const Route = createFileRoute("/auth/sign-in")({
   component: RouteComponent,
 });
 
 function RouteComponent() {
+  
   const [form] = Form.useForm<SignInDto>();
   const navigate = useNavigate();
 
@@ -31,10 +34,22 @@ function RouteComponent() {
   });
 
   const onFinish = (values: SignInDto) => mutate(values);
+  
 
   return (
+    
     <div className={"flex justify-center items-center min-h-screen p-6"}>
+      
       <div className="w-[100vw] md:w-md max-w-full h-fit border bg-neutral-50 shadow-xl rounded-xl p-6">
+
+           <div className="flex justify-center mb-4">
+               <img
+                 src={eagleLogo}
+                 alt="Eagle Logo"
+                 className="w-18 h-18 object-contain"
+               />
+        
+    </div>
         <Form form={form} layout="vertical" onFinish={onFinish}>
           <Form.Item
             label="Email"
