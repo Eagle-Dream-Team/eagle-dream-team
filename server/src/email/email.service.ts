@@ -83,6 +83,20 @@ University eTutoring System`;
     await this.sendEmail(tutorEmail, subject, tutorMessage);
   }
 
+  async notifyTutorOfAllocation(tutorEmail: string, studentName: string) {
+    const subject = 'eTutoring Notification: New Student Allocated';
+    const message = `Hello,
+
+A new student (${studentName}) has been allocated to you.
+
+Please log in to the eTutoring system to view details.
+
+Regards,
+University eTutoring System`;
+
+    await this.sendEmail(tutorEmail, subject, message);
+  }
+
   // 2️⃣ Notify tutor about new meeting scheduled
   async notifyMeetingScheduled(
     tutorEmail: string,
@@ -117,6 +131,24 @@ Regards,
 University eTutoring System`;
 
     await this.sendEmail(studentEmail, subject, message);
+  }
+
+  async notifyWelcome(email: string, firstName: string, role: string) {
+    const subject = 'Welcome to eTutoring!';
+    const message = `Hello ${firstName},
+
+Your account has been created successfully. Welcome to the eTutoring system!
+
+${
+  role === 'tutor'
+    ? 'You can view your assigned students and manage your tutoring sessions by logging in.'
+    : 'You can view your tutor and manage your sessions by logging in.'
+}
+
+Regards,
+University eTutoring System`;
+
+    await this.sendEmail(email, subject, message);
   }
 
   // 🔹 Test method

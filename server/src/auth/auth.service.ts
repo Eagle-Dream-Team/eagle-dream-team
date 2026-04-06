@@ -44,19 +44,6 @@ export class AuthService {
       last_name: user.last_name,
     };
 
-    // this.jobQueueService.enqueue(async () => {
-    //   this.emailService.sendEmail(
-    //     user.email,
-    //     'Welcome Back to eTutoring!',
-    //     `Hello ${user.first_name},
-
-    //     Welcome back to eTutoring! We're glad to see you again. If you need any assistance, feel free to reach out.
-
-    //     Best regards,
-    //     The eTutoring Team`,
-    //   );
-    // });
-
     return {
       access_token: this.jwtService.sign(payload),
       role: user.role,

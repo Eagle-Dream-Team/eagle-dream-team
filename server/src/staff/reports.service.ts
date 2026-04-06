@@ -95,9 +95,8 @@ export class ReportsService {
 
     const results = await Promise.all(
       students.map(async (student) => {
-        const [last7, last28] = await this.prisma
-          .$transaction([
-            // 7 days
+        const [last7, last28] = await Promise.all([
+          Promise.all([
             this.prisma.message.count({
               where: {
                 OR: [
@@ -125,7 +124,9 @@ export class ReportsService {
                 created_at: { gte: sevenDaysAgo },
               },
             }),
-            // 28 days
+          ]).then(([msg, file, meet, blog]) => msg + file + meet + blog),
+
+          Promise.all([
             this.prisma.message.count({
               where: {
                 OR: [
@@ -153,13 +154,8 @@ export class ReportsService {
                 created_at: { gte: twentyEightDaysAgo },
               },
             }),
-          ])
-          .then(
-            ([msg7, file7, meet7, blog7, msg28, file28, meet28, blog28]) => [
-              msg7 + file7 + meet7 + blog7,
-              msg28 + file28 + meet28 + blog28,
-            ],
-          );
+          ]).then(([msg, file, meet, blog]) => msg + file + meet + blog),
+        ]);
 
         return {
           ...student,

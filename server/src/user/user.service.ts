@@ -8,10 +8,16 @@ import * as bcrypt from 'bcrypt';
 import { PrismaService } from 'prisma.service';
 import { ChangePasswordDto } from './dto/changePassword.dto';
 import { PaginatedResult, PaginationDto } from 'src/common/dto/pagination.dto';
+import { EmailService } from 'src/email/email.service';
+import { JobQueueService } from 'src/jobs/job-queue.service';
 
 @Injectable()
 export class UserService {
-  constructor(private prisma: PrismaService) {}
+  constructor(
+    private prisma: PrismaService,
+    private jobQueueService: JobQueueService,
+    private emailService: EmailService,
+  ) {}
 
   async signUp(dto: SignUpDto) {
     const existing = await this.prisma.user.findUnique({
@@ -92,7 +98,22 @@ export class UserService {
           is_current: true,
         },
       });
+
+      this.jobQueueService.enqueue(async () => {
+        await this.emailService.notifyTutorOfAllocation(
+          tutor.email,
+          `${student.first_name} ${student.last_name}`,
+        );
+      });
     }
+
+    this.jobQueueService.enqueue(async () => {
+      await this.emailService.notifyWelcome(
+        student.email,
+        student.first_name,
+        'student',
+      );
+    });
 
     return student;
   }
