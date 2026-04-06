@@ -1,5 +1,5 @@
 import { defineConfig } from "vite";
-import path, { } from "path";
+import path from "path";
 import react from "@vitejs/plugin-react";
 import { tanstackRouter } from "@tanstack/router-plugin/vite";
 import tailwindcss from "@tailwindcss/vite";
@@ -19,5 +19,8 @@ export default defineConfig({
       "@": path.resolve(__dirname, "./src"),
       "@server": path.resolve(__dirname, "../server/src"),
     },
+  },
+  preview: {
+    allowedHosts: ["eagle-dream-team-1.onrender.com"],
   },
 });
