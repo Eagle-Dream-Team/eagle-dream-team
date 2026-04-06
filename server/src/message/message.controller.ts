@@ -4,6 +4,7 @@ import {
   Controller,
   Get,
   Param,
+  ParseIntPipe,
   Patch,
   Post,
   Query,
@@ -38,6 +39,7 @@ export class MessageController {
       req.user.user_id,
       receiver_id ?? data.receiver_id,
       content ?? data.content,
+      data.file_id ?? undefined,
     );
   }
 
@@ -94,5 +96,14 @@ export class MessageController {
   })
   getConversations(@Req() req: any) {
     return this.messageService.getConversations(req.user.user_id);
+  }
+
+  @Patch(':id/read')
+  @ApiOperation({
+    summary:
+      'Mark all messages in a conversation as read up to a given message ID',
+  })
+  markAsRead(@Param('id', ParseIntPipe) id: number, @Req() req: any) {
+    return this.messageService.markAsRead(id, req.user.user_id);
   }
 }

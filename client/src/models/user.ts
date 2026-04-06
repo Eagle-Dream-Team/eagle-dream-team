@@ -53,3 +53,27 @@ export interface AllocationResult {
     current_tutor: string;
   }[];
 }
+
+export interface ReportStats {
+  messages_last_7_days: number;
+  average_messages_per_tutor: number;
+  total_tutors: number;
+}
+
+export interface UnallocatedStudent {
+  user_id: string;
+  first_name: string;
+  last_name: string;
+  email: string;
+  created_at: string;
+}
+
+export interface InactiveStudent {
+  user_id: string;
+  first_name: string;
+  last_name: string;
+  email: string;
+  tutor: Pick<User, "user_id" | "first_name" | "last_name" | "email"> | null;
+  messages_last_7_days: number;
+  messages_last_28_days: number;
+}

@@ -16,6 +16,8 @@ export interface AllocationResult {
 import { ApiProperty } from '@nestjs/swagger';
 import { PaginatedResult, PaginationDto } from 'src/common/dto/pagination.dto';
 import { IsString, IsArray } from 'class-validator';
+import { JobQueueService } from 'src/jobs/job-queue.service';
+import { EmailService } from 'src/email/email.service';
 
 export class AllocateDto {
   @ApiProperty({ example: 'uuid-here' })
@@ -34,7 +36,11 @@ export class ReallocateDto {
 
 @Injectable()
 export class AllocationsService {
-  constructor(private prisma: PrismaService) {}
+  constructor(
+    private prisma: PrismaService,
+    private jobQueueService: JobQueueService,
+    private emailService: EmailService,
+  ) {}
 
   //todo: add transaction to allocate method to ensure atomicity when allocating multiple students
   async allocate(
@@ -84,7 +90,22 @@ export class AllocationsService {
       });
 
       allocated.push(allocation);
+      this.jobQueueService.enqueue(async () => {
+        await this.emailService.sendEmail(
+          student.email,
+          'eTutoring Notification: Tutor Allocation',
+          `Hello ${student.first_name},\n\nYou have been assigned a personal tutor: ${tutor.first_name} ${tutor.last_name}.\n\nPlease log in to the eTutoring system to view details.\n\nRegards,\nUniversity eTutoring System`,
+        );
+      });
     }
+
+    this.jobQueueService.enqueue(async () => {
+      await this.emailService.sendEmail(
+        tutor.email,
+        'eTutoring Notification: New Students Allocated',
+        `Hello ${tutor.first_name},\n\n${allocated.length} new student(s) have been allocated to you.\n\nPlease log in to the eTutoring system to view details.\n\nRegards,\nUniversity eTutoring System`,
+      );
+    });
 
     return { allocated, skipped };
   }
@@ -118,6 +139,29 @@ export class AllocationsService {
         },
       }),
     ]);
+
+    const [student, oldTutor] = await Promise.all([
+      this.prisma.user.findUnique({ where: { user_id: student_id } }),
+      this.prisma.user.findUnique({
+        where: { user_id: activeAllocation.tutor_id },
+      }),
+    ]);
+
+    this.jobQueueService.enqueue(async () => {
+      await this.emailService.notifyTutorAllocated(
+        student!.email,
+        tutor.email,
+        `${tutor.first_name} ${tutor.last_name}`,
+      );
+    });
+
+    this.jobQueueService.enqueue(async () => {
+      await this.emailService.sendEmail(
+        oldTutor!.email,
+        'eTutoring Notification: Student Reallocated',
+        `Hello ${oldTutor!.first_name},\n\nA student previously allocated to you has been reassigned to another tutor.\n\nPlease log in to the eTutoring system to view details.\n\nRegards,\nUniversity eTutoring System`,
+      );
+    });
 
     return { allocation: newAllocation };
   }

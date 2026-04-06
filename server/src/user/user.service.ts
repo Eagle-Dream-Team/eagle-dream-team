@@ -8,10 +8,16 @@ import * as bcrypt from 'bcrypt';
 import { PrismaService } from 'prisma.service';
 import { ChangePasswordDto } from './dto/changePassword.dto';
 import { PaginatedResult, PaginationDto } from 'src/common/dto/pagination.dto';
+import { EmailService } from 'src/email/email.service';
+import { JobQueueService } from 'src/jobs/job-queue.service';
 
 @Injectable()
 export class UserService {
-  constructor(private prisma: PrismaService) {}
+  constructor(
+    private prisma: PrismaService,
+    private jobQueueService: JobQueueService,
+    private emailService: EmailService,
+  ) {}
 
   async signUp(dto: SignUpDto) {
     const existing = await this.prisma.user.findUnique({
@@ -75,7 +81,41 @@ export class UserService {
   }
 
   async createStudent(dto: SignUpDto) {
-    return this.signUp({ ...dto, role: 'student' });
+    const student = await this.signUp({ ...dto, role: 'student' });
+
+    if (dto.tutor_id) {
+      const tutor = await this.prisma.user.findUnique({
+        where: { user_id: dto.tutor_id, role: 'tutor' },
+      });
+
+      if (!tutor) throw new NotFoundException('Tutor not found');
+
+      await this.prisma.userAllocation.create({
+        data: {
+          student_id: student.user_id,
+          tutor_id: dto.tutor_id,
+          allocated_by: dto.tutor_id,
+          is_current: true,
+        },
+      });
+
+      this.jobQueueService.enqueue(async () => {
+        await this.emailService.notifyTutorOfAllocation(
+          tutor.email,
+          `${student.first_name} ${student.last_name}`,
+        );
+      });
+    }
+
+    this.jobQueueService.enqueue(async () => {
+      await this.emailService.notifyWelcome(
+        student.email,
+        student.first_name,
+        'student',
+      );
+    });
+
+    return student;
   }
 
   async findAllTutors(search?: string, page: number = 1, limit: number = 10) {
@@ -176,5 +216,12 @@ export class UserService {
       omit: { password_hash: true },
     });
     return updated;
+  }
+
+  async updatePassword(userId: string, hashedPassword: string) {
+    await this.prisma.user.update({
+      where: { user_id: userId },
+      data: { password_hash: hashedPassword },
+    });
   }
 }

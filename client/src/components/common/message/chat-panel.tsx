@@ -1,10 +1,11 @@
 import { useQuery } from "@tanstack/react-query";
 import type { Conversation, Message } from "@/models/message";
-import { getMessages } from "@/services/common/messages";
+import { getMessages, markAsRead } from "@/services/common/messages";
 import { MessageBubble } from "./message-bubble";
 import { MessageInput } from "./message-input";
 import { getUser } from "@/services/auth";
 import { ChevronLeft } from "lucide-react";
+import { useEffect } from "react";
 
 interface Props {
   conversation: Conversation;
@@ -24,8 +25,16 @@ export function ChatPanel({ conversation, onBack }: Props) {
   });
   const messages: Message[] = data?.data ?? [];
 
+  useEffect(() => {
+    if (messages.length === 0) return;
+    const latestUnread = messages.find((m) => !m.mine && !m.is_read);
+    if (latestUnread) {
+      markAsRead(latestUnread.message_id);
+    }
+  }, [messages]);
+
   return (
-    <div className="flex-1 flex flex-col bg-white border-t">
+    <div className="flex-1 flex flex-col bg-white border-t overflow-hidden">
       {/* Header */}
       <div className="px-4 py-3 border-b flex items-center gap-3">
         {onBack && (

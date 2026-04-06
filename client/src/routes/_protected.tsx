@@ -68,14 +68,14 @@ function ProtectedLayout() {
   }, []);
 
   const staffNav = [
-    { title: "Dashboard", url: "/staff/home", icon: <LayoutDashboard /> },
+    { title: "Dashboard", url: "/staff/", icon: <LayoutDashboard /> },
     { title: "Tutors", url: "/staff/tutors", icon: <Users /> },
     { title: "Students", url: "/staff/students", icon: <GraduationCap /> },
-    { title: "Allocations", url: "/staff/allocations", icon: <UserCog /> },
+    // { title: "Allocations", url: "/staff/allocations", icon: <UserCog /> },
   ].map((item) => ({ ...item, isActive: pathname === item.url }));
 
   const tutorNav = [
-    { title: "Dashboard", url: "/tutor/home", icon: <LayoutDashboard /> },
+    { title: "Dashboard", url: "/tutor/", icon: <LayoutDashboard /> },
     { title: "My Students", url: "/tutor/students", icon: <GraduationCap /> },
     { title: "Messages", url: "/tutor/messages", icon: <MessageCircle /> },
     { title: "Meetings", url: "/tutor/meetings", icon: <CalendarDays /> },
@@ -109,7 +109,7 @@ function ProtectedLayout() {
             avatar: "",
           }}
         />
-        <SidebarInset>
+        <SidebarInset className="overflow-x-hidden">
           <header className="flex h-16 shrink-0 items-center gap-2 transition-[width,height] ease-linear group-has-data-[collapsible=icon]/sidebar-wrapper:h-12">
             <div className="flex items-center gap-2 px-4">
               <SidebarTrigger className="-ml-1" />
@@ -132,7 +132,7 @@ function ProtectedLayout() {
               </Breadcrumb>
             </div>
           </header>
-          <div className="p-6">
+          <div className="p-6 min-w-0 overflow-y-auto">
             <Outlet />
           </div>
         </SidebarInset>

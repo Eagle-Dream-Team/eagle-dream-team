@@ -71,7 +71,7 @@ function RouteComponent() {
             </Button>
             <Button
               type="link"
-              onClick={() => navigate({ to: "/auth/change-password" })}
+              onClick={() => navigate({ to: "/auth/forgot-password" })}
             >
               Forgot password?
             </Button>

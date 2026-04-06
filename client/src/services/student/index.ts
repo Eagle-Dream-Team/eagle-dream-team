@@ -9,3 +9,9 @@ export async function getMyTutor(): Promise<UserAllocation> {
     return handleApiError(error);
   }
 }
+
+export const getStudentUnreadMessages = () =>
+  api.get<{ count: number }>("/student/overview/unread-messages");
+
+export const getStudentUpcomingMeetings = () =>
+  api.get<{ count: number }>("/student/overview/upcoming-meetings");

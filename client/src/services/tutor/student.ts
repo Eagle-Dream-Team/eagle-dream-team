@@ -20,3 +20,9 @@ export async function getTutorStudents(
     return handleApiError(error);
   }
 }
+
+export const getTutorUnreadMessages = () =>
+  api.get<{ count: number }>("/tutor/overview/unread-messages");
+
+export const getTutorUpcomingMeetings = () =>
+  api.get<{ count: number }>("/tutor/overview/upcoming-meetings");

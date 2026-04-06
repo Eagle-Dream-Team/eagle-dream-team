@@ -30,13 +30,26 @@ export async function getMessages(
   }
 }
 
-export async function sendMessage(receiverId: string, content: string) {
+export async function sendMessage(
+  receiverId: string,
+  content: string,
+  file_id?: number,
+) {
   try {
     const { data } = await api.post("/message/send", {
       receiver_id: receiverId,
       content,
+      ...(file_id && { file_id }),
     });
     return data;
+  } catch (error) {
+    return handleApiError(error);
+  }
+}
+
+export async function markAsRead(messageId: number): Promise<void> {
+  try {
+    await api.patch(`/message/${messageId}/read`);
   } catch (error) {
     return handleApiError(error);
   }
