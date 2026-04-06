@@ -32,7 +32,6 @@ export function NavMain({
 }) {
   return (
     <SidebarGroup>
-      <SidebarGroupLabel className="text-[1em] mb-4 mt-4"><EagleIcon className="mr-1.5 scale-120 -translate-y" /> Eagle University Portal</SidebarGroupLabel>
       <SidebarMenu>
         {items.map((item) =>
           item.items?.length ? (

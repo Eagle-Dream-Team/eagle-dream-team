@@ -12,6 +12,7 @@ import {
   SidebarFooter,
   SidebarHeader,
   SidebarRail,
+  SidebarTrigger,
 } from "@/components/ui/sidebar";
 import {
   GalleryVerticalEndIcon,
@@ -168,8 +169,9 @@ interface AppSidebarProps extends React.ComponentProps<typeof Sidebar> {
 }
 
 export function AppSidebar({ items, user, ...props }: AppSidebarProps) {
-  return (
+  return (    
     <Sidebar collapsible="icon" {...props}>
+      <SidebarTrigger className="m-2 scale-140" />
       {/* <SidebarHeader>
         <TeamSwitcher teams={data.teams} />
       </SidebarHeader> */}
