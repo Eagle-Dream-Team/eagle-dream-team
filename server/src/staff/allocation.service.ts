@@ -43,6 +43,73 @@ export class AllocationsService {
   ) {}
 
   //todo: add transaction to allocate method to ensure atomicity when allocating multiple students
+  // async allocate(
+  //   tutor_id: string,
+  //   student_ids: string[],
+  //   allocated_by: string,
+  // ): Promise<AllocationResult> {
+  //   const tutor = await this.prisma.user.findUnique({
+  //     where: { user_id: tutor_id },
+  //   });
+  //   if (!tutor) throw new NotFoundException('Tutor not found');
+
+  //   const allocated: UserAllocation[] = [];
+  //   const skipped: SkippedAllocation[] = [];
+
+  //   for (const student_id of student_ids) {
+  //     const student = await this.prisma.user.findUnique({
+  //       where: { user_id: student_id },
+  //       include: {
+  //         student_allocations: {
+  //           where: { is_current: true },
+  //           include: { tutor: { omit: { password_hash: true } } },
+  //         },
+  //       },
+  //     });
+
+  //     if (!student) continue;
+
+  //     const activeAllocation = student.student_allocations[0];
+
+  //     if (activeAllocation) {
+  //       skipped.push({
+  //         student_id,
+  //         reason: 'already_allocated',
+  //         current_tutor: `${activeAllocation.tutor.first_name} ${activeAllocation.tutor.last_name}`,
+  //       });
+  //       continue;
+  //     }
+
+  //     const allocation = await this.prisma.userAllocation.create({
+  //       data: {
+  //         tutor: { connect: { user_id: tutor_id } },
+  //         student: { connect: { user_id: student_id } },
+  //         staff: { connect: { user_id: allocated_by } },
+  //         is_current: true,
+  //       },
+  //     });
+
+  //     allocated.push(allocation);
+  //     this.jobQueueService.enqueue(async () => {
+  //       await this.emailService.sendEmail(
+  //         student.email,
+  //         'eTutoring Notification: Tutor Allocation',
+  //         `Hello ${student.first_name},\n\nYou have been assigned a personal tutor: ${tutor.first_name} ${tutor.last_name}.\n\nPlease log in to the eTutoring system to view details.\n\nRegards,\nUniversity eTutoring System`,
+  //       );
+  //     });
+  //   }
+
+  //   this.jobQueueService.enqueue(async () => {
+  //     await this.emailService.sendEmail(
+  //       tutor.email,
+  //       'eTutoring Notification: New Students Allocated',
+  //       `Hello ${tutor.first_name},\n\n${allocated.length} new student(s) have been allocated to you.\n\nPlease log in to the eTutoring system to view details.\n\nRegards,\nUniversity eTutoring System`,
+  //     );
+  //   });
+
+  //   return { allocated, skipped };
+  // }
+
   async allocate(
     tutor_id: string,
     student_ids: string[],

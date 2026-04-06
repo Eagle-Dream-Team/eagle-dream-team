@@ -1,42 +1,60 @@
-import { createFileRoute } from '@tanstack/react-router'
+import { createFileRoute, useNavigate } from '@tanstack/react-router'
 import { useState } from "react";
 import axios from "axios";
+import eagleLogo from "@/assets/eagle.svg";
 
 export const Route = createFileRoute('/test/John2/login')({
   component: RouteComponent,
 })
 
 function RouteComponent() {
+  const navigate = useNavigate();
+
   const [login, setLogin] = useState({
     email: "",
     password: "",
   });
 
   const [output, setOutput] = useState("");
+  const [loading, setLoading] = useState(false);
 
-  const handleChange = (e: { target: { name: any; value: any; }; }) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setLogin({
       ...login,
       [e.target.name]: e.target.value,
     });
   };
 
-  const handleSubmit = async (e: { preventDefault: () => void; }) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setLoading(true);
+    setOutput("");
 
-    // ✅ YOUR API CODE (UNCHANGED)
     try {
       const res = await axios.post(
         "http://localhost:3000/auth/sign-in",
         login
       );
-      setOutput(JSON.stringify(res.data));
+
+      // ✅ SAVE TOKEN
+      const token = res.data.access_token;
+      localStorage.setItem("access_token", token);
+
+      setOutput("Login successful ✅");
+
+      // ✅ REDIRECT
+      setTimeout(() => {
+        navigate({ to: "/test/John2/messages/" });
+      }, 800);
+
     } catch (error: unknown) {
       if (axios.isAxiosError(error)) {
-        setOutput(JSON.stringify(error.response?.data.message));
+        setOutput(error.response?.data?.message || "Login failed");
       } else {
-        setOutput(JSON.stringify("An unexpected error occurred"));
+        setOutput("An unexpected error occurred");
       }
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -44,10 +62,15 @@ function RouteComponent() {
     <div className="min-h-screen flex items-center justify-center bg-gray-200">
       <div className="w-full max-w-md border border-black p-6 bg-gray-300">
         
-        {/* Logo / Title */}
-        <div className="mb-6 text-lg font-semibold">
-          Logo/Tile
-        </div>
+        {/* Logo */}
+        <div className="mb-6 flex flex-col items-center">
+  <img
+    src={eagleLogo}
+    alt="Eagle Logo"
+    className="w-20 h-20 object-contain mb-2"
+  />
+  <h2 className="text-lg font-semibold">Login</h2>
+</div>
 
         {/* Form */}
         <form onSubmit={handleSubmit} className="space-y-4">
@@ -82,23 +105,28 @@ function RouteComponent() {
           <div className="flex justify-center pt-4">
             <button
               type="submit"
-              className="bg-blue-700 text-black px-6 py-2 rounded-lg border-2 border-black hover:bg-blue-800 transition"
+              disabled={loading}
+              className={`px-6 py-2 rounded-lg border-2 border-black transition ${
+                loading
+                  ? "bg-gray-400 cursor-not-allowed"
+                  : "bg-blue-700 hover:bg-blue-800"
+              }`}
             >
-              Login
+              {loading ? "Logging in..." : "Login"}
             </button>
           </div>
         </form>
 
         {/* Output */}
         {output && (
-          <div className="mt-4 text-sm wrap-break-word">
+          <div className="mt-4 text-sm text-center text-black">
             {output}
           </div>
         )}
 
         {/* Footer */}
-        <div className="mt-6 text-sm font-semibold">
-          Don’t have acct, contact system admin
+        <div className="mt-6 text-sm font-semibold text-center">
+          Don’t have acct? Contact system admin
         </div>
       </div>
     </div>

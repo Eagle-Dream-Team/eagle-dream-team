@@ -9,11 +9,14 @@ import { Button, Form, Input } from "antd";
 import type { AxiosError } from "axios";
 import { useState } from "react";
 import { toast } from "sonner";
+import eagleLogo from "@/assets/eagle.svg";
+
 export const Route = createFileRoute("/auth/sign-in")({
   component: RouteComponent,
 });
 
 function RouteComponent() {
+  
   const [form] = Form.useForm<SignInDto>();
   const navigate = useNavigate();
 
@@ -34,6 +37,7 @@ function RouteComponent() {
   });
 
   const onFinish = (values: SignInDto) => mutate(values);
+  
 
   return (
     <>

@@ -1,182 +1,230 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { useState, useEffect } from "react";
-import { ConversationsList } from "@/components/test/converstaions-list";
-import type { Conversation } from "@/models/message";
+import { useState, useEffect, useRef } from "react";
+import axios from "axios";
 
 export const Route = createFileRoute("/test/messages/")({
   component: RouteComponent,
 });
 
-interface MockMessage {
-  text: string;
-  sender: "me" | "them";
-}
+const API = import.meta.env.VITE_API_URL;
 
 function RouteComponent() {
-  const [selectedUser, setSelectedUser] = useState<Conversation | null>(null);
+  const [users, setUsers] = useState<any[]>([]);
+  const [messages, setMessages] = useState<any[]>([]);
+  const [selectedUser, setSelectedUser] = useState<any>(null);
   const [text, setText] = useState("");
-  const [messages, setMessages] = useState<Record<string, MockMessage[]>>({});
+  const messagesEndRef = useRef<HTMLDivElement | null>(null);
 
-  const [conversations, setConversations] = useState<Conversation[]>([
-    {
-      allocation_id: "1",
-      peer: {
-        user_id: "user-1",
-        first_name: "Chanda",
-        last_name: "Mutale",
-        email: "chanda@example.com",
-        role: "student",
-        created_at: new Date().toISOString(),
-        updated_at: new Date().toISOString(),
-      },
-      last_message: {
-        message_id: 1,
-        sender_id: "user-1",
-        receiver_id: "me",
-        content: "Please review the assignment",
-        sent_at: new Date().toISOString(),
-        is_read: false,
-        mine: false,
-        file_id: null,
-      },
-      unread_count: 3,
-    },
-    {
-      allocation_id: "7",
-      peer: {
-        user_id: "user-7",
-        first_name: "Kasonde",
-        last_name: "Mulenga",
-        email: "kasonde@example.com",
-        role: "student",
-        created_at: new Date().toISOString(),
-        updated_at: new Date().toISOString(),
-      },
-      last_message: {
-        message_id: 2,
-        sender_id: "me",
-        receiver_id: "user-7",
-        content: "Can you share the reading list?",
-        sent_at: new Date().toISOString(),
-        is_read: true,
-        mine: true,
-        file_id: null,
-      },
-      unread_count: 2,
-    },
-  ]);
+  // ✅ Load users
+  useEffect(() => {
+    const loadUsers = async () => {
+      try {
+        const res = await axios.get(
+          `${API}/ryan-test/myCurrentAllocations`,
+          {
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("access_token")}`,
+            },
+          }
+        );
+        setUsers(res.data);
+      } catch (err) {
+        console.error(err);
+      }
+    };
 
-  // ✅ Load sample messages
+    loadUsers();
+  }, []);
+
+  // ✅ Load messages
+  const loadMessages = async (userId: string) => {
+    try {
+      const res = await axios.get(
+        `${API}/message/conversation/${userId}/unpaginated`,
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("access_token")}`,
+          },
+        }
+      );
+
+      setMessages(res.data);
+      scrollToBottom();
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  // ✅ Select user
+  const handleSelectUser = (user: any) => {
+    setSelectedUser(user);
+    loadMessages(user.user_id);
+  };
+
+  // ✅ Send message (optimistic)
+  const handleSend = async () => {
+    if (!text.trim() || !selectedUser) return;
+
+    const tempMsg = {
+      message_id: "temp-" + Date.now(),
+      content: text,
+      mine: true,
+      sent_at: new Date().toISOString(), // ✅ timestamp added
+    };
+
+    setMessages((prev) => [...prev, tempMsg]);
+    setText("");
+    scrollToBottom();
+
+    try {
+      await axios.post(
+        `${API}/message/send`,
+        {
+          receiver_id: selectedUser.user_id,
+          content: text,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("access_token")}`,
+          },
+        }
+      );
+
+      loadMessages(selectedUser.user_id);
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  // ✅ Auto refresh
   useEffect(() => {
     if (!selectedUser) return;
 
-    if (!messages[selectedUser.allocation_id]) {
-      setMessages((prev) => ({
-        ...prev,
-        [selectedUser.allocation_id]: [
-          { text: "Hello 👋", sender: "them" },
-          { text: "How can I help you?", sender: "them" },
-        ],
-      }));
-    }
+    const interval = setInterval(() => {
+      loadMessages(selectedUser.user_id);
+    }, 4000);
+
+    return () => clearInterval(interval);
   }, [selectedUser]);
 
-  const handleSend = () => {
-    if (!text.trim() || !selectedUser) return;
+  // ✅ Scroll to bottom
+  const scrollToBottom = () => {
+    setTimeout(() => {
+      messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+    }, 100);
+  };
 
-    const newMsg: MockMessage = { text, sender: "me" };
-
-    // ✅ Update chat messages
-    setMessages((prev) => ({
-      ...prev,
-      [selectedUser.allocation_id]: [
-        ...(prev[selectedUser.allocation_id] || []),
-        newMsg,
-      ],
-    }));
-
-    // ✅ Update sidebar preview + move to top
-    setConversations((prev) => {
-      const updated = prev.map((c) =>
-        c.allocation_id === selectedUser.allocation_id
-          ? {
-              ...c,
-              last_message: {
-                ...c.last_message!,
-                content: text,
-                mine: true,
-                sent_at: new Date().toISOString(),
-              },
-              unread_count: 0,
-            }
-          : c,
-      );
-
-      const selected = updated.find(
-        (c) => c.allocation_id === selectedUser.allocation_id,
-      );
-      const others = updated.filter(
-        (c) => c.allocation_id !== selectedUser.allocation_id,
-      );
-
-      return selected ? [selected, ...others] : updated;
+  // ✅ Format time helper
+  const formatTime = (dateString: string) => {
+    return new Date(dateString).toLocaleTimeString([], {
+      hour: "2-digit",
+      minute: "2-digit",
     });
-
-    setText("");
   };
 
   return (
     <div className="flex h-screen">
+      
       {/* LEFT SIDEBAR */}
-      <ConversationsList
-        conversations={conversations}
-        onSelectUser={setSelectedUser}
-      />
+      <div className="w-80 border-r overflow-y-auto bg-white">
+        <div className="p-4 font-semibold border-b">Messages</div>
+
+        {users.map((u) => {
+          const name =
+            u.name ||
+            `${u.first_name || ""} ${u.last_name || ""}`;
+
+          const isActive = selectedUser?.user_id === u.user_id;
+
+          return (
+            <div
+              key={u.user_id}
+              onClick={() => handleSelectUser(u)}
+              className={`p-4 border-b cursor-pointer transition ${
+                isActive ? "bg-blue-100" : "hover:bg-gray-100"
+              }`}
+            >
+              <div className="flex justify-between items-center">
+                <span className="font-medium">{name}</span>
+
+                {u.unread_count > 0 && (
+                  <span className="bg-green-600 text-white text-xs px-2 rounded-full">
+                    {u.unread_count}
+                  </span>
+                )}
+              </div>
+
+              <p className="text-xs text-gray-500 truncate">
+                {u.preview || "Tap to chat"}
+              </p>
+            </div>
+          );
+        })}
+      </div>
 
       {/* RIGHT CHAT PANEL */}
-      <div className="flex-1 flex flex-col bg-white">
+      <div className="flex-1 flex flex-col bg-gray-50">
         {!selectedUser ? (
           <div className="flex items-center justify-center h-full text-gray-400">
             Select a conversation
           </div>
         ) : (
           <>
-            {/* Header */}
-            <div className="p-4 border-b font-semibold">
-              {selectedUser.peer.first_name} {selectedUser.peer.last_name}
+            {/* HEADER */}
+            <div className="p-4 border-b bg-white font-semibold shadow-sm">
+              {selectedUser.name ||
+                `${selectedUser.first_name || ""} ${selectedUser.last_name || ""}`}
             </div>
 
-            {/* Messages */}
-            <div className="flex-1 p-4 overflow-y-auto space-y-2">
-              {(messages[selectedUser.allocation_id] || []).length === 0 ? (
-                <p className="text-gray-400 text-sm">No messages yet</p>
+            {/* MESSAGES */}
+            <div className="flex-1 overflow-y-auto p-4 space-y-2">
+              {messages.length === 0 ? (
+                <p className="text-gray-400 text-sm">
+                  No messages yet
+                </p>
               ) : (
-                (messages[selectedUser.allocation_id] || []).map((msg, i) => (
+                messages.map((m) => (
                   <div
-                    key={i}
-                    className={`max-w-xs px-3 py-2 rounded-2xl ${
-                      msg.sender === "me"
-                        ? "bg-blue-500 text-white ml-auto rounded-br-none"
-                        : "bg-gray-200 rounded-tl-none"
+                    key={m.message_id}
+                    className={`max-w-xs px-4 py-2 rounded-2xl text-sm ${
+                      m.mine
+                        ? "bg-blue-600 text-white ml-auto rounded-br-none"
+                        : "bg-white border rounded-tl-none"
                     }`}
                   >
-                    {msg.text}
+                    {/* MESSAGE TEXT */}
+                    <p>{m.content}</p>
+
+                    {/* ✅ TIMESTAMP */}
+                    {m.sent_at && (
+                      <p
+                        className={`text-[10px] mt-1 ${
+                          m.mine
+                            ? "text-white/70 text-right"
+                            : "text-gray-500"
+                        }`}
+                      >
+                        {formatTime(m.sent_at)}
+                      </p>
+                    )}
                   </div>
                 ))
               )}
+
+              <div ref={messagesEndRef} />
             </div>
 
-            {/* Input */}
-            <div className="p-3 border-t flex gap-2">
+            {/* INPUT */}
+            <div className="p-3 border-t bg-white flex gap-2">
               <input
                 value={text}
                 onChange={(e) => setText(e.target.value)}
-                className="flex-1 border px-2 py-2 rounded"
-                placeholder="Type message..."
+                className="flex-1 border px-3 py-2 rounded-full"
+                placeholder="Type a message..."
               />
               <button
                 onClick={handleSend}
-                className="bg-blue-600 text-white px-4 rounded"
+                className="bg-blue-600 text-white px-5 rounded-full"
               >
                 Send
               </button>
