@@ -1,6 +1,7 @@
 import * as React from "react";
 import { Outlet, createRootRoute } from "@tanstack/react-router";
 import { NotFound } from "@/components/common/not-found";
+import Spin from "antd/es/spin";
 
 export const Route = createRootRoute({
   component: RootComponent,

@@ -9,8 +9,15 @@ import { queryClient } from "./lib/queryClient";
 import { ConfigProvider, type ThemeConfig } from "antd";
 import { QueryClientProvider } from "@tanstack/react-query";
 import { App } from "antd";
+import { PendingComponent } from "./components/common/pending-component";
+import { NotFound } from "./components/common/not-found";
 
-const router = createRouter({ routeTree });
+const router = createRouter({
+  routeTree,
+  defaultPendingComponent: PendingComponent,
+  defaultNotFoundComponent: NotFound,
+  defaultPendingMs: 0,
+});
 
 export const AntdTheme: ThemeConfig = {
   token: {
