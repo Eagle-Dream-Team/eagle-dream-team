@@ -132,7 +132,6 @@ export function AppTable<T>({
   }
 
   return (
-    //Todo:table border radius
     <Table<T>
       size={size}
       bordered={bordered}
