@@ -5,7 +5,11 @@ export function EagleTitle({ className = "" }: any) {
     return <>
         <div className={"flex justify-center items-center bg-mist-900/95 border border-mist-700 backdrop-blur-xl p-8 rounded-4xl " + className}>
             <EagleIcon className={"w-18"} />
-            <h1 className={"font-semibold text-3xl ml-4"}>Eagle University Portal</h1>
+            <div className="ml-4">
+
+                <h1 className={"font-semibold text-3xl"}>Eagle University Portal</h1>
+                <p className="opacity-70 text-right">Where Innovation Breeds Excellence </p>
+            </div>
         </div>
     </>
 }
