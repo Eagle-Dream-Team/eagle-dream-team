@@ -110,7 +110,7 @@ export function AppTable<T>({
                     <span className="text-sm text-zinc-500">
                       {col.title as React.ReactNode}
                     </span>
-                    <span className="text-sm font-medium">
+                    <span className="text-sm font-medium max-w-[180px] truncate text-right">
                       {col.render
                         ? col.render(
                             col.dataIndex

@@ -39,4 +39,16 @@ export class TutorController {
       is_current,
     );
   }
+
+  @Get('overview/unread-messages')
+  @ApiOperation({ summary: 'Get count of unread messages for tutor' })
+  getUnreadMessages(@Req() req: any) {
+    return this.tutorService.getUnreadMessagesCount(req.user.sub);
+  }
+
+  @Get('overview/upcoming-meetings')
+  @ApiOperation({ summary: 'Get count of upcoming meetings for tutor' })
+  getUpcomingMeetings(@Req() req: any) {
+    return this.tutorService.getUpcomingMeetingsCount(req.user.sub);
+  }
 }

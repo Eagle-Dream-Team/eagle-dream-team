@@ -46,4 +46,24 @@ export class TutorService {
       meta: { total, page, limit, totalPages: Math.ceil(total / limit) },
     };
   }
+
+  async getUnreadMessagesCount(tutor_id: string) {
+    const count = await this.prisma.message.count({
+      where: {
+        receiver_id: tutor_id,
+        is_read: false,
+      },
+    });
+    return { count };
+  }
+
+  async getUpcomingMeetingsCount(tutor_id: string) {
+    const count = await this.prisma.meeting.count({
+      where: {
+        allocation: { tutor_id },
+        scheduled_at: { gte: new Date() },
+      },
+    });
+    return { count };
+  }
 }
