@@ -58,10 +58,13 @@ export class TutorService {
   }
 
   async getUpcomingMeetingsCount(tutor_id: string) {
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+
     const count = await this.prisma.meeting.count({
       where: {
-        allocation: { tutor_id },
-        scheduled_at: { gte: new Date() },
+        allocation: { tutor_id, is_current: true },
+        scheduled_at: { gte: today },
       },
     });
     return { count };
