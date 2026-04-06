@@ -13,7 +13,7 @@ function FileCard({ file }: any) {
                 </a>
             </div>
             <a title={'Download "' + file.title + '"'} href={file.download_url} className='flex-none'>
-                <Download className='stroke-blue-700 stroke-1 w-10 hover:not-active:stroke-blue-500' />
+                <Download className='stroke-blue-700 stroke-1.5 w-10 hover:not-active:stroke-blue-500' />
             </a>
         </div>
     </>
