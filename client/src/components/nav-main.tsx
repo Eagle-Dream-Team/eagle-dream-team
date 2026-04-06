@@ -5,7 +5,7 @@ import {
 } from "@/components/ui/collapsible";
 import {
   SidebarGroup,
-  SidebarGroupLabel,
+  // SidebarGroupLabel,
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
@@ -14,7 +14,7 @@ import {
   SidebarMenuSubItem,
 } from "@/components/ui/sidebar";
 import { ChevronRightIcon } from "lucide-react";
-import { EagleIcon } from "./eagle-icon";
+// import { EagleIcon } from "./eagle-icon";
 
 export function NavMain({
   items,

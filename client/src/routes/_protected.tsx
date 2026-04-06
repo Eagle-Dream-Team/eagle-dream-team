@@ -2,47 +2,47 @@ import {
   createFileRoute,
   Outlet,
   redirect,
-  useNavigate,
+  // useNavigate,
 } from "@tanstack/react-router";
 import { AppSidebar } from "@/components/app-sidebar";
 import {
   Users,
   LayoutDashboard,
-  BookOpen,
+  // BookOpen,
   GraduationCap,
-  UserCog,
+  // UserCog,
   FolderOpen,
   CalendarDays,
   MessageCircle,
-  SidebarOpen,
+  // SidebarOpen,
   Newspaper,
 } from "lucide-react";
 
-import {
-  Breadcrumb,
-  BreadcrumbItem,
-  BreadcrumbLink,
-  BreadcrumbList,
-  BreadcrumbPage,
-  BreadcrumbSeparator,
-} from "@/components/ui/breadcrumb";
-import { Separator } from "@/components/ui/separator";
+// import {
+//   Breadcrumb,
+//   BreadcrumbItem,
+//   BreadcrumbLink,
+//   BreadcrumbList,
+//   BreadcrumbPage,
+//   BreadcrumbSeparator,
+// } from "@/components/ui/breadcrumb";
+// import { Separator } from "@/components/ui/separator";
 import {
   SidebarInset,
   SidebarProvider,
-  SidebarTrigger,
+  // SidebarTrigger,
   SidebarTriggerMobile,
 } from "@/components/ui/sidebar";
 import {
   getUser,
   isAuthenticated,
   isTokenExpired,
-  signOut,
+  // signOut,
 } from "@/services/auth";
 import { useLocation, useMatches } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { SessionExpiredDialog } from "@/components/common/session-expired-dialog";
-import { EagleTitle } from "@/components/eagle-title";
+// import { EagleTitle } from "@/components/eagle-title";
 import { EagleIcon } from "@/components/eagle-icon";
 import { useIsMobile } from "@/hooks/use-mobile";
 
@@ -58,7 +58,7 @@ export const Route = createFileRoute("/_protected")({
 function ProtectedLayout() {
   const matches = useMatches();
   console.log("1. raw matches:", matches);
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
 
   const user = getUser();
   const { pathname } = useLocation();
