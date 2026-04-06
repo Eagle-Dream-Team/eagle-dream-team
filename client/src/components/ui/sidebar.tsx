@@ -255,7 +255,7 @@ function SidebarTrigger({
   onClick,
   ...props
 }: React.ComponentProps<typeof Button>) {
-  const { toggleSidebar, open } = useSidebar()
+  const { toggleSidebar, open, isMobile } = useSidebar()
 
   return (
     <Button
@@ -272,18 +272,44 @@ function SidebarTrigger({
     >
       {/* <PanelLeftIcon /> */}
       {
-        open ?
+        (isMobile || open) ?
           (
-              <ChevronLeft className="mt-0.5 mr-1 " />
+            <ChevronLeft className="mt-0.5 mr-1 " />
           ) :
           <Menu />
       }
       <span className="sr-only">Toggle Sidebar</span>
       {
-        open ? <span className="ml-1 mt-0.5 text-[0.8em] absolute left-5 opacity-50 hover:opacity-55">Close Panel</span> : ""
+        (isMobile || open) ? <span className="ml-1 mt-0.5 text-[0.8em] absolute left-5 opacity-50 hover:opacity-55">Close Panel</span> : ""
       }
     </Button>
   )
+}
+
+function SidebarTriggerMobile({
+  className,
+  onClick,
+  ...props
+}: React.ComponentProps<typeof Button>) {
+  const { toggleSidebar, isMobile } = useSidebar()
+
+  return isMobile ? (
+    <Button
+      data-sidebar="trigger"
+      data-slot="sidebar-trigger"
+      variant="ghost"
+      size="icon-sm"
+      className={cn(className) + ""}
+      onClick={(event) => {
+        onClick?.(event)
+        toggleSidebar()
+      }}
+      {...props}
+    >
+        <Menu />
+      <span className="sr-only">Toggle Sidebar</span>
+    </Button>
+  ) : ""
 }
 
 function SidebarRail({ className, ...props }: React.ComponentProps<"button">) {
@@ -708,5 +734,6 @@ export {
   SidebarRail,
   SidebarSeparator,
   SidebarTrigger,
+  SidebarTriggerMobile,
   useSidebar,
 }

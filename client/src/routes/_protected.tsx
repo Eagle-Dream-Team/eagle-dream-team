@@ -14,6 +14,7 @@ import {
   FolderOpen,
   CalendarDays,
   MessageCircle,
+  SidebarOpen,
 } from "lucide-react";
 
 import {
@@ -29,6 +30,7 @@ import {
   SidebarInset,
   SidebarProvider,
   SidebarTrigger,
+  SidebarTriggerMobile,
 } from "@/components/ui/sidebar";
 import {
   getUser,
@@ -39,6 +41,9 @@ import {
 import { useLocation, useMatches } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { SessionExpiredDialog } from "@/components/common/session-expired-dialog";
+import { EagleTitle } from "@/components/eagle-title";
+import { EagleIcon } from "@/components/eagle-icon";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 export const Route = createFileRoute("/_protected")({
   component: ProtectedLayout,
@@ -90,6 +95,8 @@ function ProtectedLayout() {
     { title: "Files", url: "/student/files", icon: <FolderOpen /> },
   ].map((item) => ({ ...item, isActive: pathname === item.url }));
 
+  const isMobile = useIsMobile();
+
   return (
     <>
       {sessionExpired && <SessionExpiredDialog />}
@@ -109,7 +116,12 @@ function ProtectedLayout() {
             avatar: "",
           }}
         />
-        <SidebarInset className="overflow-x-hidden mt-2">
+        <SidebarInset className="overflow-x-hidden">
+          <div className={ (isMobile ? "h-16.5" : "") + " text-[20px] items-center fixed text-xl pt-2 pb-1.5 pl-[26dvw] flex w-full bg-neutral-50 text-black/80 font-semibold z-10 shadow"}>
+          <SidebarTriggerMobile className="absolute left-4.5 top-4.5 scale-180" />
+            <EagleIcon className="w-7 -mt-0.5 mr-2" /> Eagle University Portal
+          </div>
+          <div className={ (isMobile ? "h-16" : "") + " p-5"}></div>
           <div className="p-6 min-w-0 overflow-y-auto">
             <Outlet />
           </div>
