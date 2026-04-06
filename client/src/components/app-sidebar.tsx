@@ -14,6 +14,7 @@ import {
   SidebarRail,
   SidebarTrigger,
 } from "@/components/ui/sidebar";
+import { useIsMobile } from "@/hooks/use-mobile";
 // import {
 //   GalleryVerticalEndIcon,
 //   AudioLinesIcon,
@@ -169,9 +170,10 @@ interface AppSidebarProps extends React.ComponentProps<typeof Sidebar> {
 }
 
 export function AppSidebar({ items, user, ...props }: AppSidebarProps) {
+  const isMobile = useIsMobile();
   return (    
     <Sidebar collapsible="icon" {...props}>
-      <SidebarTrigger className="m-2 scale-140" />
+      <SidebarTrigger className={"m-2 scale-140 " +(isMobile ? "mt-4" : "") } />
       {/* <SidebarHeader>
         <TeamSwitcher teams={data.teams} />
       </SidebarHeader> */}
