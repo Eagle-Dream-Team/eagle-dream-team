@@ -11,6 +11,9 @@ import type { ColumnType } from "antd/es/table";
 import { Tag } from "antd";
 import { MessageSquare, Users, TrendingUp } from "lucide-react";
 import { StatCard } from "@/components/common/stat-card";
+import { getUser } from "@/services/auth";
+import { EagleTitle } from "@/components/eagle-title";
+import { EagleIcon } from "@/components/eagle-icon";
 
 export const Route = createFileRoute("/_protected/staff/")({
   component: RouteComponent,
@@ -94,9 +97,14 @@ function RouteComponent() {
     queryKey: ["report-inactive"],
     queryFn: getInactiveStudents,
   });
+  const user = getUser();
 
   return (
     <div className="flex flex-col gap-6">
+      <div className="">
+        <h1 className="flex grow justify-center text-center text-2xl font-bold opacity-75 m-0 p-0 pr-2">Dashboard</h1>
+        <h2 className="grow text-center font-semibold mt-1 w-full">Hello, {user?.first_name + " " + user?.last_name}</h2>
+      </div>
       <h1 className="text-base font-semibold text-neutral-800">Reports</h1>
 
       {/* Stat Cards */}

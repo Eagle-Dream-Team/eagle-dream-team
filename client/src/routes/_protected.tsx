@@ -109,14 +109,10 @@ function ProtectedLayout() {
             avatar: "",
           }}
         />
-        <SidebarInset className="overflow-x-hidden">
-          <header className="flex h-16 shrink-0 items-center gap-2 transition-[width,height] ease-linear group-has-data-[collapsible=icon]/sidebar-wrapper:h-12">
+        <SidebarInset className="overflow-x-hidden mt-2 pt-14">
+          <header className="fixed shadow bg-white flex h-16 w-full pt-3 -mt-16 pl-1 z-10 pb-4 items-center gap-2 transition-[width,height] ease-linear group-has-data-[collapsible=icon]/sidebar-wrapper:h-12">
             <div className="flex items-center gap-2 px-4">
-              <SidebarTrigger className="-ml-1" />
-              <Separator
-                orientation="vertical"
-                className="mr-2 data-[orientation=vertical]:h-4"
-              />
+              <SidebarTrigger className="-ml-1 scale-160" />
               <Breadcrumb>
                 {/* <BreadcrumbList>
                   <BreadcrumbItem className="hidden md:block">
@@ -130,6 +126,8 @@ function ProtectedLayout() {
                   </BreadcrumbItem>
                 </BreadcrumbList> */}
               </Breadcrumb>
+            </div>
+            <div className="">
             </div>
           </header>
           <div className="p-6 min-w-0 overflow-y-auto">

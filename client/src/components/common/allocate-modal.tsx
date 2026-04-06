@@ -90,7 +90,7 @@ export function AllocateModal({
                 key={tutor.user_id}
                 onClick={() => !isCurrent && setSelectedTutorId(tutor.user_id)}
                 className={`flex items-center justify-between px-4 py-3 rounded-lg border transition-colors
-                  ${isCurrent ? "opacity-50 cursor-not-allowed bg-muted/30" : "cursor-pointer hover:bg-muted/50"}
+                  ${isCurrent ? "opacity-50 bg-muted/30" : "cursor-pointer hover:bg-muted/50"}
                   ${isSelected ? "border-primary bg-primary/10" : "border-border"}
                 `}
               >

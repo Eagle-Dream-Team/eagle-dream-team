@@ -108,7 +108,7 @@ function RouteComponent() {
               disabled={loading}
               className={`px-6 py-2 rounded-lg border-2 border-black transition ${
                 loading
-                  ? "bg-gray-400 cursor-not-allowed"
+                  ? "bg-gray-400"
                   : "bg-blue-700 hover:bg-blue-800"
               }`}
             >

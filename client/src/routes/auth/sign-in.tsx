@@ -44,9 +44,10 @@ function RouteComponent() {
     <Background className="bg-[url(../lecture-hall.jpg)] bg-cover" />
       <div className={"flex justify-center h-full p-6"}>
         <div className="w-full max-w-xl h-full flex flex-col p-10">
-        <EagleTitle className="w-full text-white shadow-xl" />
-        <div className="mt-8 mb-1 w-full h-fit border border-gray-600 backdrop-blur bg-neutral-50/80 shadow-xl rounded-xl p-6">
+        <EagleTitle className="w-full shadow-xl" />
+        <div className="mb-1 w-full h-fit border border-gray-600 backdrop-blur bg-neutral-50/80 shadow-xl rounded-3xl p-12">
           <Form form={form} layout="vertical" onFinish={onFinish}>
+        <h2 className="text-xl font-semibold mb-4">Sign In</h2>
             <Form.Item
               label="Email"
               name="email"
@@ -78,11 +79,12 @@ function RouteComponent() {
 
             <div className="flex items-center justify-between mt-2">
               <Button type="primary" htmlType="submit" loading={isPending}>
-                Sign In
+                Submit
               </Button>
               <Button
                 type="link"
                 onClick={() => navigate({ to: "/auth/forgot-password" })}
+                className="hover:underline hover:text-blue-400 text-blue-500"
               >
                 Forgot password?
               </Button>
