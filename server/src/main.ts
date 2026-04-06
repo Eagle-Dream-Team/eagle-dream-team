@@ -19,7 +19,11 @@ async function bootstrap() {
   SwaggerModule.setup('swagger', app, documentFactory);
 
   app.enableCors({
-    origin: ['http://localhost:3000', 'http://localhost:5173'],
+    origin: [
+      'http://localhost:3000',
+      'http://localhost:5173',
+      'https://eagle-dream-team-1.onrender.com',
+    ],
     credentials: true,
   });
 
