@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from "react";
 import axios from "axios";
-import { ConversationsList } from "@/components/test/conversations-list";
+// import { ConversationsList } from "@/components/test/-conversations-list";
+import { ConversationsList } from "./-conversations-list";
 
 const API = import.meta.env.VITE_API_URL;
 

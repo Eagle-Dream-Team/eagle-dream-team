@@ -12,8 +12,8 @@ import { Tag } from "antd";
 import { MessageSquare, Users, TrendingUp } from "lucide-react";
 import { StatCard } from "@/components/common/stat-card";
 import { getUser } from "@/services/auth";
-import { EagleTitle } from "@/components/eagle-title";
-import { EagleIcon } from "@/components/eagle-icon";
+// import { EagleTitle } from "@/components/eagle-title";
+// import { EagleIcon } from "@/components/eagle-icon";
 
 export const Route = createFileRoute("/_protected/staff/")({
   component: RouteComponent,

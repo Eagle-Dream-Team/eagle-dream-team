@@ -15,7 +15,7 @@ export function FileFilterSegment({ value, onChange }: Props) {
       options={[
         { label: "All", value: "all" },
         { label: "My Files", value: "mine" },
-        { label: "Shared with Me", value: "shared_with_me" },
+        { label: "Received", value: "shared_with_me" },
       ]}
     />
   );

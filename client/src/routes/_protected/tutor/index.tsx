@@ -6,7 +6,7 @@ import {
   getTutorStudents,
 } from "@/services/tutor/student";
 import { Calendar, FileText, MessageSquare, Users } from "lucide-react";
-import { Table } from "antd";
+// import { Table } from "antd";
 import type { AppFile } from "@/models/file";
 import { StatCard } from "@/components/common/stat-card";
 import { getFiles } from "@/services/common/file";
@@ -71,25 +71,29 @@ function RouteComponent() {
     <div className="space-y-6">
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
         <StatCard
+          href="./students"
           label="Allocated Students"
           value={studentsData?.meta.total}
           icon={<Users size={18} />}
           loading={studentsLoading}
         />
         <StatCard
+          href="./messages"
           label="Unread Messages"
           value={unreadData?.data.count}
           icon={<MessageSquare size={18} />}
           loading={unreadLoading}
         />
         <StatCard
+          href="./meetings"
           label="Upcoming Meetings"
           value={meetingsData?.data.count}
           icon={<Calendar size={18} />}
           loading={meetingsLoading}
         />
         <StatCard
-          label="Files Shared"
+          href="./files"
+          label="Files Received"
           value={filesData?.meta.total}
           icon={<FileText size={18} />}
           loading={filesLoading}

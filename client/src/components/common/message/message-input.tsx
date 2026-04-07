@@ -149,7 +149,7 @@ export function MessageInput({ peerId }: Props) {
             value={text}
             onChange={(e) => setText(e.target.value)}
             onKeyDown={(e) => e.key === "Enter" && canSend && mutate()}
-            className="flex-1 border px-3 py-2 rounded-lg text-sm outline-none focus:ring-1 focus:ring-neutral-500"
+            className="max-w-[calc(100-60px)] flex-1 border px-3 py-2 rounded-lg text-sm outline-none focus:ring-1 focus:ring-neutral-500"
             placeholder="Type a message..."
           />
 

@@ -9,7 +9,7 @@ import { useQuery } from "@tanstack/react-query";
 import { Mail, User, MessageSquare, Calendar, FileText } from "lucide-react";
 import { AppTable } from "@/components/common/app-table";
 import type { AppFile } from "@/models/file";
-import type { Meeting } from "@/models/meeting";
+// import type { Meeting } from "@/models/meeting";
 import { getMeetings } from "@/services/tutor/meeting";
 import { StatCard } from "@/components/common/stat-card";
 
@@ -80,43 +80,47 @@ function RouteComponent() {
     },
   ];
 
-  const meetingColumns = [
-    {
-      title: "Title",
-      dataIndex: "title",
-      key: "title",
-    },
-    {
-      title: "Date",
-      dataIndex: "scheduled_at",
-      key: "scheduled_at",
-      render: (val: string) => new Date(val).toLocaleString(),
-    },
-    {
-      title: "Status",
-      dataIndex: "status",
-      key: "status",
-    },
-  ];
+  // const meetingColumns = [
+  //   {
+  //     title: "Title",
+  //     dataIndex: "title",
+  //     key: "title",
+  //   },
+  //   {
+  //     title: "Date",
+  //     dataIndex: "scheduled_at",
+  //     key: "scheduled_at",
+  //     render: (val: string) => new Date(val).toLocaleString(),
+  //   },
+  //   {
+  //     title: "Status",
+  //     dataIndex: "status",
+  //     key: "status",
+  //   },
+  // ];
 
   return (
     <div className="flex flex-col gap-6">
       {/* Stat Cards */}
       <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+
         <StatCard
+          href="./messages"
           label="Unread Messages"
           value={unreadData?.data.count}
           icon={<MessageSquare size={18} />}
           loading={unreadLoading}
         />
         <StatCard
+          href="./meetings"
           label="Upcoming Meetings"
           value={meetingsCountData?.data.count}
           icon={<Calendar size={18} />}
           loading={meetingsCountLoading}
         />
         <StatCard
-          label="Files Shared With Me"
+          href="./files"
+          label="Files Received"
           value={filesData?.meta.total}
           icon={<FileText size={18} />}
           loading={filesLoading}
@@ -212,10 +216,10 @@ function RouteComponent() {
         )}
       </div>
 
-      {/* Files Shared With Me */}
+      {/* Files Receipt */}
       <div className="flex flex-col gap-2">
         <h2 className="text-sm font-semibold text-neutral-600">
-          Files Shared With Me
+          Files Receipt
         </h2>
         <AppTable<AppFile>
           columns={fileColumns}

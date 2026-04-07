@@ -3,14 +3,12 @@ import { Input } from "antd";
 
 export function ConversationsList({
   onSelectUser,
-  conversations,
+  conversations = [],
   isLoading,
-  activeConversationId,
 }: {
   onSelectUser: (c: Conversation) => void;
-  conversations: Conversation[];
+  conversations?: Conversation[];
   isLoading?: boolean;
-  activeConversationId?: string;
 }) {
   return (
     <div className="h-full flex flex-col border-r border-t bg-white">

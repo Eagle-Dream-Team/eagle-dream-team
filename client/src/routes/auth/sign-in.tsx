@@ -1,5 +1,5 @@
 import { Background } from "@/components/background";
-import { EagleIcon } from "@/components/eagle-icon";
+// import { EagleIcon } from "@/components/eagle-icon";
 import { EagleTitle } from "@/components/eagle-title";
 import { signIn } from "@/services/auth";
 import type { SignInDto } from "@server/user/dto/signIn.dto";
@@ -7,9 +7,9 @@ import { useMutation } from "@tanstack/react-query";
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { Button, Form, Input } from "antd";
 import type { AxiosError } from "axios";
-import { useState } from "react";
+// import { useState } from "react";
 import { toast } from "sonner";
-import eagleLogo from "@/assets/eagle.svg";
+// import eagleLogo from "@/assets/eagle.svg";
 
 export const Route = createFileRoute("/auth/sign-in")({
   component: RouteComponent,
@@ -43,9 +43,9 @@ function RouteComponent() {
     <>
     <Background className="bg-[url(../lecture-hall.jpg)] bg-cover" />
       <div className={"flex justify-center h-full p-6"}>
-        <div className="w-full max-w-xl h-full flex flex-col p-10">
+        <div className="w-full max-w-xl h-full flex flex-col">
         <EagleTitle className="w-full shadow-xl" />
-        <div className="mb-1 w-full h-fit border border-gray-600 backdrop-blur bg-neutral-50/80 shadow-xl rounded-3xl p-12">
+        <div className="mb-1 w-full h-fit border border-gray-600 backdrop-blur bg-neutral-50/80 shadow-xl rounded-3xl p-10 pt-8">
           <Form form={form} layout="vertical" onFinish={onFinish}>
         <h2 className="text-xl font-semibold mb-4">Sign In</h2>
             <Form.Item

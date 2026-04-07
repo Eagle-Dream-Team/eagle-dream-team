@@ -40,7 +40,10 @@ import {
   isTokenExpired,
   // signOut,
 } from "@/services/auth";
-import { useLocation, useMatches } from "@tanstack/react-router";
+import {
+  useLocation,
+  // useMatches
+} from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { SessionExpiredDialog } from "@/components/common/session-expired-dialog";
 // import { EagleTitle } from "@/components/eagle-title";
@@ -58,14 +61,18 @@ export const Route = createFileRoute("/_protected")({
 
 function TopBar() {
   const { open, isMobile } = useSidebar();
-  return <div className={((open && !isMobile) ? "  w-[calc(100vw-255px)] " : " w-full ") +  " " + (isMobile ? "" : " mr-[7vw] ") + " duration-150 flex justify-center"}>
-    <EagleIcon className="w-7 -mt-0.5 mr-2" /> Eagle University Portal
-  </div>
+  return <>
+    <SidebarTriggerMobile className="ml-4.5 pr-0.5 scale-180" />
+
+    <div className={((open && !isMobile) ? "  w-[calc(100vw-255px)] " : " w-full ") + " " + (isMobile ? " text-[min(max(5.5vw),1.5em)] mr-[4%] " : " mr-[7vw] ") + " duration-150 flex justify-center"}>
+      <EagleIcon className="w-7 -mt-0.5 mr-2" /> Eagle University Portal
+    </div>
+  </>
 }
 
 function ProtectedLayout() {
-  const matches = useMatches();
-  console.log("1. raw matches:", matches);
+  // const matches = useMatches();
+  // console.log("1. raw matches:", matches);
   // const navigate = useNavigate();
 
   const user = getUser();
@@ -129,7 +136,6 @@ function ProtectedLayout() {
         />
         <SidebarInset className="overflow-x-hidden">
           <div className={(isMobile ? "h-16.5" : "") + " text-[20px] items-center fixed text-xl pt-2 pb-1.5 w-full flex max-w-[inherit] bg-neutral-50 text-black/80 font-semibold z-10 shadow"}>
-            <SidebarTriggerMobile className="absolute left-4.5 top-4.5 scale-180" />
             <TopBar />
           </div>
           <div className={(isMobile ? "h-16" : "") + " p-5"}></div>

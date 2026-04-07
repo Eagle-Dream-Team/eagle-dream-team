@@ -35,7 +35,7 @@ function RouteComponent() {
 
   return (
     <div className="flex justify-center items-center min-h-screen p-6">
-      <div className="w-[100vw] md:w-md max-w-full h-fit border bg-neutral-50 shadow-xl rounded-xl p-6">
+      <div className="w-screen md:w-md max-w-full h-fit border bg-neutral-50 shadow-xl rounded-xl p-6 pt-4">
         <h2 className="text-lg font-semibold mb-4">Reset Password</h2>
         <Form form={form} layout="vertical" onFinish={mutate}>
           <Form.Item
