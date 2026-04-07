@@ -24,7 +24,6 @@ export function MessageBubble({ message }: { message: Message }) {
             </span>
             <a
               href={message.file.download_url}
-              target="_blank"
               rel="noreferrer"
               onClick={(e) => e.stopPropagation()}
               className="shrink-0"

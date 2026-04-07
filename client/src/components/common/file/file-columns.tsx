@@ -86,7 +86,6 @@ export const getFileColumns = (
         size="small"
         icon={<Download size={13} />}
         href={record.download_url}
-        target="_blank"
       >
         Download
       </Button>

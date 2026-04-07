@@ -26,7 +26,7 @@ function RouteComponent() {
     onSuccess: (data) => {
       localStorage.setItem("access_token", data.access_token);
       localStorage.setItem("role", data.role);
-      toast.success("welcome back");
+      toast.success("Welcome back");
 
       navigate({ to: `/${data.role}` });
     },
