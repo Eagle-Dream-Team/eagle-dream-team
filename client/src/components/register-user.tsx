@@ -92,7 +92,7 @@ export function UserModal({
             { type: "email", message: "Please enter a valid email" },
           ]}
         >
-          <Input placeholder="name@school.com" disabled={isPending} />
+          <Input placeholder="user@email.com" disabled={isPending} />
         </Form.Item>
 
         {mode === "create" && (

@@ -122,6 +122,7 @@ function RouteComponent() {
           loading={isLoadingStats}
         />
         <StatCard
+          href="tutors"
           label="Total Tutors"
           value={stats?.total_tutors}
           icon={<Users size={18} className="text-neutral-500" />}

@@ -29,7 +29,7 @@ function RouteComponent() {
 
   return (
     <div className={"flex justify-center items-center min-h-screen p-6"}>
-      <div className="w-[100vw] md:w-md max-w-full h-fit border bg-neutral-50 shadow-xl rounded-xl p-6">
+      <div className="w-screen md:w-md max-w-full h-fit border bg-neutral-50 shadow-xl rounded-xl p-6">
         <Form form={form} layout="vertical" onFinish={onFinish}>
           <Form.Item
             label="Email"
@@ -41,7 +41,7 @@ function RouteComponent() {
               { type: "email", message: "Please enter a valid email" },
             ]}
           >
-            <Input placeholder="name@school.com" disabled={isPending} />
+            <Input placeholder="user@email.com" disabled={isPending} />
           </Form.Item>
           <Form.Item
             label="New Password"

@@ -58,7 +58,7 @@ function RouteComponent() {
                 { type: "email", message: "Please enter a valid email" },
               ]}
             >
-              <Input placeholder="name@school.com" disabled={isPending} />
+              <Input spellCheck={false} type="email" placeholder="user@email.com" disabled={isPending} />
             </Form.Item>
 
             <Form.Item
