@@ -73,7 +73,7 @@ function RouteComponent() {
       title: "Action",
       key: "action",
       render: (_: any, record: AppFile) => (
-        <a href={record.url} rel="noopener noreferrer" download>
+        <a href={record.download_url} rel="noopener noreferrer" download>
           Download
         </a>
       ),
