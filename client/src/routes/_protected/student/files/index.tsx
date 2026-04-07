@@ -12,6 +12,7 @@ import {
   getFileMobileColumns,
 } from "@/components/common/file/file-columns";
 import { getUser } from "@/services/auth";
+import { LucideUpload } from "lucide-react";
 export const Route = createFileRoute("/_protected/student/files/")({
   component: RouteComponent,
 });
@@ -43,7 +44,7 @@ function RouteComponent() {
             }}
           />
           <Button icon={<Upload />} onClick={() => setUploadOpen(true)}>
-            Upload
+            <LucideUpload className="pr-2 scale-150" />
           </Button>
         </div>
       </div>
